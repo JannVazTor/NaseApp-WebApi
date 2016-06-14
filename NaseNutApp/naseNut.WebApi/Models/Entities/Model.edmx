@@ -1,0 +1,602 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NaseNModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cylinder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CylinderName" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cylinder_Reception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="ReceptionId" Type="int" Nullable="false" />
+          <Property Name="CylinderId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Grill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCapture" Type="datetime" Nullable="false" />
+          <Property Name="ReceptionId" Type="int" Nullable="false" />
+          <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="Sacks" Type="int" Nullable="false" />
+          <Property Name="Kilos" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Humidity">
+          <Key>
+            <PropertyRef Name="DateCapture" />
+            <PropertyRef Name="HumidityPercent" />
+            <PropertyRef Name="CylinderReceptionId" />
+          </Key>
+          <Property Name="DateCapture" Type="datetime" Nullable="false" />
+          <Property Name="HumidityPercent" Type="float" Nullable="false" />
+          <Property Name="CylinderReceptionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Producer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProducerName" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ReceivedFromField" Type="float" Nullable="false" />
+          <Property Name="CylinderNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CarRegistration" Type="nvarchar" MaxLength="50" />
+          <Property Name="EntryDate" Type="datetime" Nullable="false" />
+          <Property Name="IssueDate" Type="datetime" Nullable="false" />
+          <Property Name="HeatHoursDtrying" Type="float" />
+          <Property Name="HumidityPercent" Type="float" />
+          <Property Name="Observations" Type="nvarchar" MaxLength="500" />
+          <Property Name="ProducerId" Type="int" Nullable="false" />
+          <Property Name="GrillId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Remission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cultivation" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Batch" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="Butler" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="TransportNumber" Type="int" Nullable="false" />
+          <Property Name="Driver" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Elaborate" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ReceptionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sampling">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCapture" Type="datetime" Nullable="false" />
+          <Property Name="SampleWeight" Type="float" Nullable="false" />
+          <Property Name="HumidityPercent" Type="float" Nullable="false" />
+          <Property Name="WalnutNumber" Type="int" Nullable="false" />
+          <Property Name="Performance" Type="float" Nullable="false" />
+          <Property Name="TotalWeightOfEdibleNuts" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_cylinderReception_cylinder">
+          <End Role="Cylinder" Type="Self.Cylinder" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cylinder_Reception">
+              <PropertyRef Name="CylinderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cylinderReception_reception">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cylinder_Reception">
+              <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_humidity_cylinderReception">
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Humidity" Type="Self.Humidity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder_Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Humidity">
+              <PropertyRef Name="CylinderReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reception_grill">
+          <End Role="Grill" Type="Self.Grill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reception" Type="Self.Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="GrillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reception_producer">
+          <End Role="Producer" Type="Self.Producer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reception" Type="Self.Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="ProducerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_remission_reception">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Remission" Type="Self.Remission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Remission">
+              <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sampling_grill">
+          <End Role="Grill" Type="Self.Grill" Multiplicity="1" />
+          <End Role="Sampling" Type="Self.Sampling" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sampling">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NaseNModelStoreContainer">
+          <EntitySet Name="Cylinder" EntityType="Self.Cylinder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cylinder_Reception" EntityType="Self.Cylinder_Reception" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reception" EntityType="Self.Reception" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Remission" EntityType="Self.Remission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Humidity" EntityType="Self.Humidity" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Humidity].[DateCapture] AS [DateCapture], 
+    [Humidity].[HumidityPercent] AS [HumidityPercent], 
+    [Humidity].[CylinderReceptionId] AS [CylinderReceptionId]
+    FROM [dbo].[Humidity] AS [Humidity]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="fk_cylinderReception_cylinder" Association="Self.fk_cylinderReception_cylinder">
+            <End Role="Cylinder" EntitySet="Cylinder" />
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cylinderReception_reception" Association="Self.fk_cylinderReception_reception">
+            <End Role="Reception" EntitySet="Reception" />
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+          </AssociationSet>
+          <AssociationSet Name="fk_humidity_cylinderReception" Association="Self.fk_humidity_cylinderReception">
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+            <End Role="Humidity" EntitySet="Humidity" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reception_grill" Association="Self.fk_reception_grill">
+            <End Role="Grill" EntitySet="Grill" />
+            <End Role="Reception" EntitySet="Reception" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reception_producer" Association="Self.fk_reception_producer">
+            <End Role="Producer" EntitySet="Producer" />
+            <End Role="Reception" EntitySet="Reception" />
+          </AssociationSet>
+          <AssociationSet Name="fk_remission_reception" Association="Self.fk_remission_reception">
+            <End Role="Reception" EntitySet="Reception" />
+            <End Role="Remission" EntitySet="Remission" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sampling_grill" Association="Self.fk_sampling_grill">
+            <End Role="Grill" EntitySet="Grill" />
+            <End Role="Sampling" EntitySet="Sampling" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NaseNModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cylinder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CylinderName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cylinder_Reception" Relationship="Self.fk_cylinderReception_cylinder" FromRole="Cylinder" ToRole="Cylinder_Reception" />
+        </EntityType>
+        <EntityType Name="Cylinder_Reception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="CylinderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cylinder" Relationship="Self.fk_cylinderReception_cylinder" FromRole="Cylinder_Reception" ToRole="Cylinder" />
+          <NavigationProperty Name="Reception" Relationship="Self.fk_cylinderReception_reception" FromRole="Cylinder_Reception" ToRole="Reception" />
+          <NavigationProperty Name="Humidities" Relationship="Self.fk_humidity_cylinderReception" FromRole="Cylinder_Reception" ToRole="Humidity" />
+        </EntityType>
+        <EntityType Name="Grill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="Sacks" Type="Int32" Nullable="false" />
+          <Property Name="Kilos" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Receptions" Relationship="Self.fk_reception_grill" FromRole="Grill" ToRole="Reception" />
+          <NavigationProperty Name="Sampling" Relationship="Self.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
+        </EntityType>
+        <EntityType Name="Producer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProducerName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Receptions" Relationship="Self.fk_reception_producer" FromRole="Producer" ToRole="Reception" />
+        </EntityType>
+        <EntityType Name="Reception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Variety" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ReceivedFromField" Type="Double" Nullable="false" />
+          <Property Name="CylinderNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FieldName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CarRegistration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IssueDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HeatHoursDtrying" Type="Double" />
+          <Property Name="HumidityPercent" Type="Double" />
+          <Property Name="Observations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ProducerId" Type="Int32" Nullable="false" />
+          <Property Name="GrillId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cylinder_Reception" Relationship="Self.fk_cylinderReception_reception" FromRole="Reception" ToRole="Cylinder_Reception" />
+          <NavigationProperty Name="Grill" Relationship="Self.fk_reception_grill" FromRole="Reception" ToRole="Grill" />
+          <NavigationProperty Name="Producer" Relationship="Self.fk_reception_producer" FromRole="Reception" ToRole="Producer" />
+          <NavigationProperty Name="Remissions" Relationship="Self.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
+        </EntityType>
+        <EntityType Name="Remission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cultivation" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Batch" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Butler" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TransportNumber" Type="Int32" Nullable="false" />
+          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Elaborate" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reception" Relationship="Self.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
+        </EntityType>
+        <EntityType Name="Sampling">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SampleWeight" Type="Double" Nullable="false" />
+          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
+          <Property Name="WalnutNumber" Type="Int32" Nullable="false" />
+          <Property Name="Performance" Type="Double" Nullable="false" />
+          <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Grill" Relationship="Self.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
+        </EntityType>
+        <EntityType Name="Humidity">
+          <Key>
+            <PropertyRef Name="DateCapture" />
+            <PropertyRef Name="HumidityPercent" />
+            <PropertyRef Name="CylinderReceptionId" />
+          </Key>
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
+          <Property Name="CylinderReceptionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cylinder_Reception" Relationship="Self.fk_humidity_cylinderReception" FromRole="Humidity" ToRole="Cylinder_Reception" />
+        </EntityType>
+        <Association Name="fk_cylinderReception_cylinder">
+          <End Role="Cylinder" Type="Self.Cylinder" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cylinder_Reception">
+              <PropertyRef Name="CylinderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cylinderReception_reception">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cylinder_Reception">
+              <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_humidity_cylinderReception">
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Humidity" Type="Self.Humidity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder_Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Humidity">
+              <PropertyRef Name="CylinderReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reception_grill">
+          <End Role="Grill" Type="Self.Grill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reception" Type="Self.Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="GrillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sampling_grill">
+          <End Role="Grill" Type="Self.Grill" Multiplicity="1" />
+          <End Role="Sampling" Type="Self.Sampling" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sampling">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reception_producer">
+          <End Role="Producer" Type="Self.Producer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reception" Type="Self.Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="ProducerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_remission_reception">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Remission" Type="Self.Remission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Remission">
+              <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NaseNEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cylinders" EntityType="Self.Cylinder" />
+          <EntitySet Name="Cylinder_Reception" EntityType="Self.Cylinder_Reception" />
+          <EntitySet Name="Grills" EntityType="Self.Grill" />
+          <EntitySet Name="Producers" EntityType="Self.Producer" />
+          <EntitySet Name="Receptions" EntityType="Self.Reception" />
+          <EntitySet Name="Remissions" EntityType="Self.Remission" />
+          <EntitySet Name="Samplings" EntityType="Self.Sampling" />
+          <EntitySet Name="Humidities" EntityType="Self.Humidity" />
+          <AssociationSet Name="fk_cylinderReception_cylinder" Association="Self.fk_cylinderReception_cylinder">
+            <End Role="Cylinder" EntitySet="Cylinders" />
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cylinderReception_reception" Association="Self.fk_cylinderReception_reception">
+            <End Role="Reception" EntitySet="Receptions" />
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+          </AssociationSet>
+          <AssociationSet Name="fk_humidity_cylinderReception" Association="Self.fk_humidity_cylinderReception">
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+            <End Role="Humidity" EntitySet="Humidities" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reception_grill" Association="Self.fk_reception_grill">
+            <End Role="Grill" EntitySet="Grills" />
+            <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sampling_grill" Association="Self.fk_sampling_grill">
+            <End Role="Grill" EntitySet="Grills" />
+            <End Role="Sampling" EntitySet="Samplings" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reception_producer" Association="Self.fk_reception_producer">
+            <End Role="Producer" EntitySet="Producers" />
+            <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_remission_reception" Association="Self.fk_remission_reception">
+            <End Role="Reception" EntitySet="Receptions" />
+            <End Role="Remission" EntitySet="Remissions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NaseNModelStoreContainer" CdmEntityContainer="NaseNEntities">
+          <EntitySetMapping Name="Cylinders">
+            <EntityTypeMapping TypeName="NaseNModel.Cylinder">
+              <MappingFragment StoreEntitySet="Cylinder">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CylinderName" ColumnName="CylinderName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cylinder_Reception">
+            <EntityTypeMapping TypeName="NaseNModel.Cylinder_Reception">
+              <MappingFragment StoreEntitySet="Cylinder_Reception">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="CylinderId" ColumnName="CylinderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grills">
+            <EntityTypeMapping TypeName="NaseNModel.Grill">
+              <MappingFragment StoreEntitySet="Grill">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
+                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producers">
+            <EntityTypeMapping TypeName="NaseNModel.Producer">
+              <MappingFragment StoreEntitySet="Producer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProducerName" ColumnName="ProducerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receptions">
+            <EntityTypeMapping TypeName="NaseNModel.Reception">
+              <MappingFragment StoreEntitySet="Reception">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="ReceivedFromField" ColumnName="ReceivedFromField" />
+                <ScalarProperty Name="CylinderNumber" ColumnName="CylinderNumber" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="CarRegistration" ColumnName="CarRegistration" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="IssueDate" ColumnName="IssueDate" />
+                <ScalarProperty Name="HeatHoursDtrying" ColumnName="HeatHoursDtrying" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="Observations" ColumnName="Observations" />
+                <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
+                <ScalarProperty Name="GrillId" ColumnName="GrillId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Remissions">
+            <EntityTypeMapping TypeName="NaseNModel.Remission">
+              <MappingFragment StoreEntitySet="Remission">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Cultivation" ColumnName="Cultivation" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Butler" ColumnName="Butler" />
+                <ScalarProperty Name="TransportNumber" ColumnName="TransportNumber" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="Elaborate" ColumnName="Elaborate" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Samplings">
+            <EntityTypeMapping TypeName="NaseNModel.Sampling">
+              <MappingFragment StoreEntitySet="Sampling">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="WalnutNumber" ColumnName="WalnutNumber" />
+                <ScalarProperty Name="Performance" ColumnName="Performance" />
+                <ScalarProperty Name="TotalWeightOfEdibleNuts" ColumnName="TotalWeightOfEdibleNuts" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Humidities">
+            <EntityTypeMapping TypeName="NaseNModel.Humidity">
+              <MappingFragment StoreEntitySet="Humidity">
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="CylinderReceptionId" ColumnName="CylinderReceptionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

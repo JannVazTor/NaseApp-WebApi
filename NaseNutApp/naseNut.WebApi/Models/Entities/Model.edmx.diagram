@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b3f1f67817ae4a12bdf827b239fe71f3" Name="Diagram1">
+        <EntityTypeShape EntityType="NaseNModel.Cylinder" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Cylinder_Reception" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Grill" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Producer" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Reception" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Remission" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Sampling" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NaseNModel.Humidity" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <AssociationConnector Association="NaseNModel.fk_cylinderReception_cylinder" ManuallyRouted="false" />
+        <AssociationConnector Association="NaseNModel.fk_cylinderReception_reception" ManuallyRouted="false" />
+        <AssociationConnector Association="NaseNModel.fk_humidity_cylinderReception" ManuallyRouted="false" />
+        <AssociationConnector Association="NaseNModel.fk_reception_grill" ManuallyRouted="false" />
+        <AssociationConnector Association="NaseNModel.fk_sampling_grill" ManuallyRouted="false" />
+        <AssociationConnector Association="NaseNModel.fk_reception_producer" ManuallyRouted="false" />
+        <AssociationConnector Association="NaseNModel.fk_remission_reception" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
