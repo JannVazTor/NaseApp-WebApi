@@ -215,29 +215,52 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ProducerController.cs" />
+    <Compile Include="Controllers\ReceptionController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountBindingModels.cs" />
+    <Compile Include="Models\BindingModels\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BindingModels\ProducerBindingModel.cs" />
+    <Compile Include="Models\BindingModels\ReceptionBindingModel.cs" />
+    <Compile Include="Models\BindingModels\RoleBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
     <Compile Include="Models\Business\Repositories\ProducerRepository.cs" />
     <Compile Include="Models\Business\Repositories\ReceptionRepository.cs" />
     <Compile Include="Models\Business\Repositories\RemissionRepository.cs" />
+    <Compile Include="Models\Business\Repositories\RoleRepository.cs" />
     <Compile Include="Models\Business\Repositories\SamplingRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
     <Compile Include="Models\Business\Services\ProducerService.cs" />
     <Compile Include="Models\Business\Services\ReceptionService.cs" />
     <Compile Include="Models\Business\Services\RemissionService.cs" />
+    <Compile Include="Models\Business\Services\RoleService.cs" />
     <Compile Include="Models\Business\Services\SamplingService.cs" />
+    <Compile Include="Models\Entities\AspNetRole.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUser.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUserClaim.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUserLogin.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Cylinder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Cylinder_Reception.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\C__MigrationHistory.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Grill.cs">
@@ -274,6 +297,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />

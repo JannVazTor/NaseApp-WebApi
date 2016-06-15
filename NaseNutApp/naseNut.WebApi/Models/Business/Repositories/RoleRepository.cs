@@ -6,12 +6,10 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Models.Business.Repositories
 {
-    public class ReceptionRepository : Repository<Reception>
+    public class RoleRepository:Repository<AspNetRole>
     {
-        private NaseNEntities _context;
-        public ReceptionRepository(NaseNEntities context) : base(context)
+        public RoleRepository(NaseNEntities context) : base(context)
         {
-            _context = context;
         }
     }
 }

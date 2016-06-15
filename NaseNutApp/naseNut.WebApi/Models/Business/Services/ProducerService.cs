@@ -9,14 +9,14 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class ProducerService : IService<Producer>
     {
-        public bool Save(Producer obj)
+        public bool Save(Producer producer)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
                     var producerRepository = new ProducerRepository(db);
-                    producerRepository.Insert(obj);
+                    producerRepository.Insert(producer);
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -27,20 +27,37 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Delete(Producer obj)
+        public bool Delete(Producer producer)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
                     var producerRepository = new ProducerRepository(db);
-                    producerRepository.Delete(obj);
+                    producerRepository.Delete(producer);
                     return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        public Producer GetById(int id)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var producerRepository = new ProducerRepository(db);
+                    return producerRepository.SearchOne(p => p.Id == id);
+                }
+            }
+            catch (Exception)
+            {
+                
                 throw;
             }
         }

@@ -28,12 +28,12 @@ namespace naseNut.WebApi.Models.Entities
         public string FieldName { get; set; }
         public string CarRegistration { get; set; }
         public System.DateTime EntryDate { get; set; }
-        public System.DateTime IssueDate { get; set; }
+        public Nullable<System.DateTime> IssueDate { get; set; }
         public Nullable<double> HeatHoursDtrying { get; set; }
         public Nullable<double> HumidityPercent { get; set; }
         public string Observations { get; set; }
         public int ProducerId { get; set; }
-        public int GrillId { get; set; }
+        public Nullable<int> GrillId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cylinder_Reception> Cylinder_Reception { get; set; }

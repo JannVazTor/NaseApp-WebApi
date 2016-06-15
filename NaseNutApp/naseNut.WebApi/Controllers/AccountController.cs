@@ -15,6 +15,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using naseNut.WebApi.Models;
+using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Providers;
 using naseNut.WebApi.Results;
 
@@ -22,7 +23,7 @@ namespace naseNut.WebApi.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
