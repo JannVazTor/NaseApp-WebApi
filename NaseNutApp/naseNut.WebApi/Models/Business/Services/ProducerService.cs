@@ -20,10 +20,10 @@ namespace naseNut.WebApi.Models.Business.Services
                     return db.SaveChanges() >= 1;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 
@@ -38,10 +38,10 @@ namespace naseNut.WebApi.Models.Business.Services
                     return db.SaveChanges() >= 1;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 
@@ -55,10 +55,27 @@ namespace naseNut.WebApi.Models.Business.Services
                     return producerRepository.SearchOne(p => p.Id == id);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 
-                throw;
+                throw ex;
+            }
+        }
+
+        public List<Producer> GetAll()
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var producerRepository = new ProducerRepository(db);
+                    return producerRepository.GetAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
             }
         }
     }

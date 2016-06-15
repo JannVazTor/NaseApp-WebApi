@@ -14,6 +14,7 @@ namespace naseNut.WebApi.Models.Entities
     
     public partial class Humidity
     {
+        public int Id { get; set; }
         public System.DateTime DateCapture { get; set; }
         public double HumidityPercent { get; set; }
         public int CylinderReceptionId { get; set; }

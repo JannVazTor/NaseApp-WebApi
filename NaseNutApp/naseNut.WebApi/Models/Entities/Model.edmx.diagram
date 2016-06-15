@@ -17,17 +17,17 @@
         <EntityTypeShape EntityType="NASE_BD_WModel.Reception" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Remission" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Sampling" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Humidity" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
         <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.fk_cylinderReception_cylinder" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.fk_cylinderReception_reception" ManuallyRouted="false" />
-        <AssociationConnector Association="NASE_BD_WModel.fk_humidity_cylinderReception" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.fk_reception_grill" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.fk_sampling_grill" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.fk_reception_producer" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.fk_remission_reception" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Humidity" Width="1.5" PointX="7.5" PointY="4" />
+        <AssociationConnector Association="NASE_BD_WModel.fk_humidity_cylinderReception" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

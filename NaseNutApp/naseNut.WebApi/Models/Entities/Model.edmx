@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NASE_BD_WModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NASE_BD_WModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -93,14 +93,11 @@
           <Property Name="Sacks" Type="int" Nullable="false" />
           <Property Name="Kilos" Type="float" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Humidity">
           <Key>
-            <PropertyRef Name="DateCapture" />
-            <PropertyRef Name="HumidityPercent" />
-            <PropertyRef Name="CylinderReceptionId" />
+            <PropertyRef Name="Id" />
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateCapture" Type="datetime" Nullable="false" />
           <Property Name="HumidityPercent" Type="float" Nullable="false" />
           <Property Name="CylinderReceptionId" Type="int" Nullable="false" />
@@ -318,17 +315,11 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
           <EntitySet Name="Cylinder" EntityType="Self.Cylinder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cylinder_Reception" EntityType="Self.Cylinder_Reception" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception" EntityType="Self.Reception" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Remission" EntityType="Self.Remission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Humidity" EntityType="Self.Humidity" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Humidity].[DateCapture] AS [DateCapture], 
-    [Humidity].[HumidityPercent] AS [HumidityPercent], 
-    [Humidity].[CylinderReceptionId] AS [CylinderReceptionId]
-    FROM [dbo].[Humidity] AS [Humidity]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="fk_cylinderReception_cylinder" Association="Self.fk_cylinderReception_cylinder">
             <End Role="Cylinder" EntitySet="Cylinder" />
             <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
@@ -374,8 +365,7 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
             <End Role="Sampling" EntitySet="Sampling" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NASE_BD_WModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -456,7 +446,7 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
           <Property Name="CylinderId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Cylinder" Relationship="Self.fk_cylinderReception_cylinder" FromRole="Cylinder_Reception" ToRole="Cylinder" />
           <NavigationProperty Name="Reception" Relationship="Self.fk_cylinderReception_reception" FromRole="Cylinder_Reception" ToRole="Reception" />
-          <NavigationProperty Name="Humidities" Relationship="Self.fk_humidity_cylinderReception" FromRole="Cylinder_Reception" ToRole="Humidity" />
+          <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_cylinderReception" FromRole="Cylinder_Reception" ToRole="Humidity" />
         </EntityType>
         <EntityType Name="Grill">
           <Key>
@@ -529,17 +519,6 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
           <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
           <NavigationProperty Name="Grill" Relationship="Self.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
         </EntityType>
-        <EntityType Name="Humidity">
-          <Key>
-            <PropertyRef Name="DateCapture" />
-            <PropertyRef Name="HumidityPercent" />
-            <PropertyRef Name="CylinderReceptionId" />
-          </Key>
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
-          <Property Name="CylinderReceptionId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cylinder_Reception" Relationship="Self.fk_humidity_cylinderReception" FromRole="Humidity" ToRole="Cylinder_Reception" />
-        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -593,20 +572,6 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
             </Principal>
             <Dependent Role="Cylinder_Reception">
               <PropertyRef Name="ReceptionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_humidity_cylinderReception">
-          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Humidity" Type="Self.Humidity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cylinder_Reception">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Humidity">
-              <PropertyRef Name="CylinderReceptionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -681,7 +646,6 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
           <EntitySet Name="Receptions" EntityType="Self.Reception" />
           <EntitySet Name="Remissions" EntityType="Self.Remission" />
           <EntitySet Name="Samplings" EntityType="Self.Sampling" />
-          <EntitySet Name="Humidities" EntityType="Self.Humidity" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -697,10 +661,6 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
           <AssociationSet Name="fk_cylinderReception_reception" Association="Self.fk_cylinderReception_reception">
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
-          </AssociationSet>
-          <AssociationSet Name="fk_humidity_cylinderReception" Association="Self.fk_humidity_cylinderReception">
-            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
-            <End Role="Humidity" EntitySet="Humidities" />
           </AssociationSet>
           <AssociationSet Name="fk_reception_grill" Association="Self.fk_reception_grill">
             <End Role="Grill" EntitySet="Grills" />
@@ -722,7 +682,36 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="Humidities" EntityType="NASE_BD_WModel.Humidity" />
+          <AssociationSet Name="fk_humidity_cylinderReception" Association="NASE_BD_WModel.fk_humidity_cylinderReception">
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+            <End Role="Humidity" EntitySet="Humidities" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Humidity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
+          <Property Name="CylinderReceptionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cylinder_Reception" Relationship="NASE_BD_WModel.fk_humidity_cylinderReception" FromRole="Humidity" ToRole="Cylinder_Reception" />
+        </EntityType>
+        <Association Name="fk_humidity_cylinderReception">
+          <End Type="NASE_BD_WModel.Cylinder_Reception" Role="Cylinder_Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_BD_WModel.Humidity" Role="Humidity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder_Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Humidity">
+              <PropertyRef Name="CylinderReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -869,15 +858,6 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Humidities">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.Humidity">
-              <MappingFragment StoreEntitySet="Humidity">
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
-                <ScalarProperty Name="CylinderReceptionId" ColumnName="CylinderReceptionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="NASE_BD_WModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
@@ -886,6 +866,16 @@ warning 6002: The table/view 'NASE_BD_W.dbo.Humidity' does not have a primary ke
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Humidities">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.Humidity">
+              <MappingFragment StoreEntitySet="Humidity">
+                <ScalarProperty Name="CylinderReceptionId" ColumnName="CylinderReceptionId" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

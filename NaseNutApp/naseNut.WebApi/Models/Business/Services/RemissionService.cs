@@ -2,20 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
     public class RemissionService:IService<Remission>
     {
-        public bool Save(Remission obj)
+        public bool Save(Remission remission)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var remissionRepository = new RemissionRepository(db);
+                    remissionRepository.Insert(remission);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public bool Delete(Remission obj)
+        public bool Delete(Remission remission)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var remissionRepository = new RemissionRepository(db);
+                    remissionRepository.Delete(remission);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<Remission> GetAll()
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var remissionRepository = new RemissionRepository(db);
+                    return remissionRepository.GetAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -36,5 +36,22 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar al Productor." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("getAll")]
+        public IHttpActionResult GetAllProducers()
+        {
+            try
+            {
+                var producerService = new ProducerService();
+                var producers = producerService.GetAll();
+                return producers != null ? (IHttpActionResult) Ok(TheModelFactory.Create(producers)) : Ok(); 
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los productores." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }
