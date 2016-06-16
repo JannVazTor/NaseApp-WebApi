@@ -21,7 +21,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public DateTime EntryDate { get; set; }
         public DateTime? IssueDate { get; set; }
-        public double? HeatHoursDtrying { get; set; }
+        public double? HeatHoursDrying { get; set; }
         public double? HumidityPercent { get; set; }
         [Required]
         public string Observations { get; set; }
