@@ -100,11 +100,12 @@ namespace naseNut.WebApi.Models
                 CarRegistration = r.CarRegistration,
                 EntryDate = r.EntryDate,
                 IssueDate = r.IssueDate,
-                HeatHoursDtrying = r.HeatHoursDtrying,
+                HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
                 ProducerName = r.Producer != null? r.Producer.ProducerName: "",
-                Grills = r.Grill?.Id.ToString() ?? ""
+                Grills = r.Grill?.Id.ToString() ?? "",
+                Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):""
             }).ToList();
         }
 
@@ -117,11 +118,12 @@ namespace naseNut.WebApi.Models
             public string CarRegistration { get; set; }
             public DateTime EntryDate { get; set; }
             public DateTime? IssueDate { get; set; }
-            public double? HeatHoursDtrying { get; set; }
+            public double? HeatHoursDrying { get; set; }
             public double? HumidityPercent { get; set; }
             public string Observations { get; set; }
             public string ProducerName { get; set; }
             public string Grills { get; set; }
+            public string Cylinder { get; set; }
         }
 
         public class UserModel
