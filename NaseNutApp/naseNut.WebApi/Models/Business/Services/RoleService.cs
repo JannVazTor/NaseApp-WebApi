@@ -59,6 +59,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public List<AspNetRole> GetAll()
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var roleRepository = new RoleRepository(db);
+                    var role = roleRepository.GetAll();
+                    return role;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public AspNetRole GetByName(string roleName)
         {
             try
@@ -74,5 +90,23 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        //public bool AddRoleToUser()
+        //{
+        //    try
+        //    {
+        //        using (var db = new NaseNEntities())
+        //        {
+        //            var cylinderRepository = new CylinderRepository(db);
+        //            var cylinder = cylinderRepository.GetById(cylinderId);
+        //            cylinder.Receptions.Add(reception);
+        //            return db.SaveChanges() >= 1;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
     }
 }

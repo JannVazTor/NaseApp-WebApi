@@ -13,7 +13,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public double ReceivedFromField { get; set; }
         [Required]
-        public string CylinderNumber { get; set; }
+        public int CylinderId { get; set; }
         [Required]
         public string FieldName { get; set; }
         [Required]

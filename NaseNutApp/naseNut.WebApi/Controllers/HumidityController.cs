@@ -26,7 +26,9 @@ namespace naseNut.WebApi.Controllers
                 var humidity = new Humidity
                 {
                     HumidityPercent = model.HumidityPercent,
-                    CylinderReceptionId = model.CylinderReceptionId
+                    CylinderId = model.CylinderId,
+                    ReceptionId = model.ReceptionId,
+                    DateCapture = DateTime.Now
                 };
                 var saved = humidityService.Save(humidity);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

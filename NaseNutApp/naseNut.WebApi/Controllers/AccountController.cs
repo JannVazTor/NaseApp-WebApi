@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -16,17 +18,19 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using naseNut.WebApi.Models;
 using naseNut.WebApi.Models.BindingModels;
+using naseNut.WebApi.Models.Business.Services;
+using naseNut.WebApi.Models.Entities;
 using naseNut.WebApi.Providers;
 using naseNut.WebApi.Results;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : BaseApiController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private NaseNEntities _db = new NaseNEntities();
 
         public AccountController()
         {
@@ -165,8 +169,46 @@ namespace naseNut.WebApi.Controllers
             {
                 return GetErrorResult(result);
             }
+            var roleService = new RoleService();
+            var role = roleService.GetById(model.RoleId);
+            var added = UserManager.AddToRole(user.Id, role.Name);
 
-            return Ok();
+            return added.Succeeded ?(IHttpActionResult)Ok():InternalServerError();
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+        public IHttpActionResult GetAllAccounts()
+        {
+            try
+            {
+                var accounts = _db.AspNetUsers.ToList();
+                return accounts.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(accounts)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los usuarios." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IHttpActionResult DeleteUserAccount(string id)
+        {
+            try
+            {
+                var userService = new UserService();
+                var user = userService.GetById(id);
+                if (user == null) return NotFound();
+                var deleted = userService.Delete(user);
+                return deleted ? (IHttpActionResult)Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar al usuario." + "\n" + "Detalles del Error: " + ex));
+            }
         }
 
         protected override void Dispose(bool disposing)

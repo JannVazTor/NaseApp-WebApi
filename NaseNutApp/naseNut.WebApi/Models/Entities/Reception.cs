@@ -17,14 +17,14 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reception()
         {
-            this.Cylinder_Reception = new HashSet<Cylinder_Reception>();
+            this.Humidities = new HashSet<Humidity>();
             this.Remissions = new HashSet<Remission>();
+            this.Cylinders = new HashSet<Cylinder>();
         }
     
         public int Id { get; set; }
         public string Variety { get; set; }
         public double ReceivedFromField { get; set; }
-        public string CylinderNumber { get; set; }
         public string FieldName { get; set; }
         public string CarRegistration { get; set; }
         public System.DateTime EntryDate { get; set; }
@@ -35,11 +35,13 @@ namespace naseNut.WebApi.Models.Entities
         public int ProducerId { get; set; }
         public Nullable<int> GrillId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cylinder_Reception> Cylinder_Reception { get; set; }
         public virtual Grill Grill { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Humidity> Humidities { get; set; }
         public virtual Producer Producer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cylinder> Cylinders { get; set; }
     }
 }

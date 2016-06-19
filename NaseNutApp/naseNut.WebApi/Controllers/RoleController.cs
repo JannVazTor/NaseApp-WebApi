@@ -18,7 +18,6 @@ namespace naseNut.WebApi.Controllers
     {
         [HttpPost]
         [Route("addUserToRole")]
-        [Authorize]
         public IHttpActionResult AddUserToRole(AddRoleToUserBindingModel model)
         {
             try
@@ -38,9 +37,25 @@ namespace naseNut.WebApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("getAll")]
+        public IHttpActionResult GetAllRoles()
+        {
+            try
+            {
+                var roleService = new RoleService();
+                var roles = roleService.GetAll();
+                return roles != null ? (IHttpActionResult)Ok(TheModelFactory.Create(roles)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los roles." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpDelete]
         [Route("{roleId}")]
-        [Authorize]
         public IHttpActionResult DeleteRole(string roleId)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -52,7 +67,6 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IHttpActionResult SaveRol(RoleBindingModel model)
         {
             if (!ModelState.IsValid) return BadRequest();

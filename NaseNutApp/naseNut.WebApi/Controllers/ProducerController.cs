@@ -53,5 +53,24 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los productores." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IHttpActionResult DeleteProducer(int id)
+        {
+            try
+            {
+                var producerService = new ProducerService();
+                var producer = producerService.GetById(id);
+                if (producer == null) return NotFound();
+                var deleted = producerService.Delete(producer);
+                return deleted ? (IHttpActionResult) Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar al productor." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

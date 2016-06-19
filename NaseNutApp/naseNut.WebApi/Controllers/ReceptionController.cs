@@ -13,6 +13,7 @@ namespace naseNut.WebApi.Controllers
     [RoutePrefix("api/reception")]
     public class ReceptionController : BaseApiController
     {
+        private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         public IHttpActionResult SaveReception(AddReceptionBindingModel model)
         {
@@ -27,23 +28,38 @@ namespace naseNut.WebApi.Controllers
                 {
                     Variety = model.Variety,
                     ReceivedFromField = model.ReceivedFromField,
-                    CylinderNumber = model.CylinderNumber,
                     FieldName = model.FieldName,
                     CarRegistration = model.CarRegistration,
-                    EntryDate = model.EntryDate,
+                    EntryDate = DateTime.Now,
                     IssueDate = model.IssueDate,
-                    HeatHoursDtrying = model.HeatHoursDtrying,
+                    HeatHoursDtrying = model.HeatHoursDrying,
                     HumidityPercent = model.HumidityPercent,
                     Observations = model.Observations,
                     ProducerId = model.ProducerId
                 };
-                var saved = receptionService.Save(reception);
+                var saved = receptionService.SaveToCylinder(reception, model.CylinderId);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                "Ocurrio un error al intentar guardar la Recepcion." + "\n" + "Detalles del Error: " + ex));
+                "Ocurrio un error al intentar guardar la recepcion." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+        public IHttpActionResult GetAllReceptions()
+        {
+            try
+            {
+                var receptions = _db.Receptions.ToList();
+                return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(receptions)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }
