@@ -86,6 +86,26 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        //public ReceptionModel Create(Reception reception)
+        //{
+        //    return reception = new ReceptionModel
+        //    {
+        //        Id = reception.Id,
+        //        Variety = reception.Variety,
+        //        ReceivedFromField = reception.ReceivedFromField,
+        //        FieldName = reception.FieldName,
+        //        CarRegistration = reception.CarRegistration,
+        //        EntryDate = reception.EntryDate,
+        //        IssueDate = reception.IssueDate,
+        //        HeatHoursDrying = reception.HeatHoursDtrying,
+        //        HumidityPercent = reception.HumidityPercent,
+        //        Observations = reception.Observations,
+        //        ProducerName = reception.Producer != null ? reception.Producer.ProducerName : "",
+        //        Grills = reception.Grill?.Id.ToString() ?? "",
+        //        Cylinder = reception.Cylinders.Count != 0 ? string.Join(", ", reception.Cylinders.Select(c => c.CylinderName)) : ""
+        //    };
+        //}
+
         public class CylinderModel
         {
             public int Id { get; set; }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -62,6 +61,23 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult GetReception(Int32 id)
+        {
+            try
+            {
+                var reception = _db.Receptions.Find(id);
+                return reception != null ? (IHttpActionResult)Ok(reception) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteReception(int id)
@@ -78,6 +94,31 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IHttpActionResult UpdateReception(Int32 id,Reception model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var receptionService = new ReceptionService();
+                var update = receptionService.Update(model);
+                return update ? (IHttpActionResult)Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar actgualizar la recepcion." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

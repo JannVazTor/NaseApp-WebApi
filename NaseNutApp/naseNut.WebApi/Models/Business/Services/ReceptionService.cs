@@ -94,5 +94,23 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        public bool Update(Reception reception)
+        {
+
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    receptionRepository.Update(reception);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
