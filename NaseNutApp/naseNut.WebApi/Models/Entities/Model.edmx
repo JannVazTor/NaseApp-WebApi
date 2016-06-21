@@ -130,6 +130,7 @@
           <Property Name="Driver" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Elaborate" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="ReceptionId" Type="int" Nullable="false" />
+          <Property Name="DateCapture" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Sampling">
           <Key>
@@ -589,6 +590,7 @@
           <Property Name="Elaborate" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ReceptionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="Sampling">
           <Key>
@@ -809,6 +811,7 @@
           <EntitySetMapping Name="Remissions">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Remission">
               <MappingFragment StoreEntitySet="Remission">
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
                 <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
                 <ScalarProperty Name="Elaborate" ColumnName="Elaborate" />
                 <ScalarProperty Name="Driver" ColumnName="Driver" />

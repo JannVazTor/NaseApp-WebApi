@@ -78,5 +78,21 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public Reception GetById(int id)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var reception = receptionRepository.GetById(id);
+                    return reception;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -13,9 +13,11 @@ namespace naseNut.WebApi.Controllers
     [RoutePrefix("api/remission")]
     public class RemissionController : BaseApiController
     {
+        private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         public IHttpActionResult SaveRemission(AddRemissionBindingModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -32,7 +34,8 @@ namespace naseNut.WebApi.Controllers
                     TransportNumber = model.TransportNumber,
                     Driver = model.Driver,
                     Elaborate = model.Elaborate,
-                    ReceptionId = model.ReceptionId
+                    ReceptionId = model.ReceptionId,
+                    DateCapture = DateTime.Now
                 };
                 var saved = remissionService.Save(remission);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -50,14 +53,31 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var remissionService = new RemissionService();
-                var remissions = remissionService.GetAll();
-                return remissions != null ? (IHttpActionResult) Ok(TheModelFactory.Create(remissions)) : Ok();
+                var remissions = _db.Remissions.ToList();
+                return remissions.Count != 0 ? (IHttpActionResult) Ok(TheModelFactory.Create(remissions)) : Ok();
             }
             catch (Exception ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar obtener las remisiones." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpDelete]
+        [Route("{id}")]
+        public IHttpActionResult DeleteRemission(int id)
+        {
+            try
+            {
+                var remissionService = new RemissionService();
+                var remission = remissionService.GetById(id);
+                if (remission == null) return NotFound();
+                var deleted = remissionService.Delete(remission);
+                return deleted ? (IHttpActionResult)Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

@@ -41,7 +41,10 @@ namespace naseNut.WebApi.Models
                 Butler = r.Butler,
                 TransportNumber = r.TransportNumber,
                 Driver = r.Driver,
-                Elaborate = r.Elaborate
+                Elaborate = r.Elaborate,
+                DateCapture = r.DateCapture,
+                FieldName = r.Reception.FieldName,
+                Variety = r.Reception.Variety
             }).ToList();
         }
 
@@ -156,6 +159,9 @@ namespace naseNut.WebApi.Models
             public int TransportNumber { get; set; }
             public string Driver { get; set; }
             public string Elaborate { get; set; }
+            public DateTime DateCapture { get; set; }
+            public string FieldName { get; set; }
+            public string Variety { get; set; }
         }
 
         public class ProducerModel 

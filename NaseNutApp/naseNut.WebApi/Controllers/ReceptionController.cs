@@ -62,5 +62,23 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
+        [HttpDelete]
+        [Route("{id}")]
+        public IHttpActionResult DeleteReception(int id)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var producer = receptionService.GetById(id);
+                if (producer == null) return NotFound();
+                var deleted = receptionService.Delete(producer);
+                return deleted ? (IHttpActionResult)Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

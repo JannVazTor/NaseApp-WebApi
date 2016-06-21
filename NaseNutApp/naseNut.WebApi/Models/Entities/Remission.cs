@@ -23,6 +23,7 @@ namespace naseNut.WebApi.Models.Entities
         public string Driver { get; set; }
         public string Elaborate { get; set; }
         public int ReceptionId { get; set; }
+        public System.DateTime DateCapture { get; set; }
     
         public virtual Reception Reception { get; set; }
     }
