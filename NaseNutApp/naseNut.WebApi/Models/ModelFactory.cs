@@ -86,6 +86,19 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<GrillModel> Create(List<Grill> grills)
+        {
+            return grills.Select(g => new GrillModel
+            {
+                
+            }).ToList();
+        }
+
+        public class GrillModel
+        {
+
+        }
+
         public class CylinderModel
         {
             public int Id { get; set; }
@@ -107,7 +120,7 @@ namespace naseNut.WebApi.Models
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
                 ProducerName = r.Producer != null? r.Producer.ProducerName: "",
-                Grills = r.Grill?.Id.ToString() ?? "",
+                Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
                 Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):""
             }).ToList();
         }

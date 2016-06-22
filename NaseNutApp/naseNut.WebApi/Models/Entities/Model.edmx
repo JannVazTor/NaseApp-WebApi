@@ -117,6 +117,14 @@
           <Property Name="ProducerId" Type="int" Nullable="false" />
           <Property Name="GrillId" Type="int" />
         </EntityType>
+        <EntityType Name="Reception_Grill">
+          <Key>
+            <PropertyRef Name="receptionId" />
+            <PropertyRef Name="grillId" />
+          </Key>
+          <Property Name="receptionId" Type="int" Nullable="false" />
+          <Property Name="grillId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Remission">
           <Key>
             <PropertyRef Name="Id" />
@@ -200,6 +208,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_grillR">
+          <End Role="Grill" Type="Self.Grill" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reception_Grill" Type="Self.Reception_Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception_Grill">
+              <PropertyRef Name="grillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_humidity_cylinder">
           <End Role="Cylinder" Type="Self.Cylinder" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -242,20 +264,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_reception_grill">
-          <End Role="Grill" Type="Self.Grill" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Reception" Type="Self.Reception" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Grill">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Reception">
-              <PropertyRef Name="GrillId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_reception_producer">
           <End Role="Producer" Type="Self.Producer" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -267,6 +275,20 @@
             </Principal>
             <Dependent Role="Reception">
               <PropertyRef Name="ProducerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_receptionG">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Reception_Grill" Type="Self.Reception_Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception_Grill">
+              <PropertyRef Name="receptionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -322,6 +344,7 @@
           <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception" EntityType="Self.Reception" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reception_Grill" EntityType="Self.Reception_Grill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Remission" EntityType="Self.Remission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -340,6 +363,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_grillR" Association="Self.FK_grillR">
+            <End Role="Grill" EntitySet="Grill" />
+            <End Role="Reception_Grill" EntitySet="Reception_Grill" />
+          </AssociationSet>
           <AssociationSet Name="fk_humidity_cylinder" Association="Self.fk_humidity_cylinder">
             <End Role="Cylinder" EntitySet="Cylinder" />
             <End Role="Humidity" EntitySet="Humidity" />
@@ -352,13 +379,13 @@
             <End Role="Reception" EntitySet="Reception" />
             <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
           </AssociationSet>
-          <AssociationSet Name="fk_reception_grill" Association="Self.fk_reception_grill">
-            <End Role="Grill" EntitySet="Grill" />
-            <End Role="Reception" EntitySet="Reception" />
-          </AssociationSet>
           <AssociationSet Name="fk_reception_producer" Association="Self.fk_reception_producer">
             <End Role="Producer" EntitySet="Producer" />
             <End Role="Reception" EntitySet="Reception" />
+          </AssociationSet>
+          <AssociationSet Name="FK_receptionG" Association="Self.FK_receptionG">
+            <End Role="Reception" EntitySet="Reception" />
+            <End Role="Reception_Grill" EntitySet="Reception_Grill" />
           </AssociationSet>
           <AssociationSet Name="fk_remission_reception" Association="Self.fk_remission_reception">
             <End Role="Reception" EntitySet="Reception" />
@@ -486,10 +513,6 @@
             <End Role="Cylinder" EntitySet="Cylinders" />
             <End Role="Humidity" EntitySet="Humidities" />
           </AssociationSet>
-          <AssociationSet Name="fk_reception_grill" Association="NASE_BD_WModel.fk_reception_grill">
-            <End Role="Grill" EntitySet="Grills" />
-            <End Role="Reception" EntitySet="Receptions" />
-          </AssociationSet>
           <AssociationSet Name="fk_sampling_grill" Association="NASE_BD_WModel.fk_sampling_grill">
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Sampling" EntitySet="Samplings" />
@@ -510,7 +533,11 @@
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Cylinder" EntitySet="Cylinders" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="Reception_Grill" Association="NASE_BD_WModel.Reception_Grill">
+            <End Role="Grill" EntitySet="Grills" />
+            <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Cylinder">
           <Key>
             <PropertyRef Name="Id" />
@@ -531,8 +558,8 @@
           <Property Name="Size" Type="Int32" Nullable="false" />
           <Property Name="Sacks" Type="Int32" Nullable="false" />
           <Property Name="Kilos" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.fk_reception_grill" FromRole="Grill" ToRole="Reception" />
           <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
+          <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -570,11 +597,11 @@
           <Property Name="Observations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ProducerId" Type="Int32" Nullable="false" />
           <Property Name="GrillId" Type="Int32" />
-          <NavigationProperty Name="Grill" Relationship="NASE_BD_WModel.fk_reception_grill" FromRole="Reception" ToRole="Grill" />
           <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_reception" FromRole="Reception" ToRole="Humidity" />
           <NavigationProperty Name="Producer" Relationship="NASE_BD_WModel.fk_reception_producer" FromRole="Reception" ToRole="Producer" />
           <NavigationProperty Name="Remissions" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
           <NavigationProperty Name="Cylinders" Relationship="NASE_BD_WModel.Cylinder_Reception" FromRole="Reception" ToRole="Cylinder" />
+          <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
         </EntityType>
         <EntityType Name="Remission">
           <Key>
@@ -589,8 +616,8 @@
           <Property Name="Driver" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Elaborate" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ReceptionId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
           <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
         </EntityType>
         <EntityType Name="Sampling">
           <Key>
@@ -616,20 +643,6 @@
             </Principal>
             <Dependent Role="Humidity">
               <PropertyRef Name="CylinderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_reception_grill">
-          <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Grill">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Reception">
-              <PropertyRef Name="GrillId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -691,7 +704,11 @@
           <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
           <End Type="NASE_BD_WModel.Cylinder" Role="Cylinder" Multiplicity="*" />
         </Association>
-      </Schema>
+        <Association Name="Reception_Grill">
+          <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
+          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -843,6 +860,14 @@
             </EndProperty>
             <EndProperty Name="Reception">
               <ScalarProperty Name="Id" ColumnName="receptionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Reception_Grill" TypeName="NASE_BD_WModel.Reception_Grill" StoreEntitySet="Reception_Grill">
+            <EndProperty Name="Reception">
+              <ScalarProperty Name="Id" ColumnName="receptionId" />
+            </EndProperty>
+            <EndProperty Name="Grill">
+              <ScalarProperty Name="Id" ColumnName="grillId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

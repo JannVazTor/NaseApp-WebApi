@@ -20,6 +20,7 @@ namespace naseNut.WebApi.Models.Entities
             this.Humidities = new HashSet<Humidity>();
             this.Remissions = new HashSet<Remission>();
             this.Cylinders = new HashSet<Cylinder>();
+            this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
@@ -35,7 +36,6 @@ namespace naseNut.WebApi.Models.Entities
         public int ProducerId { get; set; }
         public Nullable<int> GrillId { get; set; }
     
-        public virtual Grill Grill { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Humidity> Humidities { get; set; }
         public virtual Producer Producer { get; set; }
@@ -43,5 +43,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual ICollection<Remission> Remissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cylinder> Cylinders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grill> Grills { get; set; }
     }
 }
