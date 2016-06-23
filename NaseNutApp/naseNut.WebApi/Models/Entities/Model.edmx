@@ -730,6 +730,10 @@
           <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
           <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
         </Association>
+        <EnumType Name="GrillStatus" UnderlyingType="Byte">
+          <Member Name="Issue" Value="0" />
+          <Member Name="Entry" Value="1" />
+        </EnumType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

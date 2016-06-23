@@ -278,6 +278,9 @@
     <Compile Include="Models\Entities\Grill.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\GrillStatus.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Humidity.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

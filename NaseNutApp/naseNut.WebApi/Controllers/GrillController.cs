@@ -30,7 +30,17 @@ namespace naseNut.WebApi.Controllers
                     ReceptionId = model.ReceptionId,
                     Size = model.Size,
                     Sacks = model.Sacks,
-                    Kilos = model.Kilos
+                    Kilos = model.Kilos,
+                    Quality = model.Quality,
+                    Variety = model.Variety,
+                    Producer = model.Producer,
+                    FieldName = model.FieldName,
+                    Cylinder = model.CylinderName,
+                    NutAmount = model.NutAmount,
+                    SelectPercentage = model.SelectPercentage,
+                    TotalPercentage = model.TotalPercentage,
+                    Humidity = model.Humidity,
+                    Status = Convert.ToBoolean(GrillStatus.Entry)
                 };
                 var saved = grillService.Save(grill);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
