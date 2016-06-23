@@ -29,7 +29,7 @@ namespace naseNut.WebApi.Controllers
                     ReceivedFromField = model.ReceivedFromField,
                     FieldName = model.FieldName,
                     CarRegistration = model.CarRegistration,
-                    EntryDate = DateTime.Now,
+                    EntryDate = model.EntryDate,
                     IssueDate = model.IssueDate,
                     HeatHoursDtrying = model.HeatHoursDrying,
                     HumidityPercent = model.HumidityPercent,
@@ -62,22 +62,6 @@ namespace naseNut.WebApi.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public IHttpActionResult GetReception(Int32 id)
-        {
-            try
-            {
-                var reception = _db.Receptions.Find(id);
-                return reception != null ? (IHttpActionResult)Ok(reception) : Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
-            }
-        }
-
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteReception(int id)
@@ -98,22 +82,37 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public IHttpActionResult UpdateReception(Int32 id,Reception model)
+        [Route("{Id}")]
+        public IHttpActionResult UpdateReception(int Id,AddReceptionBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
+            
             try
             {
                 var receptionService = new ReceptionService();
-                var update = receptionService.Update(model);
-                return update ? (IHttpActionResult)Ok() : BadRequest();
+                var reception = _db.Receptions.Find(Id);
+                if(reception != null)
+                {
+                    reception.CarRegistration = model.CarRegistration;
+                    reception.EntryDate = model.EntryDate;
+                    reception.FieldName = model.FieldName;
+                    reception.HeatHoursDtrying = model.HeatHoursDrying;
+                    reception.HumidityPercent = model.HumidityPercent;
+                    reception.IssueDate = model.IssueDate;
+                    reception.ProducerId = model.ProducerId;
+                    reception.ReceivedFromField = model.ReceivedFromField;
+                    reception.Variety = model.Variety;
+
+                    var update = receptionService.Update(reception, model.CylinderId);
+                    return update ? (IHttpActionResult)Ok() : BadRequest();
+                }else
+                {
+                    return BadRequest();
+                }
+               
             }
             catch (Exception ex)
             {

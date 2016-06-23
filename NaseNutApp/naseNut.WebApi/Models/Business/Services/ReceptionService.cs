@@ -95,7 +95,7 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Update(Reception reception)
+        public bool Update(Reception reception, int cylinderId)
         {
 
             try
@@ -103,8 +103,12 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionRepository = new ReceptionRepository(db);
+                    var cylinderRepository = new CylinderRepository(db);
+
+                    var cylinder = cylinderRepository.GetById(cylinderId);
                     receptionRepository.Update(reception);
-                    return db.SaveChanges() >= 1;
+                    cylinder.Receptions.Add(reception);
+                    return db.SaveChanges() >= 1;          
                 }
             }
             catch (Exception ex)
