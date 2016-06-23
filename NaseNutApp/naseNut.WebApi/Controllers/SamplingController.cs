@@ -11,12 +11,12 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
-    [RoutePrefix("api/grill")]
-    public class GrillController: BaseApiController
+    [RoutePrefix("api/sampling")]
+    public class SamplingController : BaseApiController
     {
         private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
-        public IHttpActionResult SaveGrill(AddGrillBindingModel model)
+        public IHttpActionResult SaveSampling(AddSamplingBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -24,20 +24,18 @@ namespace naseNut.WebApi.Controllers
             }
             try
             {
-                var grillService = new GrillService();
-                var grill = new Grill
+                var samplingService = new SamplingService();
+                var sampling = new Sampling
                 {
-                    DateCapture = model.DateCapture, 
-                    Size = model.Size,
-                    Sacks = model.Sacks,
-                    Kilos = model.Kilos,
-                    Quality = model.Quality,
-                    Variety = model.Variety,
-                    Producer = model.Producer,
-                    FieldName = model.FieldName,
-                    Status = Convert.ToBoolean(GrillStatus.Entry)
+                    Id = model.GrillId,
+                    DateCapture = model.DateCapture,
+                    SampleWeight = model.SampleWeight,
+                    HumidityPercent = model.HumidityPercent,
+                    WalnutNumber = model.WalnutNumber,
+                    Performance = model.Performance,
+                    TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts
                 };
-                var saved = grillService.Save(grill);
+                var saved = samplingService.Save(sampling);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
@@ -49,12 +47,12 @@ namespace naseNut.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        public IHttpActionResult GetAllGrills()
+        public IHttpActionResult GetAllSamplings()
         {
             try
             {
-                var grills = _db.Grills.ToList();
-                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
+                var samplings = _db.Samplings.ToList();
+                return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(samplings)) : Ok();
             }
             catch (Exception ex)
             {
@@ -65,14 +63,14 @@ namespace naseNut.WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IHttpActionResult DeleteGrill(int id)
+        public IHttpActionResult Deletesampling(int id)
         {
             try
             {
-                var grillService = new GrillService();
-                var grill = grillService.GetById(id);
-                if (grill == null) return NotFound();
-                var deleted = grillService.Delete(grill);
+                var samplingService = new SamplingService();
+                var sampling = samplingService.GetById(id);
+                if (sampling == null) return NotFound();
+                var deleted = samplingService.Delete(sampling);
                 return deleted ? (IHttpActionResult)Ok() : InternalServerError();
             }
             catch (Exception ex)

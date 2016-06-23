@@ -228,6 +228,7 @@
     <Compile Include="Controllers\ReceptionController.cs" />
     <Compile Include="Controllers\RemissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SamplingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -240,6 +241,7 @@
     <Compile Include="Models\BindingModels\ReceptionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RemissionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RoleBindingModel.cs" />
+    <Compile Include="Models\BindingModels\SamplingBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />

@@ -12,20 +12,20 @@
         <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Cylinder" Width="1.5" PointX="8.25" PointY="15.625" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Grill" Width="1.5" PointX="0.75" PointY="17.25" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Humidity" Width="1.5" PointX="10.5" PointY="17" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Producer" Width="1.5" PointX="3.75" PointY="14.75" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Reception" Width="1.5" PointX="6" PointY="16.5" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Remission" Width="1.5" PointX="8.25" PointY="21.5" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Sampling" Width="1.5" PointX="3" PointY="17.25" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Cylinder" Width="1.5" PointX="8.25" PointY="26.25" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Grill" Width="1.5" PointX="3.75" PointY="21.25" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Humidity" Width="1.5" PointX="10.5" PointY="23.375" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Producer" Width="1.5" PointX="3.75" PointY="26.5" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Reception" Width="1.5" PointX="6" PointY="20.875" />
         <AssociationConnector Association="NASE_BD_WModel.fk_humidity_cylinder" />
-        <AssociationConnector Association="NASE_BD_WModel.fk_sampling_grill" />
         <AssociationConnector Association="NASE_BD_WModel.fk_humidity_reception" />
         <AssociationConnector Association="NASE_BD_WModel.fk_reception_producer" />
         <AssociationConnector Association="NASE_BD_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_BD_WModel.Cylinder_Reception" />
         <AssociationConnector Association="NASE_BD_WModel.Reception_Grill" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Sampling" Width="1.5" PointX="6" PointY="26.75" />
+        <AssociationConnector Association="NASE_BD_WModel.fk_sampling_grill" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

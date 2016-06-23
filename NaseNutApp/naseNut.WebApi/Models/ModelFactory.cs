@@ -90,13 +90,74 @@ namespace naseNut.WebApi.Models
         {
             return grills.Select(g => new GrillModel
             {
-                
+                Id = g.Id,
+                DateCapture = g.DateCapture,
+                Receptions = g.Receptions != null && g.Receptions.Count != 0 ? string.Join(", ", g.Receptions.Select(r => r.Folio)) : "",
+                Size = g.Size,
+                Sacks = g.Sacks,
+                Kilos = g.Kilos,
+                Quality = g.Quality,
+                Variety = g.Variety,
+                Producer = g.Producer,
+                FieldName = g.FieldName,
+                Status = g.Status,
+                Sampling = g.Sampling != null ? Create(g.Sampling) : null
             }).ToList();
+        }
+
+        public SamplingModel Create(Sampling sampling)
+        {
+            return new SamplingModel
+            {
+                Id = sampling.Id,
+                DateCapture = sampling.DateCapture,
+                SampleWeight = sampling.SampleWeight,
+                HumidityPercent = sampling.HumidityPercent,
+                WalnutNumber = sampling.WalnutNumber,
+                Performance = sampling.Performance,
+                TotalWeightOfEdibleNuts = sampling.TotalWeightOfEdibleNuts
+            };
+        }
+
+        public List<SamplingModel> Create(List<Sampling> samplings)
+        {
+            return samplings.Select(s => new SamplingModel
+            {
+                Id = s.Id,
+                DateCapture = s.DateCapture,
+                SampleWeight = s.SampleWeight,
+                HumidityPercent = s.HumidityPercent,
+                WalnutNumber = s.WalnutNumber,
+                Performance = s.Performance,
+                TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts
+            }).ToList();
+        }
+
+        public class SamplingModel
+        {
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public double SampleWeight { get; set; }
+            public double HumidityPercent { get; set; }
+            public int WalnutNumber { get; set; }
+            public double Performance { get; set; }
+            public double TotalWeightOfEdibleNuts { get; set; }
         }
 
         public class GrillModel
         {
-
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public string Receptions { get; set; }
+            public int Size { get; set; }
+            public int Sacks { get; set; }
+            public double Kilos { get; set; }
+            public int Quality { get; set; }
+            public string Variety { get; set; }
+            public string Producer { get; set; }
+            public string FieldName { get; set; }
+            public bool Status { get; set; }
+            public SamplingModel Sampling { get; set; }
         }
 
         //public ReceptionModel Create(Reception reception)
