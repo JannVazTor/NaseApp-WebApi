@@ -8,6 +8,8 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public string Variety { get; set; }
         [Required]
+        public int Folio { get; set; }
+        [Required]
         public double ReceivedFromField { get; set; }
         [Required]
         public int CylinderId { get; set; }

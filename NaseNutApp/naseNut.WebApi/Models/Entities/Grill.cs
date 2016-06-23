@@ -26,9 +26,19 @@ namespace naseNut.WebApi.Models.Entities
         public int Size { get; set; }
         public int Sacks { get; set; }
         public double Kilos { get; set; }
+        public int Quality { get; set; }
+        public string Variety { get; set; }
+        public string Producer { get; set; }
+        public string FieldName { get; set; }
+        public string Cylinder { get; set; }
+        public int NutAmount { get; set; }
+        public double SelectPercentage { get; set; }
+        public double TotalPercentage { get; set; }
+        public double Humidity { get; set; }
+        public bool Status { get; set; }
     
+        public virtual Sampling Sampling { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
-        public virtual Sampling Sampling { get; set; }
     }
 }
