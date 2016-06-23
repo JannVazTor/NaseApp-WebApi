@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -30,7 +29,7 @@ namespace naseNut.WebApi.Controllers
                     ReceivedFromField = model.ReceivedFromField,
                     FieldName = model.FieldName,
                     CarRegistration = model.CarRegistration,
-                    EntryDate = DateTime.Now,
+                    EntryDate = model.EntryDate,
                     IssueDate = model.IssueDate,
                     HeatHoursDtrying = model.HeatHoursDrying,
                     HumidityPercent = model.HumidityPercent,
@@ -63,6 +62,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteReception(int id)
@@ -79,6 +79,46 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("{Id}")]
+        public IHttpActionResult UpdateReception(int Id,AddReceptionBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            
+            try
+            {
+                var receptionService = new ReceptionService();
+                var reception = _db.Receptions.Find(Id);
+                if(reception != null)
+                {
+                    reception.CarRegistration = model.CarRegistration;
+                    reception.EntryDate = model.EntryDate;
+                    reception.FieldName = model.FieldName;
+                    reception.HeatHoursDtrying = model.HeatHoursDrying;
+                    reception.HumidityPercent = model.HumidityPercent;
+                    reception.IssueDate = model.IssueDate;
+                    reception.ProducerId = model.ProducerId;
+                    reception.ReceivedFromField = model.ReceivedFromField;
+                    reception.Variety = model.Variety;
+
+                    var update = receptionService.Update(reception, model.CylinderId);
+                    return update ? (IHttpActionResult)Ok() : BadRequest();
+                }else
+                {
+                    return BadRequest();
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar actgualizar la recepcion." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

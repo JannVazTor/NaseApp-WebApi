@@ -80,5 +80,30 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IHttpActionResult UpdateRemission(int id, Remission model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var remissionService = new RemissionService();
+                var update = remissionService.Update(model);
+                return update ? (IHttpActionResult)Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar actgualizar la remisión." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }
