@@ -82,6 +82,16 @@
           <Property Name="Size" Type="int" Nullable="false" />
           <Property Name="Sacks" Type="int" Nullable="false" />
           <Property Name="Kilos" Type="float" Nullable="false" />
+          <Property Name="Quality" Type="int" Nullable="false" />
+          <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Producer" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Cylinder" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NutAmount" Type="int" Nullable="false" />
+          <Property Name="SelectPercentage" Type="float" Nullable="false" />
+          <Property Name="TotalPercentage" Type="float" Nullable="false" />
+          <Property Name="Humidity" Type="float" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -116,6 +126,7 @@
           <Property Name="Observations" Type="nvarchar" MaxLength="500" />
           <Property Name="ProducerId" Type="int" Nullable="false" />
           <Property Name="GrillId" Type="int" />
+          <Property Name="Folio" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Reception_Grill">
           <Key>
@@ -560,6 +571,16 @@
           <Property Name="Kilos" Type="Double" Nullable="false" />
           <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
           <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
+          <Property Name="Quality" Type="Int32" Nullable="false" />
+          <Property Name="Variety" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Producer" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Cylinder" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NutAmount" Type="Int32" Nullable="false" />
+          <Property Name="SelectPercentage" Type="Double" Nullable="false" />
+          <Property Name="TotalPercentage" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -602,6 +623,7 @@
           <NavigationProperty Name="Remissions" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
           <NavigationProperty Name="Cylinders" Relationship="NASE_BD_WModel.Cylinder_Reception" FromRole="Reception" ToRole="Cylinder" />
           <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
+          <Property Name="Folio" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Remission">
           <Key>
@@ -779,6 +801,16 @@
           <EntitySetMapping Name="Grills">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Grill">
               <MappingFragment StoreEntitySet="Grill">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="TotalPercentage" ColumnName="TotalPercentage" />
+                <ScalarProperty Name="SelectPercentage" ColumnName="SelectPercentage" />
+                <ScalarProperty Name="NutAmount" ColumnName="NutAmount" />
+                <ScalarProperty Name="Cylinder" ColumnName="Cylinder" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="Producer" ColumnName="Producer" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="Kilos" ColumnName="Kilos" />
                 <ScalarProperty Name="Sacks" ColumnName="Sacks" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
@@ -810,6 +842,7 @@
           <EntitySetMapping Name="Receptions">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Reception">
               <MappingFragment StoreEntitySet="Reception">
+                <ScalarProperty Name="Folio" ColumnName="Folio" />
                 <ScalarProperty Name="GrillId" ColumnName="GrillId" />
                 <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
                 <ScalarProperty Name="Observations" ColumnName="Observations" />

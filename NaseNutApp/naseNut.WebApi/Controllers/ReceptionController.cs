@@ -35,7 +35,8 @@ namespace naseNut.WebApi.Controllers
                     HeatHoursDtrying = model.HeatHoursDrying,
                     HumidityPercent = model.HumidityPercent,
                     Observations = model.Observations,
-                    ProducerId = model.ProducerId
+                    ProducerId = model.ProducerId,
+                    Folio = model.Folio
                 };
                 var saved = receptionService.SaveToCylinder(reception, model.CylinderId);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

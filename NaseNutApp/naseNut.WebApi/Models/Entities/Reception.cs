@@ -35,6 +35,7 @@ namespace naseNut.WebApi.Models.Entities
         public string Observations { get; set; }
         public int ProducerId { get; set; }
         public Nullable<int> GrillId { get; set; }
+        public int Folio { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Humidity> Humidities { get; set; }
