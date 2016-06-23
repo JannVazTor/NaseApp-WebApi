@@ -94,5 +94,27 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        public bool Update(Reception reception, int cylinderId)
+        {
+
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var cylinderRepository = new CylinderRepository(db);
+
+                    var cylinder = cylinderRepository.GetById(cylinderId);
+                    receptionRepository.Update(reception);
+                    cylinder.Receptions.Add(reception);
+                    return db.SaveChanges() >= 1;          
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

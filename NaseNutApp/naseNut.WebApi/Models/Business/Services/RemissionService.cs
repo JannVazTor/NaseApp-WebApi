@@ -73,5 +73,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        public bool Update(Remission remission)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var remissionRepository = new RemissionRepository(db);
+                    remissionRepository.Update(remission);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
