@@ -64,6 +64,28 @@ namespace naseNut.WebApi.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("addReceptionToGrill/{receptionId}/{grillId}")]
+        public IHttpActionResult AddReceptionToGrill(int receptionId, int grillId )
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var grillService = new GrillService();
+                var reception = receptionService.GetById(receptionId);
+                var grill = grillService.GetById(grillId);
+                if (reception == null || grill == null) return NotFound();
+                var added = receptionService.AddReceptionToGrill(reception.Id, grill.Id);
+                if (!added) return BadRequest();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+               "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteReception(int id)
