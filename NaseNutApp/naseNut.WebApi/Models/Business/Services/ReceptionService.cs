@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
 using naseNut.WebApi.Models.BindingModels;
+using System.Data.Entity;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
@@ -116,8 +117,7 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Update(Reception reception, int cylinderId)
-        public bool Update(int id,UpdateReceptionBindingModel model)
+        public bool Update(int id, UpdateReceptionBindingModel model)
         {
 
             try
