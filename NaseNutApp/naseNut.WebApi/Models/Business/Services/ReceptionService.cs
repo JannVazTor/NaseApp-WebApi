@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http.ModelBinding;
@@ -95,9 +96,30 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
+        public bool AddReceptionToGrill(int receptionId, int grillId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var grillRepository = new GrillRepository(db);
+                    var reception = receptionRepository.GetById(receptionId);
+                    var grill = grillRepository.GetById(grillId);
+                    db.Set<Reception>().Attach(reception);
+                    db.Entry(reception).State = EntityState.Modified;
+                    reception.Grills.Add(grill);;
+                    return db.SaveChanges()>=1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool Update(Reception reception, int cylinderId)
         {
-
             try
             {
                 using (var db = new NaseNEntities())
