@@ -83,20 +83,16 @@ namespace naseNut.WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public IHttpActionResult UpdateRemission(int id, Remission model)
+        public IHttpActionResult UpdateRemission(int id, UpdateRemissionBindingModel model)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            if (id != model.Id)
             {
                 return BadRequest();
             }
             try
             {
                 var remissionService = new RemissionService();
-                var update = remissionService.Update(model);
+                var update = remissionService.Update(id, model);
                 return update ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
