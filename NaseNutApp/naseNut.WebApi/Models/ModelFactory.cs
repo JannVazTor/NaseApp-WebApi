@@ -191,6 +191,7 @@ namespace naseNut.WebApi.Models
             return receptions.Select(r => new ReceptionModel
             {
                 Id =  r.Id,
+                Folio = r.Folio,
                 Variety = r.Variety,
                 ReceivedFromField = r.ReceivedFromField,
                 FieldName = r.FieldName,
@@ -209,6 +210,7 @@ namespace naseNut.WebApi.Models
         public class ReceptionModel
         {
             public int Id { get; set; }
+            public int Folio { get; set; }
             public string Variety { get; set; }
             public double ReceivedFromField { get; set; }
             public string FieldName { get; set; }

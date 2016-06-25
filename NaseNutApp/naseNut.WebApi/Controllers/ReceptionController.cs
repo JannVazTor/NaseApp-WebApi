@@ -6,6 +6,7 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
+using System.Data.Entity;
 
 namespace naseNut.WebApi.Controllers
 {
@@ -128,7 +129,7 @@ namespace naseNut.WebApi.Controllers
 
         [HttpPut]
         [Route("{Id}")]
-        public IHttpActionResult UpdateReception(int Id,AddReceptionBindingModel model)
+        public IHttpActionResult UpdateReception(int Id,UpdateReceptionBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -137,26 +138,12 @@ namespace naseNut.WebApi.Controllers
             
             try
             {
-                var receptionService = new ReceptionService();
-                var reception = _db.Receptions.Find(Id);
-                if(reception != null)
-                {
-                    reception.CarRegistration = model.CarRegistration;
-                    reception.EntryDate = model.EntryDate;
-                    reception.FieldName = model.FieldName;
-                    reception.HeatHoursDtrying = model.HeatHoursDrying;
-                    reception.HumidityPercent = model.HumidityPercent;
-                    reception.IssueDate = model.IssueDate;
-                    reception.ProducerId = model.ProducerId;
-                    reception.ReceivedFromField = model.ReceivedFromField;
-                    reception.Variety = model.Variety;
 
-                    var update = receptionService.Update(reception, model.CylinderId);
-                    return update ? (IHttpActionResult)Ok() : BadRequest();
-                }else
-                {
-                    return BadRequest();
-                }
+                var receptionService = new ReceptionService();
+                var update = receptionService.Update(Id,model);
+                 
+                return update?(IHttpActionResult)Ok() : BadRequest();
+
                
             }
             catch (Exception ex)

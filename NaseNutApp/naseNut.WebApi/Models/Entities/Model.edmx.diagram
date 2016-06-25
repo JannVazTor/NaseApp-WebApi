@@ -6,8 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="5328e029372b420caf51ff203cfb535d" Name="Diagram1">
         <EntityTypeShape EntityType="NASE_BD_WModel.AspNetRole" Width="1.5" PointX="7.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserClaim" Width="1.5" PointX="12.25" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserLogin" Width="1.5" PointX="12.25" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserClaim" Width="1.875" PointX="12.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserLogin" Width="1.875" PointX="12.25" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUser" Width="1.5" PointX="10" PointY="7.375" IsExpanded="true" />
         <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />

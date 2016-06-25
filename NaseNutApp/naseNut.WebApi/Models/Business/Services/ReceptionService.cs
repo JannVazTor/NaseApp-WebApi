@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using System.Web.Http.ModelBinding;
 using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
+using naseNut.WebApi.Models.BindingModels;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
@@ -86,6 +83,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionRepository = new ReceptionRepository(db);
+                    
                     var reception = receptionRepository.GetById(id);
                     return reception;
                 }
@@ -138,18 +136,35 @@ namespace naseNut.WebApi.Models.Business.Services
         }
 
         public bool Update(Reception reception, int cylinderId)
+        public bool Update(int id,UpdateReceptionBindingModel model)
         {
+
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var receptionRepository = new ReceptionRepository(db);
-                    var cylinderRepository = new CylinderRepository(db);
+                    var receptionService = new ReceptionService();
+                    var reception = db.Receptions.Find(id);
+                    if (reception != null)
+                    {
+                        reception.CarRegistration = model.CarRegistration;
+                        reception.EntryDate = model.EntryDate;
+                        reception.FieldName = model.FieldName;
+                        reception.HeatHoursDtrying = model.HeatHoursDrying;
+                        reception.HumidityPercent = model.HumidityPercent;
+                        reception.IssueDate = model.IssueDate;
+                        reception.ProducerId = model.ProducerId;
+                        reception.ReceivedFromField = model.ReceivedFromField;
+                        reception.Variety = model.Variety;
 
-                    var cylinder = cylinderRepository.GetById(cylinderId);
-                    receptionRepository.Update(reception);
-                    cylinder.Receptions.Add(reception);
-                    return db.SaveChanges() >= 1;          
+                        var receptionRepository = new ReceptionRepository(db);
+                        receptionRepository.Update(reception);
+                        return db.SaveChanges() >= 1;
+                    }
+                    else
+                    {
+                        return false;
+                    }    
                 }
             }
             catch (Exception ex)
