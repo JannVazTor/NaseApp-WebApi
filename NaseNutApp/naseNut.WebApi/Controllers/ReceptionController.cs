@@ -81,7 +81,29 @@ namespace naseNut.WebApi.Controllers
             catch (Exception ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-               "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
+               "Ocurrio un error al intentar relacionar los registros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("removeReceptionToGrill/{receptionId}/{grillId}")]
+        public IHttpActionResult RemoveReceptionToGrill(int receptionId, int grillId)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var grillService = new GrillService();
+                var reception = receptionService.GetById(receptionId);
+                var grill = grillService.GetById(grillId);
+                if (reception == null || grill == null) return NotFound();
+                var removed = receptionService.RemoveReceptionToGrill(reception.Id, grill.Id);
+                if (!removed) return BadRequest();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+               "Ocurrio un error al intentar remover el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
 

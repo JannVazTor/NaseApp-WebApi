@@ -75,5 +75,45 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public bool AddGrillToReception(int receptionId, int grillId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var grillRepository = new GrillRepository(db);
+                    var reception = receptionRepository.GetById(receptionId);
+                    var grill = grillRepository.GetById(grillId);
+                    grillRepository.Update(grill);
+                    grill.Receptions.Add(reception);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool RemoveGrillToReception(int receptionId, int grillId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var grillRepository = new GrillRepository(db);
+                    var reception = receptionRepository.GetById(receptionId);
+                    var grill = grillRepository.GetById(grillId);
+                    grill.Receptions.Remove(reception);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

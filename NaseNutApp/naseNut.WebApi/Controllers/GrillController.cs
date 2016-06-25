@@ -81,5 +81,49 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpPut]
+        [Route("addGrillToReception/{grillId}/{receptionId}")]
+        public IHttpActionResult AddReceptionToGrill(int grillId, int receptionId)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var grillService = new GrillService();
+                var reception = receptionService.GetById(receptionId);
+                var grill = grillService.GetById(grillId);
+                if (reception == null || grill == null) return NotFound();
+                var added = grillService.AddGrillToReception(reception.Id, grill.Id);
+                if (!added) return BadRequest();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+               "Ocurrio un error al intentar relacionar los registros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("removeGrillToReception/{grillId}/{receptionId}")]
+        public IHttpActionResult RemoveReceptionToGrill(int grillId, int receptionId)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var grillService = new GrillService();
+                var reception = receptionService.GetById(receptionId);
+                var grill = grillService.GetById(grillId);
+                if (reception == null || grill == null) return NotFound();
+                var removed = grillService.RemoveGrillToReception(reception.Id, grill.Id);
+                if (!removed) return BadRequest();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+               "Ocurrio un error al intentar remover el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }
