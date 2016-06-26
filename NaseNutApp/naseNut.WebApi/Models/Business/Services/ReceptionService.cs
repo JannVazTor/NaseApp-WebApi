@@ -134,8 +134,6 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-
-        public bool Update(Reception reception, int cylinderId)
         public bool Update(int id,UpdateReceptionBindingModel model)
         {
 

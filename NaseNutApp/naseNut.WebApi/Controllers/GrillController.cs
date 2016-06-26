@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -27,7 +28,7 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grill = new Grill
                 {
-                    DateCapture = model.DateCapture, 
+                    DateCapture = model.DateCapture.ConvertToDate(), 
                     Size = model.Size,
                     Sacks = model.Sacks,
                     Kilos = model.Kilos,
@@ -62,7 +63,6 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteGrill(int id)
