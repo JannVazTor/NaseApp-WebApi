@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -9,7 +10,7 @@ namespace naseNut.WebApi.Models.BindingModels
     public class AddGrillBindingModel
     {
         [Required]
-        public DateTime DateCapture { get; set; }
+        public string DateCapture { get; set; }
         public int Size { get; set; }
         [Required]
         public int Sacks { get; set; }

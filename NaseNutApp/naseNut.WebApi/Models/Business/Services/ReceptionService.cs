@@ -105,9 +105,8 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grillRepository = new GrillRepository(db);
                     var reception = receptionRepository.GetById(receptionId);
                     var grill = grillRepository.GetById(grillId);
-                    db.Set<Reception>().Attach(reception);
-                    db.Entry(reception).State = EntityState.Modified;
-                    reception.Grills.Add(grill);;
+                    receptionRepository.Update(reception);
+                    reception.Grills.Add(grill);
                     return db.SaveChanges()>=1;
                 }
             }
@@ -117,7 +116,26 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Update(int id, UpdateReceptionBindingModel model)
+        public bool RemoveReceptionToGrill(int receptionId, int grillId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var grillRepository = new GrillRepository(db);
+                    var reception = receptionRepository.GetById(receptionId);
+                    var grill = grillRepository.GetById(grillId);
+                    reception.Grills.Remove(grill);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool Update(int id,UpdateReceptionBindingModel model)
         {
 
             try
