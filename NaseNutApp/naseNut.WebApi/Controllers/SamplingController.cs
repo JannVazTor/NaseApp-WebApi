@@ -27,7 +27,7 @@ namespace naseNut.WebApi.Controllers
                 var samplingService = new SamplingService();
                 var sampling = new Sampling
                 {
-                    Id = model.GrillId,
+                    Id = model.Id,
                     DateCapture = model.DateCapture,
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
@@ -72,6 +72,22 @@ namespace naseNut.WebApi.Controllers
                 if (sampling == null) return NotFound();
                 var deleted = samplingService.Delete(sampling);
                 return deleted ? (IHttpActionResult)Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult Updatesampling(AddSamplingBindingModel model)
+        {
+            try
+            {
+                var samplingService = new SamplingService();
+                var update = samplingService.Update(model);
+                return update ? (IHttpActionResult)Ok() : InternalServerError();
             }
             catch (Exception ex)
             {

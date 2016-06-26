@@ -9,7 +9,7 @@ namespace naseNut.WebApi.Models.BindingModels
     public class AddSamplingBindingModel
     {
         [Required]
-        public int GrillId { get; set; }
+        public int Id { get; set; }
         [Required]
         public DateTime DateCapture { get; set; }
         [Required]
