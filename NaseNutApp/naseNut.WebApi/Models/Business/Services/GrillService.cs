@@ -115,5 +115,25 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        public bool UpdateStatus(int id, bool status)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var grillRepository= new GrillRepository(db);
+                    var grill = grillRepository.GetById(id);
+                    grill.Status = status;
+                    db.Grills.Attach(grill);
+                    db.Entry(grill).Property(p => p.Status).IsModified = true;
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

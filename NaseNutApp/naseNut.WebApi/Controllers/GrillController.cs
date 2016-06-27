@@ -125,5 +125,40 @@ namespace naseNut.WebApi.Controllers
                "Ocurrio un error al intentar remover el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpPut]
+        [Route("changeStatus/{id}/{status}")]
+        public IHttpActionResult UpdateStatus(int id, int status) 
+        {
+            try
+            {
+                if (status != 0 && status != 1) return BadRequest();
+                var grillService = new GrillService();
+                if (grillService.GetById(id) == null) return NotFound();
+                var modified = grillService.UpdateStatus(id, status == 1);
+                return modified ? (IHttpActionResult) Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar modificar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("getAllCurrentInv")]
+        public IHttpActionResult GetAllCurrentInventory()
+        {
+            try
+            {
+                var grills = _db.Grills.Where(g => g.Status).ToList();
+                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar recuperar los registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }
