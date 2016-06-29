@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
 
@@ -108,6 +109,42 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grill = grillRepository.GetById(grillId);
                     grill.Receptions.Remove(reception);
                     return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool Update(int id, AddGrillBindingModel model)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                   
+                    var grill = db.Grills.Find(id);
+                    if (grill != null)
+                    {
+                        grill.DateCapture = model.DateCapture.ConvertToDate(); 
+                        grill.FieldName = model.FieldName;
+                        grill.Kilos = model.Kilos;
+                        grill.Producer = model.Producer;
+                        grill.Quality = model.Quality;
+                        grill.Sacks = model.Sacks;
+                        grill.Size = model.Size;
+                        grill.Variety = model.Variety;
+
+
+                        var grillRepository = new GrillRepository(db);
+                        grillRepository.Update(grill);
+                        return db.SaveChanges() >= 1;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)

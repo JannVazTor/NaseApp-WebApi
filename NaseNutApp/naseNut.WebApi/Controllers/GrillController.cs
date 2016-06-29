@@ -72,6 +72,12 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grill = grillService.GetById(id);
                 if (grill == null) return NotFound();
+                if(grill.Sampling != null)
+                {
+                    var samplingService = new SamplingService();
+                    var sampling = samplingService.GetById(id);
+                    var deleteSampling = samplingService.Delete(sampling);
+                }
                 var deleted = grillService.Delete(grill);
                 return deleted ? (IHttpActionResult)Ok() : InternalServerError();
             }
@@ -123,6 +129,23 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                "Ocurrio un error al intentar remover el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IHttpActionResult UpdateGrill(int id, AddGrillBindingModel model)
+        {
+            try
+            {
+                var grillService = new GrillService();
+                var update = grillService.Update(id,model);
+                return update ? (IHttpActionResult)Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }
