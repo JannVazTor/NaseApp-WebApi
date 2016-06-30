@@ -66,12 +66,13 @@ namespace naseNut.WebApi.Models.Business.Services
         {
             try
             {
-                using (var db = new NaseNEntities())
-                {
+               // using (var db = new NaseNEntities())
+                //{
+                var db = new NaseNEntities();
                     var receptionRepository = new ReceptionRepository(db);
                     var receptions = receptionRepository.GetAllWithProperties();
                     return receptions;
-                }
+               // }
             }
             catch (Exception ex)
             {
@@ -88,6 +89,22 @@ namespace naseNut.WebApi.Models.Business.Services
                     var reception = receptionRepository.GetById(id);
                     return reception;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<Reception> GetReceptionsByCylinders(int cylinderId)
+        {
+            try
+            {
+                var db = new NaseNEntities();
+                var cylinderRepository = new CylinderRepository(db);
+                var cylinder = cylinderRepository.GetById(cylinderId);
+                var receptions = cylinder.Receptions.ToList();
+                return receptions;
             }
             catch (Exception ex)
             {

@@ -27,7 +27,6 @@ namespace naseNut.WebApi.Controllers
                 {
                     HumidityPercent = model.HumidityPercent,
                     CylinderId = model.CylinderId,
-                    ReceptionId = model.ReceptionId,
                     DateCapture = DateTime.Now
                 };
                 var saved = humidityService.Save(humidity);
@@ -40,15 +39,34 @@ namespace naseNut.WebApi.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getAll")]
-        public IHttpActionResult GetAllHumidity()
+        [HttpDelete]
+        [Route("{id}")]
+        public IHttpActionResult DeleteHumidity(int id)
         {
             try
             {
                 var humidityService = new HumidityService();
-                var humidity = humidityService.GetAll();
-                return humidity != null ? (IHttpActionResult)Ok(TheModelFactory.Create(humidity)) : Ok();
+                var humidity = humidityService.GetById(id);
+                if (humidity == null) return NotFound();
+                var deleted = humidityService.Delete(humidity);
+                return deleted ? (IHttpActionResult) Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+        public IHttpActionResult GetAllHumidities()
+        {
+            try
+            {
+                var humidityService = new HumidityService();
+                var humidities = humidityService.GetAll();
+                return humidities != null ? (IHttpActionResult)Ok(TheModelFactory.CreateC(humidities)) : Ok();
             }
             catch (Exception ex)
             {

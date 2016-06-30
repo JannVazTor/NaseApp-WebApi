@@ -17,10 +17,10 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reception()
         {
-            this.Humidities = new HashSet<Humidity>();
             this.Remissions = new HashSet<Remission>();
             this.Cylinders = new HashSet<Cylinder>();
             this.Grills = new HashSet<Grill>();
+            this.Humidities = new HashSet<Humidity>();
         }
     
         public int Id { get; set; }
@@ -36,8 +36,6 @@ namespace naseNut.WebApi.Models.Entities
         public int ProducerId { get; set; }
         public Nullable<int> GrillId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Humidity> Humidities { get; set; }
         public virtual Producer Producer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
@@ -45,5 +43,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual ICollection<Cylinder> Cylinders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Humidity> Humidities { get; set; }
     }
 }

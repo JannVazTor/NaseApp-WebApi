@@ -33,11 +33,11 @@
         </EntityType>
         <EntityType Name="AspNetUserRoles">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="AspNetRoles_Id" />
+            <PropertyRef Name="AspNetUsers_Id" />
           </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="AspNetRoles_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="AspNetUsers_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
@@ -119,11 +119,11 @@
         </EntityType>
         <EntityType Name="Reception_Grill">
           <Key>
-            <PropertyRef Name="receptionId" />
             <PropertyRef Name="grillId" />
+            <PropertyRef Name="receptionId" />
           </Key>
-          <Property Name="receptionId" Type="int" Nullable="false" />
           <Property Name="grillId" Type="int" Nullable="false" />
+          <Property Name="receptionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Remission">
           <Key>
@@ -152,6 +152,80 @@
           <Property Name="Performance" Type="float" Nullable="false" />
           <Property Name="TotalWeightOfEdibleNuts" Type="float" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TotalHumidityView">
+          <Key>
+            <PropertyRef Name="HumidityId" />
+            <PropertyRef Name="HumidityDateCapture" />
+            <PropertyRef Name="HumidityPercent" />
+            <PropertyRef Name="CylinderId" />
+            <PropertyRef Name="Variety" />
+            <PropertyRef Name="ReceivedFromField" />
+            <PropertyRef Name="EntryDate" />
+            <PropertyRef Name="ProducerName" />
+            <PropertyRef Name="CylinderName" />
+            <PropertyRef Name="ReceptionId" />
+          </Key>
+          <Property Name="HumidityId" Type="int" Nullable="false" />
+          <Property Name="HumidityDateCapture" Type="datetime" Nullable="false" />
+          <Property Name="HumidityPercent" Type="float" Nullable="false" />
+          <Property Name="CylinderId" Type="int" Nullable="false" />
+          <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ReceivedFromField" Type="float" Nullable="false" />
+          <Property Name="EntryDate" Type="datetime" Nullable="false" />
+          <Property Name="ProducerName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CylinderName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ReceptionId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AspNetUserRoles_AspNetRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="AspNetRoles_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AspNetUserRoles_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="AspNetUsers_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cylinder_Reception_Cylinder">
+          <End Role="Cylinder" Type="Self.Cylinder" Multiplicity="1" />
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cylinder_Reception">
+              <PropertyRef Name="cylinderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cylinder_Reception_Reception">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1" />
+          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cylinder_Reception">
+              <PropertyRef Name="receptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -177,48 +251,6 @@
             </Principal>
             <Dependent Role="AspNetUserLogins">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetRoles">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_grillR">
-          <End Role="Grill" Type="Self.Grill" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Reception_Grill" Type="Self.Reception_Grill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Grill">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Reception_Grill">
-              <PropertyRef Name="grillId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -250,16 +282,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_reception">
-          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
+        <Association Name="FK_Reception_Grill_Grill">
+          <End Role="Grill" Type="Self.Grill" Multiplicity="1" />
+          <End Role="Reception_Grill" Type="Self.Reception_Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception_Grill">
+              <PropertyRef Name="grillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reception_Grill_Reception">
+          <End Role="Reception" Type="Self.Reception" Multiplicity="1" />
+          <End Role="Reception_Grill" Type="Self.Reception_Grill" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Reception">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Cylinder_Reception">
+            <Dependent Role="Reception_Grill">
               <PropertyRef Name="receptionId" />
             </Dependent>
           </ReferentialConstraint>
@@ -275,20 +317,6 @@
             </Principal>
             <Dependent Role="Reception">
               <PropertyRef Name="ProducerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_receptionG">
-          <End Role="Reception" Type="Self.Reception" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Reception_Grill" Type="Self.Reception_Grill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Reception">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Reception_Grill">
-              <PropertyRef Name="receptionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -318,20 +346,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_technicalUser">
-          <End Role="Cylinder" Type="Self.Cylinder" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Cylinder_Reception" Type="Self.Cylinder_Reception" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cylinder">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Cylinder_Reception">
-              <PropertyRef Name="cylinderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="NASE_BD_WModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -347,6 +361,36 @@
           <EntitySet Name="Reception_Grill" EntityType="Self.Reception_Grill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Remission" EntityType="Self.Remission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TotalHumidityView" EntityType="Self.TotalHumidityView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TotalHumidityView].[HumidityId] AS [HumidityId], 
+    [TotalHumidityView].[HumidityDateCapture] AS [HumidityDateCapture], 
+    [TotalHumidityView].[HumidityPercent] AS [HumidityPercent], 
+    [TotalHumidityView].[CylinderId] AS [CylinderId], 
+    [TotalHumidityView].[Variety] AS [Variety], 
+    [TotalHumidityView].[ReceivedFromField] AS [ReceivedFromField], 
+    [TotalHumidityView].[EntryDate] AS [EntryDate], 
+    [TotalHumidityView].[ProducerName] AS [ProducerName], 
+    [TotalHumidityView].[CylinderName] AS [CylinderName], 
+    [TotalHumidityView].[ReceptionId] AS [ReceptionId]
+    FROM [dbo].[TotalHumidityView] AS [TotalHumidityView]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AspNetUserRoles_AspNetRoles" Association="Self.FK_AspNetUserRoles_AspNetRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AspNetUserRoles_AspNetUsers" Association="Self.FK_AspNetUserRoles_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cylinder_Reception_Cylinder" Association="Self.FK_Cylinder_Reception_Cylinder">
+            <End Role="Cylinder" EntitySet="Cylinder" />
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cylinder_Reception_Reception" Association="Self.FK_Cylinder_Reception_Reception">
+            <End Role="Reception" EntitySet="Reception" />
+            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -354,18 +398,6 @@
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_grillR" Association="Self.FK_grillR">
-            <End Role="Grill" EntitySet="Grill" />
-            <End Role="Reception_Grill" EntitySet="Reception_Grill" />
           </AssociationSet>
           <AssociationSet Name="fk_humidity_cylinder" Association="Self.fk_humidity_cylinder">
             <End Role="Cylinder" EntitySet="Cylinder" />
@@ -375,17 +407,17 @@
             <End Role="Reception" EntitySet="Reception" />
             <End Role="Humidity" EntitySet="Humidity" />
           </AssociationSet>
-          <AssociationSet Name="FK_reception" Association="Self.FK_reception">
+          <AssociationSet Name="FK_Reception_Grill_Grill" Association="Self.FK_Reception_Grill_Grill">
+            <End Role="Grill" EntitySet="Grill" />
+            <End Role="Reception_Grill" EntitySet="Reception_Grill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reception_Grill_Reception" Association="Self.FK_Reception_Grill_Reception">
             <End Role="Reception" EntitySet="Reception" />
-            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
+            <End Role="Reception_Grill" EntitySet="Reception_Grill" />
           </AssociationSet>
           <AssociationSet Name="fk_reception_producer" Association="Self.fk_reception_producer">
             <End Role="Producer" EntitySet="Producer" />
             <End Role="Reception" EntitySet="Reception" />
-          </AssociationSet>
-          <AssociationSet Name="FK_receptionG" Association="Self.FK_receptionG">
-            <End Role="Reception" EntitySet="Reception" />
-            <End Role="Reception_Grill" EntitySet="Reception_Grill" />
           </AssociationSet>
           <AssociationSet Name="fk_remission_reception" Association="Self.fk_remission_reception">
             <End Role="Reception" EntitySet="Reception" />
@@ -394,10 +426,6 @@
           <AssociationSet Name="fk_sampling_grill" Association="Self.fk_sampling_grill">
             <End Role="Grill" EntitySet="Grill" />
             <End Role="Sampling" EntitySet="Sampling" />
-          </AssociationSet>
-          <AssociationSet Name="FK_technicalUser" Association="Self.FK_technicalUser">
-            <End Role="Cylinder" EntitySet="Cylinder" />
-            <End Role="Cylinder_Reception" EntitySet="Cylinder_Reception" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -410,7 +438,7 @@
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="NASE_BD_WModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
@@ -451,7 +479,7 @@
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetRoles" Relationship="NASE_BD_WModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -481,10 +509,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="NaseNEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
@@ -497,10 +521,6 @@
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
           <EntitySet Name="Cylinders" EntityType="NASE_BD_WModel.Cylinder" />
           <EntitySet Name="Grills" EntityType="NASE_BD_WModel.Grill" />
@@ -517,10 +537,6 @@
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Sampling" EntitySet="Samplings" />
           </AssociationSet>
-          <AssociationSet Name="fk_humidity_reception" Association="NASE_BD_WModel.fk_humidity_reception">
-            <End Role="Reception" EntitySet="Receptions" />
-            <End Role="Humidity" EntitySet="Humidities" />
-          </AssociationSet>
           <AssociationSet Name="fk_reception_producer" Association="NASE_BD_WModel.fk_reception_producer">
             <End Role="Producer" EntitySet="Producers" />
             <End Role="Reception" EntitySet="Receptions" />
@@ -536,6 +552,15 @@
           <AssociationSet Name="Reception_Grill" Association="NASE_BD_WModel.Reception_Grill">
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles1" Association="NASE_BD_WModel.AspNetUserRoles">
+            <End EntitySet="AspNetRoles" Role="AspNetRole" />
+            <End EntitySet="AspNetUsers" Role="AspNetUser" />
+          </AssociationSet>
+          <EntitySet Name="TotalHumidityViews" EntityType="NASE_BD_WModel.TotalHumidityView" />
+          <AssociationSet Name="fk_humidity_reception" Association="NASE_BD_WModel.fk_humidity_reception">
+            <End Role="Reception" EntitySet="Receptions" />
+            <End Role="Humidity" EntitySet="Humidities" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Cylinder">
@@ -569,8 +594,8 @@
           <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="HumidityPercent" Type="Double" Nullable="false" />
           <Property Name="CylinderId" Type="Int32" Nullable="false" />
-          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Cylinder" Relationship="NASE_BD_WModel.fk_humidity_cylinder" FromRole="Humidity" ToRole="Cylinder" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.fk_humidity_reception" FromRole="Humidity" ToRole="Reception" />
         </EntityType>
         <EntityType Name="Producer">
@@ -597,11 +622,11 @@
           <Property Name="Observations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ProducerId" Type="Int32" Nullable="false" />
           <Property Name="GrillId" Type="Int32" />
-          <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_reception" FromRole="Reception" ToRole="Humidity" />
           <NavigationProperty Name="Producer" Relationship="NASE_BD_WModel.fk_reception_producer" FromRole="Reception" ToRole="Producer" />
           <NavigationProperty Name="Remissions" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
           <NavigationProperty Name="Cylinders" Relationship="NASE_BD_WModel.Cylinder_Reception" FromRole="Reception" ToRole="Cylinder" />
           <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
+          <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_reception" FromRole="Reception" ToRole="Humidity" />
         </EntityType>
         <EntityType Name="Remission">
           <Key>
@@ -658,20 +683,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_humidity_reception">
-          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_BD_WModel.Humidity" Role="Humidity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Reception">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Humidity">
-              <PropertyRef Name="ReceptionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_reception_producer">
           <End Type="NASE_BD_WModel.Producer" Role="Producer" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -707,6 +718,48 @@
         <Association Name="Reception_Grill">
           <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
           <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="NASE_BD_WModel.AspNetRole" Multiplicity="*" Role="AspNetRole" />
+          <End Type="NASE_BD_WModel.AspNetUser" Multiplicity="*" Role="AspNetUser" />
+        </Association>
+        <EntityType Name="TotalHumidityView">
+          <Key>
+            <PropertyRef Name="HumidityId" />
+            <PropertyRef Name="HumidityDateCapture" />
+            <PropertyRef Name="HumidityPercent" />
+            <PropertyRef Name="CylinderId" />
+            <PropertyRef Name="ReceptionId" />
+            <PropertyRef Name="Variety" />
+            <PropertyRef Name="ReceivedFromField" />
+            <PropertyRef Name="EntryDate" />
+            <PropertyRef Name="ProducerName" />
+            <PropertyRef Name="CylinderName" />
+          </Key>
+          <Property Name="HumidityId" Type="Int32" Nullable="false" />
+          <Property Name="HumidityDateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
+          <Property Name="CylinderId" Type="Int32" Nullable="false" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="Variety" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ReceivedFromField" Type="Double" Nullable="false" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ProducerName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CylinderName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="fk_humidity_reception">
+          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_BD_WModel.Humidity" Role="Humidity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Humidity">
+              <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -759,14 +812,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="NASE_BD_WModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Cylinders">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Cylinder">
               <MappingFragment StoreEntitySet="Cylinder">
@@ -870,6 +915,30 @@
               <ScalarProperty Name="Id" ColumnName="grillId" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles1" TypeName="NASE_BD_WModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="AspNetUsers_Id" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="AspNetRoles_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="TotalHumidityViews">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.TotalHumidityView">
+              <MappingFragment StoreEntitySet="TotalHumidityView">
+                <ScalarProperty Name="CylinderName" ColumnName="CylinderName" />
+                <ScalarProperty Name="ProducerName" ColumnName="ProducerName" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="ReceivedFromField" ColumnName="ReceivedFromField" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="CylinderId" ColumnName="CylinderId" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="HumidityDateCapture" ColumnName="HumidityDateCapture" />
+                <ScalarProperty Name="HumidityId" ColumnName="HumidityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

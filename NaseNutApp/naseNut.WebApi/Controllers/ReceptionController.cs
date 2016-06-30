@@ -80,5 +80,22 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("getReceptionsByCylinder")]
+        public IHttpActionResult GetReceptionsByCylinder(int cylinderId)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var receptions = receptionService.GetReceptionsByCylinders(cylinderId).ToList();
+                return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReceptionId(receptions)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las recepciones que contiene el cilindro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

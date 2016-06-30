@@ -36,5 +36,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<Reception> Receptions { get; set; }
         public virtual DbSet<Remission> Remissions { get; set; }
         public virtual DbSet<Sampling> Samplings { get; set; }
+        public virtual DbSet<TotalHumidityView> TotalHumidityViews { get; set; }
     }
 }
