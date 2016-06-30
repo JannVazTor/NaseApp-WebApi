@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +6,7 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
+using System.Data.Entity;
 
 namespace naseNut.WebApi.Controllers
 {
@@ -30,12 +30,13 @@ namespace naseNut.WebApi.Controllers
                     ReceivedFromField = model.ReceivedFromField,
                     FieldName = model.FieldName,
                     CarRegistration = model.CarRegistration,
-                    EntryDate = DateTime.Now,
+                    EntryDate = model.EntryDate,
                     IssueDate = model.IssueDate,
                     HeatHoursDtrying = model.HeatHoursDrying,
                     HumidityPercent = model.HumidityPercent,
                     Observations = model.Observations,
-                    ProducerId = model.ProducerId
+                    ProducerId = model.ProducerId,
+                    Folio = model.Folio
                 };
                 var saved = receptionService.SaveToCylinder(reception, model.CylinderId);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -62,6 +63,51 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpPut]
+        [Route("addReceptionToGrill/{receptionId}/{grillId}")]
+        public IHttpActionResult AddReceptionToGrill(int receptionId, int grillId )
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var grillService = new GrillService();
+                var reception = receptionService.GetById(receptionId);
+                var grill = grillService.GetById(grillId);
+                if (reception == null || grill == null) return NotFound();
+                var added = receptionService.AddReceptionToGrill(reception.Id, grill.Id);
+                if (!added) return BadRequest();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+               "Ocurrio un error al intentar relacionar los registros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("removeReceptionToGrill/{receptionId}/{grillId}")]
+        public IHttpActionResult RemoveReceptionToGrill(int receptionId, int grillId)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var grillService = new GrillService();
+                var reception = receptionService.GetById(receptionId);
+                var grill = grillService.GetById(grillId);
+                if (reception == null || grill == null) return NotFound();
+                var removed = receptionService.RemoveReceptionToGrill(reception.Id, grill.Id);
+                if (!removed) return BadRequest();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+               "Ocurrio un error al intentar remover el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteReception(int id)
@@ -78,6 +124,32 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPut]
+        [Route("{Id}")]
+        public IHttpActionResult UpdateReception(int Id,UpdateReceptionBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            
+            try
+            {
+
+                var receptionService = new ReceptionService();
+                var update = receptionService.Update(Id,model);
+                 
+                return update?(IHttpActionResult)Ok() : BadRequest();
+
+               
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar actgualizar la recepcion." + "\n" + "Detalles del Error: " + ex));
             }
         }
 

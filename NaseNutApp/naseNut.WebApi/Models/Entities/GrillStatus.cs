@@ -10,17 +10,10 @@
 namespace naseNut.WebApi.Models.Entities
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Humidity
+    public enum GrillStatus : byte
     {
-        public int Id { get; set; }
-        public System.DateTime DateCapture { get; set; }
-        public double HumidityPercent { get; set; }
-        public int CylinderId { get; set; }
-        public int ReceptionId { get; set; }
-    
-        public virtual Cylinder Cylinder { get; set; }
-        public virtual Reception Reception { get; set; }
+        Issue = 0,
+        Entry = 1
     }
 }

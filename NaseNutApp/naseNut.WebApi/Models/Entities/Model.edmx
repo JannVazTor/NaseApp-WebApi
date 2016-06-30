@@ -78,10 +78,15 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateCapture" Type="datetime" Nullable="false" />
-          <Property Name="ReceptionId" Type="int" Nullable="false" />
+          <Property Name="ReceptionId" Type="int" />
           <Property Name="Size" Type="int" Nullable="false" />
           <Property Name="Sacks" Type="int" Nullable="false" />
           <Property Name="Kilos" Type="float" Nullable="false" />
+          <Property Name="Quality" Type="int" Nullable="false" />
+          <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Producer" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -116,6 +121,7 @@
           <Property Name="Observations" Type="nvarchar" MaxLength="500" />
           <Property Name="ProducerId" Type="int" Nullable="false" />
           <Property Name="GrillId" Type="int" />
+          <Property Name="Folio" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Reception_Grill">
           <Key>
@@ -144,7 +150,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="DateCapture" Type="datetime" Nullable="false" />
           <Property Name="SampleWeight" Type="float" Nullable="false" />
           <Property Name="HumidityPercent" Type="float" Nullable="false" />
@@ -522,15 +528,22 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Remissions" EntityType="NASE_BD_WModel.Remission" />
           <EntitySet Name="Cylinders" EntityType="NASE_BD_WModel.Cylinder" />
           <EntitySet Name="Grills" EntityType="NASE_BD_WModel.Grill" />
           <EntitySet Name="Humidities" EntityType="NASE_BD_WModel.Humidity" />
           <EntitySet Name="Producers" EntityType="NASE_BD_WModel.Producer" />
           <EntitySet Name="Receptions" EntityType="NASE_BD_WModel.Reception" />
-          <EntitySet Name="Remissions" EntityType="NASE_BD_WModel.Remission" />
-          <EntitySet Name="Samplings" EntityType="NASE_BD_WModel.Sampling" />
           <AssociationSet Name="fk_humidity_cylinder" Association="NASE_BD_WModel.fk_humidity_cylinder">
             <End Role="Cylinder" EntitySet="Cylinders" />
+            <End Role="Humidity" EntitySet="Humidities" />
+          </AssociationSet>
+          <AssociationSet Name="fk_humidity_reception" Association="NASE_BD_WModel.fk_humidity_reception">
+            <End Role="Reception" EntitySet="Receptions" />
             <End Role="Humidity" EntitySet="Humidities" />
           </AssociationSet>
           <AssociationSet Name="fk_sampling_grill" Association="NASE_BD_WModel.fk_sampling_grill">
@@ -562,7 +575,32 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Humidity" EntitySet="Humidities" />
           </AssociationSet>
+          <EntitySet Name="Samplings" EntityType="NASE_BD_WModel.Sampling" />
+          <AssociationSet Name="fk_sampling_grill" Association="NASE_BD_WModel.fk_sampling_grill">
+            <End Role="Grill" EntitySet="Grills" />
+            <End Role="Sampling" EntitySet="Samplings" />
+          </AssociationSet>
           </EntityContainer>
+        <EntityType Name="Remission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cultivation" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Batch" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Butler" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TransportNumber" Type="Int32" Nullable="false" />
+          <Property Name="Driver" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Elaborate" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
+        </EntityType>
+        <EnumType Name="GrillStatus" UnderlyingType="Byte">
+          <Member Name="Issue" Value="0" />
+          <Member Name="Entry" Value="1" />
+        </EnumType>
         <EntityType Name="Cylinder">
           <Key>
             <PropertyRef Name="Id" />
@@ -579,12 +617,17 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="ReceptionId" Type="Int32" />
           <Property Name="Size" Type="Int32" Nullable="false" />
           <Property Name="Sacks" Type="Int32" Nullable="false" />
           <Property Name="Kilos" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
+          <Property Name="Quality" Type="Int32" Nullable="false" />
+          <Property Name="Variety" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Producer" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
+          <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -622,40 +665,13 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
           <Property Name="Observations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ProducerId" Type="Int32" Nullable="false" />
           <Property Name="GrillId" Type="Int32" />
+          <Property Name="Folio" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_reception" FromRole="Reception" ToRole="Humidity" />
           <NavigationProperty Name="Producer" Relationship="NASE_BD_WModel.fk_reception_producer" FromRole="Reception" ToRole="Producer" />
           <NavigationProperty Name="Remissions" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
           <NavigationProperty Name="Cylinders" Relationship="NASE_BD_WModel.Cylinder_Reception" FromRole="Reception" ToRole="Cylinder" />
           <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
           <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_reception" FromRole="Reception" ToRole="Humidity" />
-        </EntityType>
-        <EntityType Name="Remission">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Cultivation" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Batch" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Quantity" Type="Double" Nullable="false" />
-          <Property Name="Butler" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="TransportNumber" Type="Int32" Nullable="false" />
-          <Property Name="Driver" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Elaborate" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
-        </EntityType>
-        <EntityType Name="Sampling">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SampleWeight" Type="Double" Nullable="false" />
-          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
-          <Property Name="WalnutNumber" Type="Int32" Nullable="false" />
-          <Property Name="Performance" Type="Double" Nullable="false" />
-          <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Grill" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
         </EntityType>
         <Association Name="fk_humidity_cylinder">
           <End Type="NASE_BD_WModel.Cylinder" Role="Cylinder" Multiplicity="1">
@@ -671,6 +687,17 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_humidity_reception">
+          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_BD_WModel.Humidity" Role="Humidity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Humidity">
+              <PropertyRef Name="ReceptionId" />
         <Association Name="fk_sampling_grill">
           <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="1" />
           <End Type="NASE_BD_WModel.Sampling" Role="Sampling" Multiplicity="0..1" />
@@ -812,6 +839,30 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="NASE_BD_WModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Remissions">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.Remission">
+              <MappingFragment StoreEntitySet="Remission">
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="Elaborate" ColumnName="Elaborate" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="TransportNumber" ColumnName="TransportNumber" />
+                <ScalarProperty Name="Butler" ColumnName="Butler" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="Cultivation" ColumnName="Cultivation" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Cylinders">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Cylinder">
               <MappingFragment StoreEntitySet="Cylinder">
@@ -824,6 +875,11 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
           <EntitySetMapping Name="Grills">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Grill">
               <MappingFragment StoreEntitySet="Grill">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="Producer" ColumnName="Producer" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
                 <ScalarProperty Name="Kilos" ColumnName="Kilos" />
                 <ScalarProperty Name="Sacks" ColumnName="Sacks" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
@@ -855,6 +911,7 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
           <EntitySetMapping Name="Receptions">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Reception">
               <MappingFragment StoreEntitySet="Reception">
+                <ScalarProperty Name="Folio" ColumnName="Folio" />
                 <ScalarProperty Name="GrillId" ColumnName="GrillId" />
                 <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
                 <ScalarProperty Name="Observations" ColumnName="Observations" />
@@ -866,35 +923,6 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
                 <ScalarProperty Name="FieldName" ColumnName="FieldName" />
                 <ScalarProperty Name="ReceivedFromField" ColumnName="ReceivedFromField" />
                 <ScalarProperty Name="Variety" ColumnName="Variety" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Remissions">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.Remission">
-              <MappingFragment StoreEntitySet="Remission">
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
-                <ScalarProperty Name="Elaborate" ColumnName="Elaborate" />
-                <ScalarProperty Name="Driver" ColumnName="Driver" />
-                <ScalarProperty Name="TransportNumber" ColumnName="TransportNumber" />
-                <ScalarProperty Name="Butler" ColumnName="Butler" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
-                <ScalarProperty Name="Cultivation" ColumnName="Cultivation" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Samplings">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.Sampling">
-              <MappingFragment StoreEntitySet="Sampling">
-                <ScalarProperty Name="TotalWeightOfEdibleNuts" ColumnName="TotalWeightOfEdibleNuts" />
-                <ScalarProperty Name="Performance" ColumnName="Performance" />
-                <ScalarProperty Name="WalnutNumber" ColumnName="WalnutNumber" />
-                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
-                <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -940,6 +968,20 @@ warning 6002: The table/view 'NASE_BD_W.dbo.TotalHumidityView' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
         </EntityContainerMapping>
+          <EntitySetMapping Name="Samplings">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.Sampling">
+              <MappingFragment StoreEntitySet="Sampling">
+                <ScalarProperty Name="TotalWeightOfEdibleNuts" ColumnName="TotalWeightOfEdibleNuts" />
+                <ScalarProperty Name="Performance" ColumnName="Performance" />
+                <ScalarProperty Name="WalnutNumber" ColumnName="WalnutNumber" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

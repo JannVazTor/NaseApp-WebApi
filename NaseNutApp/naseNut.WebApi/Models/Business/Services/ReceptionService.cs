@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Http.ModelBinding;
 using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
+using naseNut.WebApi.Models.BindingModels;
+using System.Data.Entity;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
@@ -86,6 +88,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionRepository = new ReceptionRepository(db);
+                    
                     var reception = receptionRepository.GetById(id);
                     return reception;
                 }
@@ -105,6 +108,83 @@ namespace naseNut.WebApi.Models.Business.Services
                 var cylinder = cylinderRepository.GetById(cylinderId);
                 var receptions = cylinder.Receptions.ToList();
                 return receptions;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool AddReceptionToGrill(int receptionId, int grillId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var grillRepository = new GrillRepository(db);
+                    var reception = receptionRepository.GetById(receptionId);
+                    var grill = grillRepository.GetById(grillId);
+                    receptionRepository.Update(reception);
+                    reception.Grills.Add(grill);
+                    return db.SaveChanges()>=1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool RemoveReceptionToGrill(int receptionId, int grillId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+                    var grillRepository = new GrillRepository(db);
+                    var reception = receptionRepository.GetById(receptionId);
+                    var grill = grillRepository.GetById(grillId);
+                    reception.Grills.Remove(grill);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool Update(int id,UpdateReceptionBindingModel model)
+        {
+
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionService = new ReceptionService();
+                    var reception = db.Receptions.Find(id);
+                    if (reception != null)
+                    {
+                        reception.CarRegistration = model.CarRegistration;
+                        reception.EntryDate = model.EntryDate;
+                        reception.FieldName = model.FieldName;
+                        reception.HeatHoursDtrying = model.HeatHoursDrying;
+                        reception.HumidityPercent = model.HumidityPercent;
+                        reception.IssueDate = model.IssueDate;
+                        reception.ProducerId = model.ProducerId;
+                        reception.ReceivedFromField = model.ReceivedFromField;
+                        reception.Variety = model.Variety;
+
+                        var receptionRepository = new ReceptionRepository(db);
+                        receptionRepository.Update(reception);
+                        return db.SaveChanges() >= 1;
+                    }
+                    else
+                    {
+                        return false;
+                    }    
+                }
             }
             catch (Exception ex)
             {
