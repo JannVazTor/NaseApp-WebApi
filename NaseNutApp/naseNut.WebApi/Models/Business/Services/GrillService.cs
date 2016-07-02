@@ -125,7 +125,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grillRepository = new GrillRepository(db);
                     var grill = grillRepository.GetById(id);
                     grill.Status = status;
-                    db.Grills.Attach(grill);
+                    db.Grill.Attach(grill);
                     db.Entry(grill).Property(p => p.Status).IsModified = true;
                     return db.SaveChanges() >= 1;
                 }
@@ -142,7 +142,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                    
-                    var grill = db.Grills.Find(id);
+                    var grill = db.Grill.Find(id);
                     if (grill != null)
                     {
                         grill.DateCapture = model.DateCapture.ConvertToDate(); 

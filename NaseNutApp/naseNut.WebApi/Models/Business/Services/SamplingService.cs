@@ -67,7 +67,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     
-                    var sampling = db.Samplings.Find(model.Id);
+                    var sampling = db.Sampling.Find(model.Id);
                     if (sampling != null)
                     {
                         sampling.DateCapture = model.DateCapture;

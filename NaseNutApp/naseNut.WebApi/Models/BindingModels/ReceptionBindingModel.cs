@@ -17,7 +17,7 @@ namespace naseNut.WebApi.Models.BindingModels
         public string FieldName { get; set; }
         [Required]
         public string CarRegistration { get; set; }
-        public DateTime EntryDate { get; set; } = DateTime.Now;
+        public DateTime? EntryDate { get; set; } = DateTime.Now;
         public DateTime? IssueDate { get; set; }
         public double? HeatHoursDrying { get; set; }
         public double? HumidityPercent { get; set; }

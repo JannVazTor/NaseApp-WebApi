@@ -14,5 +14,7 @@ namespace naseNut.WebApi.Models.BindingModels
         public int CylinderId { get; set; }
         [Required]
         public int ReceptionId { get; set; }
+        [Required]
+        public string CylinderName { get; set;}
     }
 }

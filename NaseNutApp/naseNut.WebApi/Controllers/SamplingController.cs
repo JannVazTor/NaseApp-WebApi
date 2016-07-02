@@ -51,7 +51,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var samplings = _db.Samplings.ToList();
+                var samplings = _db.Sampling.ToList();
                 return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(samplings)) : Ok();
             }
             catch (Exception ex)

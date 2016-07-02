@@ -76,5 +76,29 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        public int GetId(string cylinderName)
+        {
+            try
+            {
+                //  using (var db = new NaseNEntities())
+                //{
+                int cylinderId = 0;
+                var db = new NaseNEntities();
+                var cylinderRepository = new CylinderRepository(db);
+                var cylinders = cylinderRepository.GetAll();
+                var cylindersId = (from a in cylinders where a.CylinderName == cylinderName select a.Id).ToList();
+                foreach (var id in cylindersId)
+                {
+                    cylinderId = id;
+                }
+                return cylinderId;
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

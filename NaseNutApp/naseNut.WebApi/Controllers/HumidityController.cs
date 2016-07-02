@@ -7,6 +7,7 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace naseNut.WebApi.Controllers
 {
@@ -14,20 +15,25 @@ namespace naseNut.WebApi.Controllers
     public class HumidityController : BaseApiController
     {
         [HttpPost]
+        [Route("saveHumidity")]
         public IHttpActionResult SaveHumidity(AddHumidityBindingModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+
+          //  if (!ModelState.IsValid)
+           // {
+             //   return BadRequest();
+            //}
             try
             {
+                var cylinderService = new CylinderService();
+                var cylinderId = cylinderService.GetId(model.CylinderName);
                 var humidityService = new HumidityService();
                 var humidity = new Humidity
                 {
+                    DateCapture = DateTime.Now,
                     HumidityPercent = model.HumidityPercent,
-                    CylinderId = model.CylinderId,
-                    DateCapture = DateTime.Now
+                    CylinderId = cylinderId,
+                    ReceptionId = model.ReceptionId
                 };
                 var saved = humidityService.Save(humidity);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

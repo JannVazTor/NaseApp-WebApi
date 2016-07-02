@@ -101,7 +101,7 @@ namespace naseNut.WebApi.Models
                 Producer = g.Producer,
                 FieldName = g.FieldName,
                 Status = g.Status,
-                Sampling = g.Sampling != null ? Create(g.Sampling) : null
+                Sampling = g.Samplings != null ? Create(g.Samplings) : null
             }).ToList();
         }
 
@@ -201,9 +201,9 @@ namespace naseNut.WebApi.Models
                 HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
-                ProducerName = r.Producer != null? r.Producer.ProducerName: "",
+                ProducerName = r.Producers != null? r.Producers.ProducerName: "",
                 Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
-                Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):""
+                Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):"",
             }).ToList();
         }
 
@@ -214,11 +214,12 @@ namespace naseNut.WebApi.Models
                 Id = r.Id,
                 HumidityPercentage = r.HumidityPercent,
                 DateCapture = r.DateCapture,
-                CylinderName = r.Cylinder.CylinderName,
-                Variety = r.Reception.Variety,
-                ProducerName = r.Reception.Producer.ProducerName,
-                Tons = (r.Reception.ReceivedFromField / 1000),
-                EntryDate = r.Reception.EntryDate
+                CylinderName = r.Cylinders.CylinderName,
+                Variety = r.Receptions.Variety,
+                ProducerName = r.Receptions.Producers.ProducerName,
+                Tons = (r.Receptions.ReceivedFromField / 1000),
+                EntryDate = r.Receptions.EntryDate,
+                Folio = r.Receptions.Folio
             }).ToList();
         }
 
@@ -239,7 +240,8 @@ namespace naseNut.WebApi.Models
             public string Variety { get; set; }
             public string ProducerName { get; set; }
             public double Tons { get; set; }
-            public DateTime EntryDate { get; set; }
+            public DateTime? EntryDate { get; set; }
+            public int Folio { get; set; }
         }
 
         public class ReceptionModel
@@ -250,7 +252,7 @@ namespace naseNut.WebApi.Models
             public double ReceivedFromField { get; set; }
             public string FieldName { get; set; }
             public string CarRegistration { get; set; }
-            public DateTime EntryDate { get; set; }
+            public DateTime? EntryDate { get; set; }
             public DateTime? IssueDate { get; set; }
             public double? HeatHoursDrying { get; set; }
             public double? HumidityPercent { get; set; }

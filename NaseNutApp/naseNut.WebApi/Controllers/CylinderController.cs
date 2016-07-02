@@ -15,7 +15,7 @@ namespace naseNut.WebApi.Controllers
     public class CylinderController:BaseApiController
     {
         [HttpPost]
-        public IHttpActionResult SaveProducer(AddCylinderBindingModel model)
+        public IHttpActionResult SaveCylinder(AddCylinderBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -40,7 +40,7 @@ namespace naseNut.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        public IHttpActionResult GetAllProducers()
+        public IHttpActionResult GetAllCylinders()
         {
             try
             {
@@ -71,6 +71,23 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("getIdByName")]
+        public int GetIdByName(string cylinderName)
+        {
+            try
+            {
+                var cylinderService = new CylinderService();
+                var cylinderId = cylinderService.GetId(cylinderName);
+                return cylinderId;
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

@@ -13,12 +13,13 @@ namespace naseNut.WebApi.Models.Business.Services
         {
             try
             {
-                using (var db = new NaseNEntities())
-                {
+         //       using (var db = new NaseNEntities())
+           //     {
+                    var db = new NaseNEntities();
                     var humidityRepository = new HumidityRepository(db);
                     humidityRepository.Insert(newHumidity);
                     return db.SaveChanges() >= 1;
-                }
+             //   }
             }
             catch (Exception ex)
             {
@@ -65,11 +66,12 @@ namespace naseNut.WebApi.Models.Business.Services
         {
             try
             {
-                using (var db = new NaseNEntities())
-                {
+              //  using (var db = new NaseNEntities())
+                //{
+                    var db = new NaseNEntities();
                     var humidityRepository = new HumidityRepository(db);
                     return humidityRepository.GetAll();
-                }
+               // }
             }
             catch (Exception ex)
             {

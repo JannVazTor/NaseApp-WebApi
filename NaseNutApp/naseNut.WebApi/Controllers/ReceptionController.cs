@@ -19,6 +19,7 @@ namespace naseNut.WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest();
             }
             try
@@ -30,7 +31,7 @@ namespace naseNut.WebApi.Controllers
                     ReceivedFromField = model.ReceivedFromField,
                     FieldName = model.FieldName,
                     CarRegistration = model.CarRegistration,
-                    EntryDate = model.EntryDate,
+                    EntryDate = DateTime.Now,
                     IssueDate = model.IssueDate,
                     HeatHoursDtrying = model.HeatHoursDrying,
                     HumidityPercent = model.HumidityPercent,
@@ -54,7 +55,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var receptions = _db.Receptions.ToList();
+                var receptions = _db.Reception.ToList();
                 return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(receptions)) : Ok();
             }
             catch (Exception ex)

@@ -247,7 +247,6 @@
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
-    <Compile Include="Models\Business\Repositories\HumidityViewRepository.cs" />
     <Compile Include="Models\Business\Repositories\ProducerRepository.cs" />
     <Compile Include="Models\Business\Repositories\ReceptionRepository.cs" />
     <Compile Include="Models\Business\Repositories\RemissionRepository.cs" />
@@ -282,9 +281,6 @@
     <Compile Include="Models\Entities\Grill.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\GrillStatus.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Humidity.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -313,9 +309,6 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Sampling.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\TotalHumidityView.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
