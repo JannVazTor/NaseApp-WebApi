@@ -29,12 +29,14 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<Cylinder> Cylinder { get; set; }
-        public virtual DbSet<Grill> Grill { get; set; }
-        public virtual DbSet<Humidity> Humidity { get; set; }
-        public virtual DbSet<Producer> Producer { get; set; }
-        public virtual DbSet<Reception> Reception { get; set; }
-        public virtual DbSet<Remission> Remission { get; set; }
-        public virtual DbSet<Sampling> Sampling { get; set; }
+        public virtual DbSet<Remission> Remissions { get; set; }
+        public virtual DbSet<Cylinder> Cylinders { get; set; }
+        public virtual DbSet<Grill> Grills { get; set; }
+        public virtual DbSet<Humidity> Humidities { get; set; }
+        public virtual DbSet<Producer> Producers { get; set; }
+        public virtual DbSet<Reception> Receptions { get; set; }
+        public virtual DbSet<Sampling> Samplings { get; set; }
+        public virtual DbSet<GrillIssue> GrillIssues { get; set; }
+        public virtual DbSet<Variety> Varieties { get; set; }
     }
 }

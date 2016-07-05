@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Repositories;
@@ -18,6 +19,23 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var grillRepository = new GrillRepository(db);
                     grillRepository.Insert(grill);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool SaveIssue(GrillIssue grillIssue)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var grillIssueRepository = new GrillIssueRepository(db);
+                    grillIssueRepository.Insert(grillIssue);
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -142,27 +160,53 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                    
-                    var grill = db.Grill.Find(id);
-                    if (grill != null)
-                    {
-                        grill.DateCapture = model.DateCapture.ConvertToDate(); 
-                        grill.FieldName = model.FieldName;
-                        grill.Kilos = model.Kilos;
-                        grill.Producer = model.Producer;
-                        grill.Quality = model.Quality;
-                        grill.Sacks = model.Sacks;
-                        grill.Size = model.Size;
-                        grill.Variety = model.Variety;
+                    var grill = db.Grills.Find(id);
+                    if (grill == null) return false;
+                    grill.DateCapture = model.DateCapture.ConvertToDate(); 
+                    grill.FieldName = model.FieldName;
+                    grill.Kilos = model.Kilos;
+                    grill.Producer = model.Producer;
+                    grill.Quality = model.Quality;
+                    grill.Sacks = model.Sacks;
+                    grill.Size = model.Size;
+                    grill.Variety = model.Variety;
 
 
-                        var grillRepository = new GrillRepository(db);
-                        grillRepository.Update(grill);
-                        return db.SaveChanges() >= 1;
-                    }
-                    else
+                    var grillRepository = new GrillRepository(db);
+                    grillRepository.Update(grill);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool SaveIssue(GrillIssue grillIssue, List<int> grillsId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var grillIssueRepository = new GrillIssueRepository(db);
+                    grillIssueRepository.Insert(grillIssue);
+                    var saved = db.SaveChanges() >= 1;
+                    if (!saved) return false;
+                    var grills = db.Grills.Where(g => grillsId.Any(id => id == g.Id)).ToList();
+
+                    grillIssueRepository.Update(grillIssue);
+                    foreach (var grill in grills)
                     {
-                        return false;
+                        grillIssue.Grills.Add(grill);
                     }
+                    var added = db.SaveChanges() >= 1;
+                    if (!added) return false;
+                    foreach (var grill in grills)
+                    {
+                        UpdateStatus(grill.Id, false);
+                    }
+                    return true;
                 }
             }
             catch (Exception ex)

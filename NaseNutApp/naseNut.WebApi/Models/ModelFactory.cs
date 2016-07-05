@@ -133,6 +133,40 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<GrillIssueModel> Create(List<GrillIssue> issues)
+        {
+            return issues.Select(i => new GrillIssueModel
+            {
+                Id = i.Id,
+                DateCapture = i.DateCapture,
+                Truck = i.Truck,
+                Driver = i.Driver,
+                Box = i.Box,
+                Remission = i.Remission,
+                Grills = Create(i.Grills.Where(g => g.GrillIssuesId == i.Id).ToList())
+            }).ToList();
+        }
+
+        public List<VarietyModel> Create(List<Variety> varieties)
+        {
+            return varieties.Select(v => new VarietyModel
+            {
+                Id = v.Id,
+                VarietyName = v.Variety1
+            }).ToList();
+        }
+
+        public class GrillIssueModel
+        {
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public string Truck { get; set; }
+            public string Driver { get; set; }
+            public string Box { get; set; }
+            public int Remission { get; set; }
+            public List<GrillModel> Grills { get; set; }
+        }
+
         public class SamplingModel
         {
             public int Id { get; set; }
@@ -184,6 +218,12 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string CylinderName { get; set; }
+        }
+
+        public class VarietyModel
+        {
+            public int Id { get; set; }
+            public string VarietyName { get; set; }
         }
 
         public List<ReceptionModel> Create(List<Reception> receptions)

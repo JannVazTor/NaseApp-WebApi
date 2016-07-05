@@ -12,31 +12,22 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Grill
+    public partial class GrillIssue
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Grill()
+        public GrillIssue()
         {
-            this.Receptions = new HashSet<Reception>();
+            this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
         public System.DateTime DateCapture { get; set; }
-        public Nullable<int> ReceptionId { get; set; }
-        public int Size { get; set; }
-        public int Sacks { get; set; }
-        public double Kilos { get; set; }
-        public int Quality { get; set; }
-        public string Variety { get; set; }
-        public string Producer { get; set; }
-        public string FieldName { get; set; }
-        public bool Status { get; set; }
-        public Nullable<int> GrillIssuesId { get; set; }
+        public string Truck { get; set; }
+        public string Driver { get; set; }
+        public string Box { get; set; }
+        public int Remission { get; set; }
     
-        public virtual Sampling Sampling { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reception> Receptions { get; set; }
-        public virtual Sampling Sampling { get; set; }
-        public virtual GrillIssue GrillIssue { get; set; }
+        public virtual ICollection<Grill> Grills { get; set; }
     }
 }
