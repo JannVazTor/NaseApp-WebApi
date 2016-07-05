@@ -229,6 +229,7 @@
     <Compile Include="Controllers\RemissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SamplingController.cs" />
+    <Compile Include="Controllers\VarietyController.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -238,13 +239,16 @@
     <Compile Include="Models\BindingModels\CylinderBindingModel.cs" />
     <Compile Include="Models\BindingModels\GrillBindingModel.cs" />
     <Compile Include="Models\BindingModels\HumidityBindingModel.cs" />
+    <Compile Include="Models\BindingModels\IssuesBindingModel.cs" />
     <Compile Include="Models\BindingModels\ProducerBindingModel.cs" />
     <Compile Include="Models\BindingModels\ReceptionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RemissionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RoleBindingModel.cs" />
     <Compile Include="Models\BindingModels\SamplingBindingModel.cs" />
+    <Compile Include="Models\BindingModels\VarietyBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
+    <Compile Include="Models\Business\Repositories\GrillIssueRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
     <Compile Include="Models\Business\Repositories\ProducerRepository.cs" />
@@ -253,6 +257,7 @@
     <Compile Include="Models\Business\Repositories\RoleRepository.cs" />
     <Compile Include="Models\Business\Repositories\SamplingRepository.cs" />
     <Compile Include="Models\Business\Repositories\UserRepository.cs" />
+    <Compile Include="Models\Business\Repositories\VarietyRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
     <Compile Include="Models\Business\Services\CylinderService.cs" />
     <Compile Include="Models\Business\Services\GrillService.cs" />
@@ -263,6 +268,7 @@
     <Compile Include="Models\Business\Services\RoleService.cs" />
     <Compile Include="Models\Business\Services\SamplingService.cs" />
     <Compile Include="Models\Business\Services\UserService.cs" />
+    <Compile Include="Models\Business\Services\VarietyService.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -279,6 +285,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Grill.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\GrillIssue.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\GrillStatus.cs">
@@ -312,6 +321,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Sampling.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Variety.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />

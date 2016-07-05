@@ -166,5 +166,50 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar recuperar los registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpPost]
+        [Route("Issue")]
+        public IHttpActionResult SaveIssue(SaveIssueBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var grillService = new GrillService();
+                var grillIssue = new GrillIssue
+                {
+                    DateCapture = model.DateCapture.ConvertToDate(),
+                    Truck = model.Truck,
+                    Driver = model.Driver,
+                    Box = model.Box,
+                    Remission = model.Remission
+                };
+                var saved = grillService.SaveIssue(grillIssue, model.GrillIds);
+                return saved ? (IHttpActionResult)Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar guardar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllIssues")]
+        public IHttpActionResult GetAllIssues()
+        {
+            try
+            {
+                var issues = _db.GrillIssues.ToList();
+                return issues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(issues)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los registros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

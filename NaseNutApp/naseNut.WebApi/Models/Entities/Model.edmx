@@ -87,6 +87,18 @@
           <Property Name="Producer" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="FieldName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="GrillIssuesId" Type="int" />
+        </EntityType>
+        <EntityType Name="GrillIssues">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCapture" Type="datetime" Nullable="false" />
+          <Property Name="Truck" Type="nvarchar" MaxLength="150" />
+          <Property Name="Driver" Type="nvarchar" MaxLength="150" />
+          <Property Name="Box" Type="nvarchar" MaxLength="150" />
+          <Property Name="Remission" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -158,6 +170,13 @@
           <Property Name="Performance" Type="float" Nullable="false" />
           <Property Name="TotalWeightOfEdibleNuts" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="Variety">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -211,6 +230,20 @@
             </Principal>
             <Dependent Role="AspNetUserRoles">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_grill_grillIssues">
+          <End Role="GrillIssues" Type="Self.GrillIssues" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Grill" Type="Self.Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrillIssues">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Grill">
+              <PropertyRef Name="GrillIssuesId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -347,12 +380,14 @@
           <EntitySet Name="Cylinder" EntityType="Self.Cylinder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cylinder_Reception" EntityType="Self.Cylinder_Reception" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GrillIssues" EntityType="Self.GrillIssues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception" EntityType="Self.Reception" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception_Grill" EntityType="Self.Reception_Grill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Remission" EntityType="Self.Remission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Variety" EntityType="Self.Variety" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -368,6 +403,10 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_grill_grillIssues" Association="Self.fk_grill_grillIssues">
+            <End Role="GrillIssues" EntitySet="GrillIssues" />
+            <End Role="Grill" EntitySet="Grill" />
           </AssociationSet>
           <AssociationSet Name="FK_grillR" Association="Self.FK_grillR">
             <End Role="Grill" EntitySet="Grill" />
@@ -543,6 +582,12 @@
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Sampling" EntitySet="Samplings" />
           </AssociationSet>
+          <EntitySet Name="GrillIssues" EntityType="NASE_BD_WModel.GrillIssue" />
+          <AssociationSet Name="fk_grill_grillIssues" Association="NASE_BD_WModel.fk_grill_grillIssues">
+            <End Role="GrillIssue" EntitySet="GrillIssues" />
+            <End Role="Grill" EntitySet="Grills" />
+          </AssociationSet>
+          <EntitySet Name="Varieties" EntityType="NASE_BD_WModel.Variety" />
           </EntityContainer>
         <EntityType Name="Remission">
           <Key>
@@ -591,6 +636,8 @@
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
           <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
+          <Property Name="GrillIssuesId" Type="Int32" />
+          <NavigationProperty Name="GrillIssue" Relationship="NASE_BD_WModel.fk_grill_grillIssues" FromRole="Grill" ToRole="GrillIssue" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -724,6 +771,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="GrillIssue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Truck" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Box" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Remission" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.fk_grill_grillIssues" FromRole="GrillIssue" ToRole="Grill" />
+        </EntityType>
+        <Association Name="fk_grill_grillIssues">
+          <End Type="NASE_BD_WModel.GrillIssue" Role="GrillIssue" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrillIssue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Grill">
+              <PropertyRef Name="GrillIssuesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Variety">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Variety1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -811,6 +891,7 @@
           <EntitySetMapping Name="Grills">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Grill">
               <MappingFragment StoreEntitySet="Grill">
+                <ScalarProperty Name="GrillIssuesId" ColumnName="GrillIssuesId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="FieldName" ColumnName="FieldName" />
                 <ScalarProperty Name="Producer" ColumnName="Producer" />
@@ -888,6 +969,26 @@
                 <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
                 <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
                 <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GrillIssues">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.GrillIssue">
+              <MappingFragment StoreEntitySet="GrillIssues">
+                <ScalarProperty Name="Remission" ColumnName="Remission" />
+                <ScalarProperty Name="Box" ColumnName="Box" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="Truck" ColumnName="Truck" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Varieties">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.Variety">
+              <MappingFragment StoreEntitySet="Variety">
+                <ScalarProperty Name="Variety1" ColumnName="Variety" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
