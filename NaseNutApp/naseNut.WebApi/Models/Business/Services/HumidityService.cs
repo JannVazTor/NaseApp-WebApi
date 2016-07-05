@@ -9,14 +9,14 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class HumidityService:IService<Humidity>
     {
-        public bool Save(Humidity humidity)
+        public bool Save(Humidity newHumidity)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
                     var humidityRepository = new HumidityRepository(db);
-                    humidityRepository.Insert(humidity);
+                    humidityRepository.Insert(newHumidity);
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -36,6 +36,23 @@ namespace naseNut.WebApi.Models.Business.Services
                     var humidityRepository = new HumidityRepository(db);
                     humidityRepository.Delete(humidity);
                     return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public Humidity GetById(int id)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var humidityRepository = new HumidityRepository(db);
+                    return humidityRepository.SearchOne(p => p.Id == id);
                 }
             }
             catch (Exception ex)

@@ -63,12 +63,13 @@ namespace naseNut.WebApi.Models.Business.Services
         {
             try
             {
-                using (var db = new NaseNEntities())
-                {
+              //  using (var db = new NaseNEntities())
+                //{
+                var db = new NaseNEntities();
                     var cylinderRepository = new CylinderRepository(db);
                     var cylinders = cylinderRepository.GetAll();
                     return cylinders;
-                }
+                //}
             }
             catch (Exception ex)
             {

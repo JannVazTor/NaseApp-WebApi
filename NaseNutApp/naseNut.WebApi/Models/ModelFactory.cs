@@ -247,6 +247,41 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<HumiditiesModel> CreateC(List<Humidity> humidities)
+        {
+            return humidities.Select(r => new HumiditiesModel
+            {
+                Id = r.Id,
+                HumidityPercentage = r.HumidityPercent,
+                DateCapture = r.DateCapture,
+                CylinderName = r.Cylinder.CylinderName,
+                Variety = r.Reception.Variety,
+                ProducerName = r.Reception.Producer.ProducerName,
+                Tons = (r.Reception.ReceivedFromField / 1000),
+                EntryDate = r.Reception.EntryDate
+            }).ToList();
+        }
+
+        public List<ReceptionIdModel> CreateReceptionId(List<Reception> receptions)
+        {
+            return receptions.Select(r => new ReceptionIdModel
+            {
+                ReceptionId = r.Id
+            }).ToList();
+        }
+
+        public class HumiditiesModel
+        {
+            public int Id { get; set; }
+            public double HumidityPercentage { get; set; }
+            public DateTime DateCapture { get; set; }
+            public string CylinderName { get; set; }
+            public string Variety { get; set; }
+            public string ProducerName { get; set; }
+            public double Tons { get; set; }
+            public DateTime EntryDate { get; set; }
+        }
+
         public class ReceptionModel
         {
             public int Id { get; set; }
@@ -263,6 +298,23 @@ namespace naseNut.WebApi.Models
             public string ProducerName { get; set; }
             public string Grills { get; set; }
             public string Cylinder { get; set; }
+        }
+
+        public class CompleteHumidityModel
+        {
+            public IEnumerable<int> HumidityId { get; set; }
+            public string CylinderName { get; set; }
+            public string Variety { get; set; }
+            public string ProducerName { get; set; }
+            public double Tons { get; set; }
+            public DateTime EntryDate { get; set; }
+            public int ReceptionId { get; set; }
+            public List<IEnumerable<Double>>HumidityPercent { get; set; }
+        }
+
+        public class ReceptionIdModel
+        {
+            public int ReceptionId { get; set; }
         }
 
         public class UserModel
