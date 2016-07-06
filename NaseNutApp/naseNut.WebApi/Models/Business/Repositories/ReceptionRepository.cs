@@ -15,7 +15,7 @@ namespace naseNut.WebApi.Models.Business.Repositories
         }
         public List<Reception> GetAllWithProperties()
         {
-            return _context.Reception.ToList();
+            return _context.Receptions.ToList();
         }
     }
 }

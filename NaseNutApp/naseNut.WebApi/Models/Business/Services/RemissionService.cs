@@ -82,7 +82,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var remissionRepository = new RemissionRepository(db);
-                    var remission = db.Remission.Find(id);
+                    var remission = db.Remissions.Find(id);
 
                     remission.Batch = model.Batch;
                     remission.Butler = model.Butler;

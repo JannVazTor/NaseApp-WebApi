@@ -36,7 +36,7 @@ namespace naseNut.WebApi.Controllers
                     Variety = model.Variety,
                     Producer = model.Producer,
                     FieldName = model.FieldName,
-                    Status = Convert.ToBoolean(true) //PREGUNTAR POR EL PARAMETRO DEL METODO CONVERT... GrillStatus.Entry
+                    Status = Convert.ToBoolean(GrillStatus.Entry)
                 };
                 var saved = grillService.Save(grill);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -54,7 +54,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var grills = _db.Grill.ToList();
+                var grills = _db.Grills.ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grill = grillService.GetById(id);
                 if (grill == null) return NotFound();
-                if(grill.Samplings != null)
+                if(grill.Sampling != null)
                 {
                     var samplingService = new SamplingService();
                     var sampling = samplingService.GetById(id);
@@ -157,7 +157,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var grills = _db.Grill.Where(g => g.Status).ToList();
+                var grills = _db.Grills.Where(g => g.Status).ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)

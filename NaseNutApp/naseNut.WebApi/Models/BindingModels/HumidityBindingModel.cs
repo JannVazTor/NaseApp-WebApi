@@ -10,7 +10,6 @@ namespace naseNut.WebApi.Models.BindingModels
     {
         [Required]
         public double HumidityPercent { get; set; }
-        [Required]
         public int CylinderId { get; set; }
         [Required]
         public int ReceptionId { get; set; }

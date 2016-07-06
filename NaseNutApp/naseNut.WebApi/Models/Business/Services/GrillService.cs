@@ -143,7 +143,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grillRepository = new GrillRepository(db);
                     var grill = grillRepository.GetById(id);
                     grill.Status = status;
-                    db.Grill.Attach(grill);
+                    db.Grills.Attach(grill);
                     db.Entry(grill).Property(p => p.Status).IsModified = true;
                     return db.SaveChanges() >= 1;
                 }

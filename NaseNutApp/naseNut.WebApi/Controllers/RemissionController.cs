@@ -53,7 +53,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var remissions = _db.Remission.ToList();
+                var remissions = _db.Remissions.ToList();
                 return remissions.Count != 0 ? (IHttpActionResult) Ok(TheModelFactory.Create(remissions)) : Ok();
             }
             catch (Exception ex)

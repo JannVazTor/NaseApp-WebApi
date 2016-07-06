@@ -163,7 +163,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionService = new ReceptionService();
-                    var reception = db.Reception.Find(id);
+                    var reception = db.Receptions.Find(id);
                     if (reception != null)
                     {
                         reception.CarRegistration = model.CarRegistration;

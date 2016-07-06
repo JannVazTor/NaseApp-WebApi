@@ -36,7 +36,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual Sampling Sampling { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
-        public virtual Sampling Sampling { get; set; }
         public virtual GrillIssue GrillIssue { get; set; }
     }
 }

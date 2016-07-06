@@ -55,7 +55,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var receptions = _db.Reception.ToList();
+                var receptions = _db.Receptions.ToList();
                 return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(receptions)) : Ok();
             }
             catch (Exception ex)

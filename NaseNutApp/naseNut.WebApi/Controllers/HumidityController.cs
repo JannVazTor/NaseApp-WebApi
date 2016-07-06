@@ -14,15 +14,16 @@ namespace naseNut.WebApi.Controllers
     [RoutePrefix("api/humidity")]
     public class HumidityController : BaseApiController
     {
+        private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         [Route("saveHumidity")]
         public IHttpActionResult SaveHumidity(AddHumidityBindingModel model)
         {
 
-          //  if (!ModelState.IsValid)
-           // {
-             //   return BadRequest();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             try
             {
                 var cylinderService = new CylinderService();
@@ -70,9 +71,8 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var humidityService = new HumidityService();
-                var humidities = humidityService.GetAll();
-                return humidities != null ? (IHttpActionResult)Ok(TheModelFactory.CreateC(humidities)) : Ok();
+                var humidities = _db.Humidities.ToList();
+                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateC(humidities)) : Ok();
             }
             catch (Exception ex)
             {

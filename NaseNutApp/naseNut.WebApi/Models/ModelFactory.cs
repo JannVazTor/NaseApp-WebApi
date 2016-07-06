@@ -101,7 +101,7 @@ namespace naseNut.WebApi.Models
                 Producer = g.Producer,
                 FieldName = g.FieldName,
                 Status = g.Status,
-                Sampling = g.Samplings != null ? Create(g.Samplings) : null
+                Sampling = g.Sampling != null ? Create(g.Sampling) : null
             }).ToList();
         }
 
@@ -241,7 +241,7 @@ namespace naseNut.WebApi.Models
                 HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
-                ProducerName = r.Producers != null? r.Producers.ProducerName: "",
+                ProducerName = r.Producer != null? r.Producer.ProducerName: "",
                 Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
                 Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):"",
             }).ToList();
@@ -254,12 +254,12 @@ namespace naseNut.WebApi.Models
                 Id = r.Id,
                 HumidityPercentage = r.HumidityPercent,
                 DateCapture = r.DateCapture,
-                CylinderName = r.Cylinders.CylinderName,
-                Variety = r.Receptions.Variety,
-                ProducerName = r.Receptions.Producers.ProducerName,
-                Tons = (r.Receptions.ReceivedFromField / 1000),
-                EntryDate = r.Receptions.EntryDate,
-                Folio = r.Receptions.Folio
+                CylinderName = r.Cylinder.CylinderName,
+                Variety = r.Reception.Variety,
+                ProducerName = r.Reception.Producer.ProducerName,
+                Tons = (r.Reception.ReceivedFromField / 1000),
+                EntryDate = r.Reception.EntryDate,
+                Folio = r.Reception.Folio
             }).ToList();
         }
 
