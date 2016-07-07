@@ -5,41 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="NASE_BD_WModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AspNetRoles">
+        <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
-        <EntityType Name="AspNetUserClaims">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ClaimType" Type="nvarchar(max)" />
-          <Property Name="ClaimValue" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="AspNetUserLogins">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetUserRoles">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetUsers">
+        <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -55,6 +28,33 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Cylinder">
           <Key>
@@ -87,9 +87,9 @@
           <Property Name="Producer" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="FieldName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
-          <Property Name="GrillIssuesId" Type="int" />
+          <Property Name="GrillIssuesId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="GrillIssues">
+        <EntityType Name="GrillIssue">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -170,76 +170,97 @@
           <Property Name="Performance" Type="float" Nullable="false" />
           <Property Name="TotalWeightOfEdibleNuts" Type="float" Nullable="false" />
         </EntityType>
-        <EntityType Name="Variety">
+        <EntityType Name="Selection">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="First" Type="int" Nullable="false" />
+          <Property Name="Second" Type="int" Nullable="false" />
+          <Property Name="Third" Type="int" Nullable="false" />
+          <Property Name="Broken" Type="int" Nullable="false" />
+          <Property Name="Germinated" Type="int" Nullable="false" />
+          <Property Name="Vanas" Type="int" Nullable="false" />
+          <Property Name="WithNut" Type="int" Nullable="false" />
+          <Property Name="NutColor" Type="float" Nullable="false" />
+          <Property Name="NutPerformance" Type="float" Nullable="false" />
+          <Property Name="GerminationStart" Type="float" Nullable="false" />
+          <Property Name="SampleWeight" Type="float" Nullable="false" />
+          <Property Name="NutsNumber" Type="float" Nullable="false" />
+          <Property Name="Humidity" Type="float" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'NASE_BD_W.dbo.Variety' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Variety">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Variety1" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Variety1" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Role="AspNetUser" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <End Role="AspNetUserClaim" Type="Self.AspNetUserClaim" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserClaims">
+            <Dependent Role="AspNetUserClaim">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Role="AspNetUser" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <End Role="AspNetUserLogin" Type="Self.AspNetUserLogin" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserLogins">
+            <Dependent Role="AspNetUserLogin">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+          <End Role="AspNetRole" Type="Self.AspNetRole" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <End Role="AspNetUserRole" Type="Self.AspNetUserRole" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetRoles">
+            <Principal Role="AspNetRole">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserRoles">
+            <Dependent Role="AspNetUserRole">
               <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Role="AspNetUser" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <End Role="AspNetUserRole" Type="Self.AspNetUserRole" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
+            <Principal Role="AspNetUser">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AspNetUserRoles">
+            <Dependent Role="AspNetUserRole">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_grill_grillIssues">
-          <End Role="GrillIssues" Type="Self.GrillIssues" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="FK_Grill_GrillIssue">
+          <End Role="GrillIssue" Type="Self.GrillIssue" Multiplicity="1" />
           <End Role="Grill" Type="Self.Grill" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="GrillIssues">
+            <Principal Role="GrillIssue">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Grill">
@@ -317,6 +338,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Reception_Selection">
+          <End Role="Selection" Type="Self.Selection" Multiplicity="1" />
+          <End Role="Reception" Type="Self.Reception" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Selection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_receptionG">
           <End Role="Reception" Type="Self.Reception" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -372,40 +405,46 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="NASE_BD_WModelStoreContainer">
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRole" EntityType="Self.AspNetRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUser" EntityType="Self.AspNetUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaim" EntityType="Self.AspNetUserClaim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogin" EntityType="Self.AspNetUserLogin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRole" EntityType="Self.AspNetUserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cylinder" EntityType="Self.Cylinder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cylinder_Reception" EntityType="Self.Cylinder_Reception" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="GrillIssues" EntityType="Self.GrillIssues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GrillIssue" EntityType="Self.GrillIssue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception" EntityType="Self.Reception" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception_Grill" EntityType="Self.Reception_Grill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Remission" EntityType="Self.Remission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Variety" EntityType="Self.Variety" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Selection" EntityType="Self.Selection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Variety" EntityType="Self.Variety" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Variety].[Id] AS [Id], 
+    [Variety].[Variety1] AS [Variety1]
+    FROM [dbo].[Variety] AS [Variety]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+            <End Role="AspNetUser" EntitySet="AspNetUser" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaim" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+            <End Role="AspNetUser" EntitySet="AspNetUser" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogin" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+            <End Role="AspNetRole" EntitySet="AspNetRole" />
+            <End Role="AspNetUserRole" EntitySet="AspNetUserRole" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUser" />
+            <End Role="AspNetUserRole" EntitySet="AspNetUserRole" />
           </AssociationSet>
-          <AssociationSet Name="fk_grill_grillIssues" Association="Self.fk_grill_grillIssues">
-            <End Role="GrillIssues" EntitySet="GrillIssues" />
+          <AssociationSet Name="FK_Grill_GrillIssue" Association="Self.FK_Grill_GrillIssue">
+            <End Role="GrillIssue" EntitySet="GrillIssue" />
             <End Role="Grill" EntitySet="Grill" />
           </AssociationSet>
           <AssociationSet Name="FK_grillR" Association="Self.FK_grillR">
@@ -426,6 +465,10 @@
           </AssociationSet>
           <AssociationSet Name="fk_reception_producer" Association="Self.fk_reception_producer">
             <End Role="Producer" EntitySet="Producer" />
+            <End Role="Reception" EntitySet="Reception" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reception_Selection" Association="Self.FK_Reception_Selection">
+            <End Role="Selection" EntitySet="Selection" />
             <End Role="Reception" EntitySet="Reception" />
           </AssociationSet>
           <AssociationSet Name="FK_receptionG" Association="Self.FK_receptionG">
@@ -449,107 +492,9 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NASE_BD_WModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AspNetRole">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
-        </EntityType>
-        <EntityType Name="AspNetUserClaim">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
-        </EntityType>
-        <EntityType Name="AspNetUserLogin">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
-        </EntityType>
-        <EntityType Name="AspNetUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-        </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="NaseNEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
           <EntitySet Name="Remissions" EntityType="NASE_BD_WModel.Remission" />
           <EntitySet Name="Cylinders" EntityType="NASE_BD_WModel.Cylinder" />
-          <EntitySet Name="Grills" EntityType="NASE_BD_WModel.Grill" />
           <EntitySet Name="Humidities" EntityType="NASE_BD_WModel.Humidity" />
           <EntitySet Name="Producers" EntityType="NASE_BD_WModel.Producer" />
           <EntitySet Name="Receptions" EntityType="NASE_BD_WModel.Reception" />
@@ -573,21 +518,43 @@
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Cylinder" EntitySet="Cylinders" />
           </AssociationSet>
-          <AssociationSet Name="Reception_Grill" Association="NASE_BD_WModel.Reception_Grill">
-            <End Role="Grill" EntitySet="Grills" />
+          <EntitySet Name="Samplings" EntityType="NASE_BD_WModel.Sampling" />
+          <EntitySet Name="Selections" EntityType="NASE_BD_WModel.Selection" />
+          <AssociationSet Name="FK_Reception_Selection" Association="NASE_BD_WModel.FK_Reception_Selection">
+            <End Role="Selection" EntitySet="Selections" />
             <End Role="Reception" EntitySet="Receptions" />
           </AssociationSet>
-          <EntitySet Name="Samplings" EntityType="NASE_BD_WModel.Sampling" />
+          <EntitySet Name="AspNetRoles" EntityType="NASE_BD_WModel.AspNetRole" />
+          <EntitySet Name="AspNetUsers" EntityType="NASE_BD_WModel.AspNetUser" />
+          <EntitySet Name="AspNetUserClaims" EntityType="NASE_BD_WModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="NASE_BD_WModel.AspNetUserLogin" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRole" Association="NASE_BD_WModel.AspNetUserRole">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="GrillIssues" EntityType="NASE_BD_WModel.GrillIssue" />
+          <EntitySet Name="Varieties" EntityType="NASE_BD_WModel.Variety" />
+          <EntitySet Name="Grills" EntityType="NASE_BD_WModel.Grill" />
+          <AssociationSet Name="FK_Grill_GrillIssue" Association="NASE_BD_WModel.FK_Grill_GrillIssue">
+            <End Role="GrillIssue" EntitySet="GrillIssues" />
+            <End Role="Grill" EntitySet="Grills" />
+          </AssociationSet>
           <AssociationSet Name="fk_sampling_grill" Association="NASE_BD_WModel.fk_sampling_grill">
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Sampling" EntitySet="Samplings" />
           </AssociationSet>
-          <EntitySet Name="GrillIssues" EntityType="NASE_BD_WModel.GrillIssue" />
-          <AssociationSet Name="fk_grill_grillIssues" Association="NASE_BD_WModel.fk_grill_grillIssues">
-            <End Role="GrillIssue" EntitySet="GrillIssues" />
+          <AssociationSet Name="Reception_Grill" Association="NASE_BD_WModel.Reception_Grill">
             <End Role="Grill" EntitySet="Grills" />
+            <End Role="Reception" EntitySet="Receptions" />
           </AssociationSet>
-          <EntitySet Name="Varieties" EntityType="NASE_BD_WModel.Variety" />
           </EntityContainer>
         <EntityType Name="Remission">
           <Key>
@@ -618,26 +585,6 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Humidities" Relationship="NASE_BD_WModel.fk_humidity_cylinder" FromRole="Cylinder" ToRole="Humidity" />
           <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Cylinder_Reception" FromRole="Cylinder" ToRole="Reception" />
-        </EntityType>
-        <EntityType Name="Grill">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ReceptionId" Type="Int32" />
-          <Property Name="Size" Type="Int32" Nullable="false" />
-          <Property Name="Sacks" Type="Int32" Nullable="false" />
-          <Property Name="Kilos" Type="Double" Nullable="false" />
-          <Property Name="Quality" Type="Int32" Nullable="false" />
-          <Property Name="Variety" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Producer" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
-          <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
-          <Property Name="GrillIssuesId" Type="Int32" />
-          <NavigationProperty Name="GrillIssue" Relationship="NASE_BD_WModel.fk_grill_grillIssues" FromRole="Grill" ToRole="GrillIssue" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -680,6 +627,7 @@
           <NavigationProperty Name="Producer" Relationship="NASE_BD_WModel.fk_reception_producer" FromRole="Reception" ToRole="Producer" />
           <NavigationProperty Name="Remissions" Relationship="NASE_BD_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
           <NavigationProperty Name="Cylinders" Relationship="NASE_BD_WModel.Cylinder_Reception" FromRole="Reception" ToRole="Cylinder" />
+          <NavigationProperty Name="Selection" Relationship="NASE_BD_WModel.FK_Reception_Selection" FromRole="Reception" ToRole="Selection" />
           <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
         </EntityType>
         <Association Name="fk_humidity_cylinder">
@@ -742,10 +690,6 @@
           <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
           <End Type="NASE_BD_WModel.Cylinder" Role="Cylinder" Multiplicity="*" />
         </Association>
-        <Association Name="Reception_Grill">
-          <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
-          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
-        </Association>
         <EntityType Name="Sampling">
           <Key>
             <PropertyRef Name="Id" />
@@ -759,6 +703,172 @@
           <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
           <NavigationProperty Name="Grill" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
         </EntityType>
+        <EntityType Name="Selection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="First" Type="Int32" Nullable="false" />
+          <Property Name="Second" Type="Int32" Nullable="false" />
+          <Property Name="Third" Type="Int32" Nullable="false" />
+          <Property Name="Broken" Type="Int32" Nullable="false" />
+          <Property Name="Germinated" Type="Int32" Nullable="false" />
+          <Property Name="Vanas" Type="Int32" Nullable="false" />
+          <Property Name="WithNut" Type="Int32" Nullable="false" />
+          <Property Name="NutColor" Type="Double" Nullable="false" />
+          <Property Name="NutPerformance" Type="Double" Nullable="false" />
+          <Property Name="GerminationStart" Type="Double" Nullable="false" />
+          <Property Name="SampleWeight" Type="Double" Nullable="false" />
+          <Property Name="NutsNumber" Type="Double" Nullable="false" />
+          <Property Name="Humidity" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Reception" Relationship="NASE_BD_WModel.FK_Reception_Selection" FromRole="Selection" ToRole="Reception" />
+        </EntityType>
+        <Association Name="FK_Reception_Selection">
+          <End Type="NASE_BD_WModel.Selection" Role="Selection" Multiplicity="1" />
+          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Selection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="NASE_BD_WModel.AspNetUserRole" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="AspNetRoles" Relationship="NASE_BD_WModel.AspNetUserRole" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="NASE_BD_WModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_BD_WModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="NASE_BD_WModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_BD_WModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRole">
+          <End Type="NASE_BD_WModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="NASE_BD_WModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="GrillIssue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Truck" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Box" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Remission" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.FK_Grill_GrillIssue" FromRole="GrillIssue" ToRole="Grill" />
+        </EntityType>
+        <EntityType Name="Variety">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Variety1" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Variety1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Grill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReceptionId" Type="Int32" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="Sacks" Type="Int32" Nullable="false" />
+          <Property Name="Kilos" Type="Double" Nullable="false" />
+          <Property Name="Quality" Type="Int32" Nullable="false" />
+          <Property Name="Variety" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Producer" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="GrillIssuesId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GrillIssue" Relationship="NASE_BD_WModel.FK_Grill_GrillIssue" FromRole="Grill" ToRole="GrillIssue" />
+          <NavigationProperty Name="Sampling" Relationship="NASE_BD_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
+          <NavigationProperty Name="Receptions" Relationship="NASE_BD_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
+        </EntityType>
+        <Association Name="FK_Grill_GrillIssue">
+          <End Type="NASE_BD_WModel.GrillIssue" Role="GrillIssue" Multiplicity="1" />
+          <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrillIssue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Grill">
+              <PropertyRef Name="GrillIssuesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_sampling_grill">
           <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="1" />
           <End Type="NASE_BD_WModel.Sampling" Role="Sampling" Multiplicity="0..1" />
@@ -771,98 +881,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="GrillIssue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Truck" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Box" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Remission" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Grills" Relationship="NASE_BD_WModel.fk_grill_grillIssues" FromRole="GrillIssue" ToRole="Grill" />
-        </EntityType>
-        <Association Name="fk_grill_grillIssues">
-          <End Type="NASE_BD_WModel.GrillIssue" Role="GrillIssue" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="Reception_Grill">
           <End Type="NASE_BD_WModel.Grill" Role="Grill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GrillIssue">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Grill">
-              <PropertyRef Name="GrillIssuesId" />
-            </Dependent>
-          </ReferentialConstraint>
+          <End Type="NASE_BD_WModel.Reception" Role="Reception" Multiplicity="*" />
         </Association>
-        <EntityType Name="Variety">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Variety1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="NASE_BD_WModelStoreContainer" CdmEntityContainer="NaseNEntities">
-          <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetRole">
-              <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetUserClaim">
-              <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetUserLogin">
-              <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetUser">
-              <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="NASE_BD_WModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Remissions">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Remission">
               <MappingFragment StoreEntitySet="Remission">
@@ -884,24 +912,6 @@
               <MappingFragment StoreEntitySet="Cylinder">
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="CylinderName" ColumnName="CylinderName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Grills">
-            <EntityTypeMapping TypeName="NASE_BD_WModel.Grill">
-              <MappingFragment StoreEntitySet="Grill">
-                <ScalarProperty Name="GrillIssuesId" ColumnName="GrillIssuesId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
-                <ScalarProperty Name="Producer" ColumnName="Producer" />
-                <ScalarProperty Name="Variety" ColumnName="Variety" />
-                <ScalarProperty Name="Quality" ColumnName="Quality" />
-                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
-                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -952,14 +962,6 @@
               <ScalarProperty Name="Id" ColumnName="receptionId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="Reception_Grill" TypeName="NASE_BD_WModel.Reception_Grill" StoreEntitySet="Reception_Grill">
-            <EndProperty Name="Reception">
-              <ScalarProperty Name="Id" ColumnName="receptionId" />
-            </EndProperty>
-            <EndProperty Name="Grill">
-              <ScalarProperty Name="Id" ColumnName="grillId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Samplings">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Sampling">
               <MappingFragment StoreEntitySet="Sampling">
@@ -973,9 +975,83 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Selections">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.Selection">
+              <MappingFragment StoreEntitySet="Selection">
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="NutsNumber" ColumnName="NutsNumber" />
+                <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
+                <ScalarProperty Name="GerminationStart" ColumnName="GerminationStart" />
+                <ScalarProperty Name="NutPerformance" ColumnName="NutPerformance" />
+                <ScalarProperty Name="NutColor" ColumnName="NutColor" />
+                <ScalarProperty Name="WithNut" ColumnName="WithNut" />
+                <ScalarProperty Name="Vanas" ColumnName="Vanas" />
+                <ScalarProperty Name="Germinated" ColumnName="Germinated" />
+                <ScalarProperty Name="Broken" ColumnName="Broken" />
+                <ScalarProperty Name="Third" ColumnName="Third" />
+                <ScalarProperty Name="Second" ColumnName="Second" />
+                <ScalarProperty Name="First" ColumnName="First" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRole">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUser">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaim">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogin">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRole" TypeName="NASE_BD_WModel.AspNetUserRole" StoreEntitySet="AspNetUserRole">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
           <EntitySetMapping Name="GrillIssues">
             <EntityTypeMapping TypeName="NASE_BD_WModel.GrillIssue">
-              <MappingFragment StoreEntitySet="GrillIssues">
+              <MappingFragment StoreEntitySet="GrillIssue">
                 <ScalarProperty Name="Remission" ColumnName="Remission" />
                 <ScalarProperty Name="Box" ColumnName="Box" />
                 <ScalarProperty Name="Driver" ColumnName="Driver" />
@@ -988,11 +1064,37 @@
           <EntitySetMapping Name="Varieties">
             <EntityTypeMapping TypeName="NASE_BD_WModel.Variety">
               <MappingFragment StoreEntitySet="Variety">
-                <ScalarProperty Name="Variety1" ColumnName="Variety" />
+                <ScalarProperty Name="Variety1" ColumnName="Variety1" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Grills">
+            <EntityTypeMapping TypeName="NASE_BD_WModel.Grill">
+              <MappingFragment StoreEntitySet="Grill">
+                <ScalarProperty Name="GrillIssuesId" ColumnName="GrillIssuesId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="Producer" ColumnName="Producer" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
+                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Reception_Grill" TypeName="NASE_BD_WModel.Reception_Grill" StoreEntitySet="Reception_Grill">
+            <EndProperty Name="Reception">
+              <ScalarProperty Name="Id" ColumnName="receptionId" />
+            </EndProperty>
+            <EndProperty Name="Grill">
+              <ScalarProperty Name="Id" ColumnName="grillId" />
+            </EndProperty>
+          </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -18,6 +18,6 @@ namespace naseNut.WebApi.Models.Entities
         public string ProviderKey { get; set; }
         public string UserId { get; set; }
     
-        public virtual AspNetUser AspNetUsers { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

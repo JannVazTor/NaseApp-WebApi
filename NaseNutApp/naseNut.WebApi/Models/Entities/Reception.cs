@@ -44,6 +44,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual ICollection<Remission> Remissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cylinder> Cylinders { get; set; }
+        public virtual Selection Selection { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
     }

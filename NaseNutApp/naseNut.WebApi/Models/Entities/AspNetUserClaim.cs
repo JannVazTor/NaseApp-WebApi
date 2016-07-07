@@ -19,6 +19,6 @@ namespace naseNut.WebApi.Models.Entities
         public string ClaimType { get; set; }
         public string ClaimValue { get; set; }
     
-        public virtual AspNetUser AspNetUsers { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

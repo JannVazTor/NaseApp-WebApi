@@ -4,17 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5328e029372b420caf51ff203cfb535d" Name="Diagram1">
-        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetRole" Width="1.5" PointX="7.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserClaim" Width="1.875" PointX="12.25" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserLogin" Width="1.875" PointX="12.25" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUser" Width="1.5" PointX="10" PointY="7.375" IsExpanded="true" />
-        <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="NASE_BD_WModel.AspNetUserRoles" ManuallyRouted="false" />
+      <Diagram DiagramId="5328e029372b420caf51ff203cfb535d" Name="Diagram1" ZoomLevel="75">
         <EntityTypeShape EntityType="NASE_BD_WModel.Remission" Width="1.5" PointX="8.125" PointY="21.375" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Cylinder" Width="1.5" PointX="10.375" PointY="23.75" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Grill" Width="1.5" PointX="4.125" PointY="21.125" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Humidity" Width="1.5" PointX="10.375" PointY="20.875" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Producer" Width="1.5" PointX="2.125" PointY="24.5" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Reception" Width="1.5" PointX="6" PointY="20.875" />
@@ -23,12 +15,22 @@
         <AssociationConnector Association="NASE_BD_WModel.fk_reception_producer" />
         <AssociationConnector Association="NASE_BD_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_BD_WModel.Cylinder_Reception" />
-        <AssociationConnector Association="NASE_BD_WModel.Reception_Grill" />
         <EntityTypeShape EntityType="NASE_BD_WModel.Sampling" Width="1.5" PointX="2.125" PointY="21.125" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Selection" Width="1.5" PointX="11" PointY="15.125" />
+        <AssociationConnector Association="NASE_BD_WModel.FK_Reception_Selection" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetRole" Width="1.5" PointX="12.375" PointY="8.75" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUser" Width="1.5" PointX="14.625" PointY="7.625" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserClaim" Width="1.5" PointX="16.875" PointY="7.25" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.AspNetUserLogin" Width="1.5" PointX="16.875" PointY="10" />
+        <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="NASE_BD_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="NASE_BD_WModel.AspNetUserRole" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.GrillIssue" Width="1.5" PointX="2.25" PointY="18" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Variety" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NASE_BD_WModel.Grill" Width="1.5" PointX="4.5" PointY="15.25" />
+        <AssociationConnector Association="NASE_BD_WModel.FK_Grill_GrillIssue" />
         <AssociationConnector Association="NASE_BD_WModel.fk_sampling_grill" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.GrillIssue" Width="1.5" PointX="1.875" PointY="17.875" />
-        <AssociationConnector Association="NASE_BD_WModel.fk_grill_grillIssues" />
-        <EntityTypeShape EntityType="NASE_BD_WModel.Variety" Width="1.5" PointX="4.625" PointY="18.5" />
+        <AssociationConnector Association="NASE_BD_WModel.Reception_Grill" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

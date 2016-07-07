@@ -155,6 +155,46 @@ namespace naseNut.WebApi.Models
                 VarietyName = v.Variety1
             }).ToList();
         }
+        public List<SelectionModel> Create(List<Selection> selections)
+        {
+            return selections.Select(s => new SelectionModel
+            {
+                Id   = s.Id,
+                Date = s.Date,
+                First = s.First,
+                Second = s.Second,
+                Third = s.Third,
+                Broken = s.Broken,
+                Germinated = s.Germinated,
+                Vanas = s.Vanas,
+                WithNut = s.WithNut,
+                NutColor = s.NutColor,
+                NutPerformance = s.NutPerformance,
+                GerminationStart = s.GerminationStart,
+                SampleWeight = s.SampleWeight,
+                NutsNumber = s.NutsNumber,
+                Humidity = s.Humidity
+            }).ToList();
+        }
+
+        public class SelectionModel
+        {
+            public int Id { get; set; }
+            public System.DateTime Date { get; set; }
+            public int First { get; set; }
+            public int Second { get; set; }
+            public int Third { get; set; }
+            public int Broken { get; set; }
+            public int Germinated { get; set; }
+            public int Vanas { get; set; }
+            public int WithNut { get; set; }
+            public double NutColor { get; set; }
+            public double NutPerformance { get; set; }
+            public double GerminationStart { get; set; }
+            public double SampleWeight { get; set; }
+            public double NutsNumber { get; set; }
+            public double Humidity { get; set; } 
+        }
 
         public class GrillIssueModel
         {
@@ -193,26 +233,6 @@ namespace naseNut.WebApi.Models
             public bool Status { get; set; }
             public SamplingModel Sampling { get; set; }
         }
-
-        //public ReceptionModel Create(Reception reception)
-        //{
-        //    return reception = new ReceptionModel
-        //    {
-        //        Id = reception.Id,
-        //        Variety = reception.Variety,
-        //        ReceivedFromField = reception.ReceivedFromField,
-        //        FieldName = reception.FieldName,
-        //        CarRegistration = reception.CarRegistration,
-        //        EntryDate = reception.EntryDate,
-        //        IssueDate = reception.IssueDate,
-        //        HeatHoursDrying = reception.HeatHoursDtrying,
-        //        HumidityPercent = reception.HumidityPercent,
-        //        Observations = reception.Observations,
-        //        ProducerName = reception.Producer != null ? reception.Producer.ProducerName : "",
-        //        Grills = reception.Grill?.Id.ToString() ?? "",
-        //        Cylinder = reception.Cylinders.Count != 0 ? string.Join(", ", reception.Cylinders.Select(c => c.CylinderName)) : ""
-        //    };
-        //}
 
         public class CylinderModel
         {

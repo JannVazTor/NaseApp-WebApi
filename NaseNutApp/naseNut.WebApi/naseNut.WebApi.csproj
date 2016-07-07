@@ -229,6 +229,7 @@
     <Compile Include="Controllers\RemissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SamplingController.cs" />
+    <Compile Include="Controllers\SelectionController.cs" />
     <Compile Include="Controllers\VarietyController.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
@@ -245,6 +246,7 @@
     <Compile Include="Models\BindingModels\RemissionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RoleBindingModel.cs" />
     <Compile Include="Models\BindingModels\SamplingBindingModel.cs" />
+    <Compile Include="Models\BindingModels\SelectionBindingModel.cs" />
     <Compile Include="Models\BindingModels\VarietyBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Models\Business\Repositories\RemissionRepository.cs" />
     <Compile Include="Models\Business\Repositories\RoleRepository.cs" />
     <Compile Include="Models\Business\Repositories\SamplingRepository.cs" />
+    <Compile Include="Models\Business\Repositories\SelectionRepository.cs" />
     <Compile Include="Models\Business\Repositories\UserRepository.cs" />
     <Compile Include="Models\Business\Repositories\VarietyRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
@@ -267,6 +270,7 @@
     <Compile Include="Models\Business\Services\RemissionService.cs" />
     <Compile Include="Models\Business\Services\RoleService.cs" />
     <Compile Include="Models\Business\Services\SamplingService.cs" />
+    <Compile Include="Models\Business\Services\SelectionService.cs" />
     <Compile Include="Models\Business\Services\UserService.cs" />
     <Compile Include="Models\Business\Services\VarietyService.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
@@ -321,6 +325,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Sampling.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Selection.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Variety.cs">

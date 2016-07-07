@@ -31,11 +31,11 @@ namespace naseNut.WebApi.Models.Entities
         public string Producer { get; set; }
         public string FieldName { get; set; }
         public bool Status { get; set; }
-        public Nullable<int> GrillIssuesId { get; set; }
+        public int GrillIssuesId { get; set; }
     
+        public virtual GrillIssue GrillIssue { get; set; }
         public virtual Sampling Sampling { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
-        public virtual GrillIssue GrillIssue { get; set; }
     }
 }
