@@ -21,7 +21,10 @@ namespace naseNut.WebApi.Models.Entities
         public int WalnutNumber { get; set; }
         public double Performance { get; set; }
         public double TotalWeightOfEdibleNuts { get; set; }
+        public Nullable<int> GrillId { get; set; }
+        public Nullable<int> ReceptionEntryId { get; set; }
     
         public virtual Grill Grill { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }

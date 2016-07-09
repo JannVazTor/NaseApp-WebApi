@@ -26,17 +26,15 @@ namespace naseNut.WebApi.Controllers
             }
             try
             {
-                var cylinderService = new CylinderService();
-                var cylinderId = cylinderService.GetId(model.CylinderName);
                 var humidityService = new HumidityService();
                 var humidity = new Humidity
                 {
-                    DateCapture = DateTime.Now,
-                    HumidityPercent = model.HumidityPercent,
-                    CylinderId = cylinderId,
-                    ReceptionId = model.ReceptionId
+                   HumidityPercent = model.HumidityPercent,
+                   DateCapture = model.DateCapture.ConvertToDate()
                 };
-                var saved = humidityService.Save(humidity);
+                var receptionEntryService = new ReceptionEntryService();
+                var receptionEntry = receptionEntryService.GetById(model.ReceptionEntryId);
+                var saved = humidityService.Save(humidity, receptionEntry);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)

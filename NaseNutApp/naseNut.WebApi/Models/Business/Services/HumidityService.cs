@@ -7,16 +7,17 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
-    public class HumidityService:IService<Humidity>
+    public class HumidityService
     {
-        public bool Save(Humidity newHumidity)
+        public bool Save(Humidity humidity, ReceptionEntry receptionEntry)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var humidityRepository = new HumidityRepository(db);
-                    humidityRepository.Insert(newHumidity);
+                    db.ReceptionEntries.Attach(receptionEntry);
+                    db.Humidities.Add(humidity);
+                    receptionEntry.Humidities.Add(humidity);
                     return db.SaveChanges() >= 1;
                 }
             }

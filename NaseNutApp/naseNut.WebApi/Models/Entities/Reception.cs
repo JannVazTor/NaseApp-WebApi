@@ -17,14 +17,11 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reception()
         {
-            this.Humidities = new HashSet<Humidity>();
             this.Remissions = new HashSet<Remission>();
-            this.Cylinders = new HashSet<Cylinder>();
             this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
-        public string Variety { get; set; }
         public double ReceivedFromField { get; set; }
         public string FieldName { get; set; }
         public string CarRegistration { get; set; }
@@ -33,18 +30,13 @@ namespace naseNut.WebApi.Models.Entities
         public Nullable<double> HeatHoursDtrying { get; set; }
         public Nullable<double> HumidityPercent { get; set; }
         public string Observations { get; set; }
-        public int ProducerId { get; set; }
-        public Nullable<int> GrillId { get; set; }
+        public int GrillId { get; set; }
         public int Folio { get; set; }
+        public int ReceptionEntryId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Humidity> Humidities { get; set; }
-        public virtual Producer Producer { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cylinder> Cylinders { get; set; }
-        public virtual Selection Selection { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
     }

@@ -226,10 +226,10 @@
     <Compile Include="Controllers\HumidityController.cs" />
     <Compile Include="Controllers\ProducerController.cs" />
     <Compile Include="Controllers\ReceptionController.cs" />
+    <Compile Include="Controllers\ReceptionEntryController.cs" />
     <Compile Include="Controllers\RemissionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SamplingController.cs" />
-    <Compile Include="Controllers\SelectionController.cs" />
     <Compile Include="Controllers\VarietyController.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
@@ -246,7 +246,6 @@
     <Compile Include="Models\BindingModels\RemissionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RoleBindingModel.cs" />
     <Compile Include="Models\BindingModels\SamplingBindingModel.cs" />
-    <Compile Include="Models\BindingModels\SelectionBindingModel.cs" />
     <Compile Include="Models\BindingModels\VarietyBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
@@ -254,11 +253,11 @@
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
     <Compile Include="Models\Business\Repositories\ProducerRepository.cs" />
+    <Compile Include="Models\Business\Repositories\ReceptionEntryRepository.cs" />
     <Compile Include="Models\Business\Repositories\ReceptionRepository.cs" />
     <Compile Include="Models\Business\Repositories\RemissionRepository.cs" />
     <Compile Include="Models\Business\Repositories\RoleRepository.cs" />
     <Compile Include="Models\Business\Repositories\SamplingRepository.cs" />
-    <Compile Include="Models\Business\Repositories\SelectionRepository.cs" />
     <Compile Include="Models\Business\Repositories\UserRepository.cs" />
     <Compile Include="Models\Business\Repositories\VarietyRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
@@ -266,11 +265,11 @@
     <Compile Include="Models\Business\Services\GrillService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
     <Compile Include="Models\Business\Services\ProducerService.cs" />
+    <Compile Include="Models\Business\Services\ReceptionEntryService.cs" />
     <Compile Include="Models\Business\Services\ReceptionService.cs" />
     <Compile Include="Models\Business\Services\RemissionService.cs" />
     <Compile Include="Models\Business\Services\RoleService.cs" />
     <Compile Include="Models\Business\Services\SamplingService.cs" />
-    <Compile Include="Models\Business\Services\SelectionService.cs" />
     <Compile Include="Models\Business\Services\UserService.cs" />
     <Compile Include="Models\Business\Services\VarietyService.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
@@ -288,13 +287,13 @@
     <Compile Include="Models\Entities\Cylinder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\C__MigrationHistory.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Grill.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\GrillIssue.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\GrillStatus.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Humidity.cs">
@@ -305,20 +304,27 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Entities\Model.cs" />
     <Compile Include="Models\Entities\Model.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\NutType.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Producer.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Reception.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\ReceptionEntry.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Remission.cs">
@@ -327,7 +333,7 @@
     <Compile Include="Models\Entities\Sampling.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Selection.cs">
+    <Compile Include="Models\Entities\sysdiagram.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Variety.cs">
@@ -355,7 +361,7 @@
     <Content Include="Models\Entities\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
-      <LastGenOutput>Model.cs</LastGenOutput>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Models\Entities\NASE_BD_W.sql" />
     <Content Include="Scripts\bootstrap.js" />

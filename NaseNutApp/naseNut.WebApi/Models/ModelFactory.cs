@@ -44,7 +44,7 @@ namespace naseNut.WebApi.Models
                 Elaborate = r.Elaborate,
                 DateCapture = r.DateCapture,
                 FieldName = r.Reception.FieldName,
-                Variety = r.Reception.Variety
+                Variety = r.Reception.ReceptionEntry.Variety.Variety1
             }).ToList();
         }
 
@@ -101,7 +101,7 @@ namespace naseNut.WebApi.Models
                 Producer = g.Producer,
                 FieldName = g.FieldName,
                 Status = g.Status,
-                Sampling = g.Sampling != null ? Create(g.Sampling) : null
+                Sampling = g.Samplings != null ? Create(g.Samplings.OrderBy(d => d.DateCapture).FirstOrDefault()) : null
             }).ToList();
         }
 
@@ -153,27 +153,6 @@ namespace naseNut.WebApi.Models
             {
                 Id = v.Id,
                 VarietyName = v.Variety1
-            }).ToList();
-        }
-        public List<SelectionModel> Create(List<Selection> selections)
-        {
-            return selections.Select(s => new SelectionModel
-            {
-                Id   = s.Id,
-                Date = s.Date,
-                First = s.First,
-                Second = s.Second,
-                Third = s.Third,
-                Broken = s.Broken,
-                Germinated = s.Germinated,
-                Vanas = s.Vanas,
-                WithNut = s.WithNut,
-                NutColor = s.NutColor,
-                NutPerformance = s.NutPerformance,
-                GerminationStart = s.GerminationStart,
-                SampleWeight = s.SampleWeight,
-                NutsNumber = s.NutsNumber,
-                Humidity = s.Humidity
             }).ToList();
         }
 
@@ -252,7 +231,7 @@ namespace naseNut.WebApi.Models
             {
                 Id =  r.Id,
                 Folio = r.Folio,
-                Variety = r.Variety,
+                Variety = r.ReceptionEntry.Variety.Variety1,
                 ReceivedFromField = r.ReceivedFromField,
                 FieldName = r.FieldName,
                 CarRegistration = r.CarRegistration,
@@ -261,9 +240,9 @@ namespace naseNut.WebApi.Models
                 HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
-                ProducerName = r.Producer != null? r.Producer.ProducerName: "",
+                ProducerName = r.ReceptionEntry.Producer.ProducerName,
                 Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
-                Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):"",
+                Cylinder = r.ReceptionEntry.Cylinder.CylinderName,
             }).ToList();
         }
 
@@ -274,12 +253,12 @@ namespace naseNut.WebApi.Models
                 Id = r.Id,
                 HumidityPercentage = r.HumidityPercent,
                 DateCapture = r.DateCapture,
-                CylinderName = r.Cylinder.CylinderName,
-                Variety = r.Reception.Variety,
-                ProducerName = r.Reception.Producer.ProducerName,
-                Tons = (r.Reception.ReceivedFromField / 1000),
-                EntryDate = r.Reception.EntryDate,
-                Folio = r.Reception.Folio
+                CylinderName = r.ReceptionEntry.Cylinder.CylinderName,
+                Variety = r.ReceptionEntry.Variety.Variety1,
+                ProducerName = r.ReceptionEntry.Producer.ProducerName,
+                Tons = r.ReceptionEntry.Receptions.Sum(rec => rec.ReceivedFromField),
+                EntryDate = r.ReceptionEntry.DateEntry,
+                Folio = string.Join(", ", r.ReceptionEntry.Receptions.Select(re => re.Folio))  
             }).ToList();
         }
 
@@ -301,7 +280,7 @@ namespace naseNut.WebApi.Models
             public string ProducerName { get; set; }
             public double Tons { get; set; }
             public DateTime? EntryDate { get; set; }
-            public int Folio { get; set; }
+            public string Folio { get; set; }
         }
 
         public class ReceptionModel

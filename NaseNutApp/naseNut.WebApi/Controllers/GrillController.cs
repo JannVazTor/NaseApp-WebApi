@@ -9,7 +9,6 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
-
 namespace naseNut.WebApi.Controllers
 {
     [RoutePrefix("api/grill")]
@@ -36,7 +35,7 @@ namespace naseNut.WebApi.Controllers
                     Variety = model.Variety,
                     Producer = model.Producer,
                     FieldName = model.FieldName,
-                    Status = Convert.ToBoolean(GrillStatus.Entry)
+                    Status = true
                 };
                 var saved = grillService.Save(grill);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -72,12 +71,6 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grill = grillService.GetById(id);
                 if (grill == null) return NotFound();
-                if(grill.Sampling != null)
-                {
-                    var samplingService = new SamplingService();
-                    var sampling = samplingService.GetById(id);
-                    var deleteSampling = samplingService.Delete(sampling);
-                }
                 var deleted = grillService.Delete(grill);
                 return deleted ? (IHttpActionResult)Ok() : InternalServerError();
             }

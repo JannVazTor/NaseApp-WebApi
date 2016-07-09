@@ -17,10 +17,8 @@ namespace naseNut.WebApi.Models.Entities
         public int Id { get; set; }
         public System.DateTime DateCapture { get; set; }
         public double HumidityPercent { get; set; }
-        public int CylinderId { get; set; }
-        public int ReceptionId { get; set; }
+        public int ReceptionEntryId { get; set; }
     
-        public virtual Cylinder Cylinder { get; set; }
-        public virtual Reception Reception { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }

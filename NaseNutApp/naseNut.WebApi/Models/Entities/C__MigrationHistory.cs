@@ -12,12 +12,11 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Cylinder
+    public partial class C__MigrationHistory
     {
-        public int Id { get; set; }
-        public string CylinderName { get; set; }
-        public bool Active { get; set; }
-    
-        public virtual ReceptionEntry ReceptionEntry { get; set; }
+        public string MigrationId { get; set; }
+        public string ContextKey { get; set; }
+        public byte[] Model { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

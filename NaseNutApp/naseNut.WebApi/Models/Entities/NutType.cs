@@ -12,18 +12,13 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Variety
+    public partial class NutType
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Variety()
-        {
-            this.ReceptionEntries = new HashSet<ReceptionEntry>();
-        }
-    
         public int Id { get; set; }
-        public string Variety1 { get; set; }
+        public byte NutType1 { get; set; }
+        public string TypeName { get; set; }
+        public int ReceptionEntryId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }
