@@ -23,6 +23,8 @@ namespace naseNut.WebApi.Models.Business.Services
                     {
                         receptionEntry.Receptions.Add(reception);
                     }
+                    var cylinder = db.Cylinders.Where(c => c.Id == CylinderId).FirstOrDefault();
+                    cylinder.ReceptionEntry = receptionEntry;
                     db.ReceptionEntries.Add(receptionEntry);
                     return db.SaveChanges() >= 1;
                 }

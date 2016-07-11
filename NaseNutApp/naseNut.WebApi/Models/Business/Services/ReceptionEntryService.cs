@@ -64,5 +64,20 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public List<ReceptionEntry> GetAll() {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
+                    var receptionEntries = receptionEntryRepository.GetAll();
+                    return receptionEntries;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

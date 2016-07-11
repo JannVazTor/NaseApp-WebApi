@@ -156,6 +156,24 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<ReceptionEntryModel> Create(List<ReceptionEntry> receptionEntries)
+        {
+            return receptionEntries.Select(r => new ReceptionEntryModel
+            {
+                Id = r.Id,
+                Receptions = string.Join(", ", r.Receptions.Select(f => f.Folio)),
+                DateEntry = r.DateEntry,
+                Variety = r.Variety.Variety1,
+                Producer = r.Producer.ProducerName
+            }).ToList();
+        }
+        public class ReceptionEntryModel {
+            public int Id { get; set; }
+            public string Receptions { get; set; }
+            public DateTime DateEntry { get; set; }
+            public string Variety { get; set; }
+            public string Producer { get; set; }
+        }
         public class SelectionModel
         {
             public int Id { get; set; }

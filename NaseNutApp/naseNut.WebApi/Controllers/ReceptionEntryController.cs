@@ -14,6 +14,7 @@ namespace naseNut.WebApi.Controllers
     [RoutePrefix("api/receptionEntry")]
     public class ReceptionEntryController : BaseApiController
     {
+        NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         public IHttpActionResult SaveReceptionEntry(AddReceptionEntryBindingModel model)
         {
@@ -44,6 +45,19 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar guardar la recepcion." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpGet]
+        public IHttpActionResult GetAllReceptionEntries() {
+            try
+            {
+                var receptionEntries = _db.ReceptionEntries.ToList();
+                return receptionEntries != null ? (IHttpActionResult)Ok(TheModelFactory.Create(receptionEntries)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

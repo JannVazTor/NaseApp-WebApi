@@ -16,7 +16,6 @@ namespace naseNut.WebApi.Controllers
     {
         private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
-        [Route("saveHumidity")]
         public IHttpActionResult SaveHumidity(AddHumidityBindingModel model)
         {
 
