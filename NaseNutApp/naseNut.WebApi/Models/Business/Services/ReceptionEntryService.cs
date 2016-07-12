@@ -9,17 +9,21 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class ReceptionEntryService
     {
-        public bool Save(List<Reception> receptions, int CylinderId)
+        public bool Save(List<Reception> receptions, int CylinderId, int VarietyId, int ProducerId)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var receptionEntry = new ReceptionEntry { Id = CylinderId, DateEntry = DateTime.Now };
+                    var receptionEntry = new ReceptionEntry { Id = CylinderId, DateEntry = DateTime.Now, VarietyId = VarietyId, ProducerId = ProducerId };
                     foreach (var reception in receptions)
                     {
                         receptionEntry.Receptions.Add(reception);
                     }
+                    var cylinder = db.Cylinders.Where(c => c.Id == CylinderId).FirstOrDefault();
+                    cylinder.Active = false;
+                    db.Cylinders.Attach(cylinder);
+                    db.Entry(cylinder).Property(p => p.Active).IsModified = true;
                     db.ReceptionEntries.Add(receptionEntry);
                     return db.SaveChanges() >= 1;
                 }
@@ -30,7 +34,23 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public List<ReceptionEntry> GetByCylinderId(int cylinderId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
+                    var receptionEntries = receptionEntryRepository.Search(r => r.CylinderId == cylinderId);
+                    return receptionEntries;
+                }
+            }
+            catch (Exception ex)
+            {
 
+                throw ex;
+            }
+        }
         public bool Delete(ReceptionEntry receptionEntry)
         {
             try

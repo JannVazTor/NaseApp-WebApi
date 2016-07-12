@@ -75,6 +75,21 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public List<Cylinder> GetAllActive() {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var cylinderRepository = new CylinderRepository(db);
+                    var cylinders = cylinderRepository.Search(c => c.Active);
+                    return cylinders;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public int GetId(string cylinderName)
         {

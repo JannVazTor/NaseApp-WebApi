@@ -14,10 +14,17 @@ namespace naseNut.WebApi.Models.Entities
     
     public partial class Cylinder
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Cylinder()
+        {
+            this.ReceptionEntries = new HashSet<ReceptionEntry>();
+        }
+    
         public int Id { get; set; }
         public string CylinderName { get; set; }
         public bool Active { get; set; }
     
-        public virtual ReceptionEntry ReceptionEntry { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
     }
 }

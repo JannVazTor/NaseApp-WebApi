@@ -25,7 +25,7 @@ namespace naseNut.WebApi.Controllers
             }
             try
             {
-                var receptionService = new ReceptionService();
+                var receptionEntryService = new ReceptionEntryService();
                 var receptions = model.Receptions.Select(m => new Reception
                 {
                     ReceivedFromField = m.ReceivedFromField,
@@ -38,7 +38,7 @@ namespace naseNut.WebApi.Controllers
                     Observations = m.Observations,
                     Folio = m.Folio
                 }).ToList();
-                var saved = receptionService.Save(receptions, model.CylinderId, model.VarietyId, model.ProducerId);
+                var saved = receptionEntryService.Save(receptions, model.CylinderId, model.VarietyId, model.ProducerId);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)

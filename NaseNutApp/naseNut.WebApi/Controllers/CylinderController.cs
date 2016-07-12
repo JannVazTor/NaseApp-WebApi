@@ -26,7 +26,8 @@ namespace naseNut.WebApi.Controllers
                 var cylinderService = new CylinderService();
                 var cylinder = new Cylinder
                 {
-                    CylinderName = model.CylinderName
+                    CylinderName = model.CylinderName,
+                    Active = true
                 };
                 var saved = cylinderService.Save(cylinder);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -45,7 +46,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var cylinderService = new CylinderService();
-                var cylinder = cylinderService.GetAll();
+                var cylinder = cylinderService.GetAllActive();
                 return cylinder != null ? (IHttpActionResult)Ok(TheModelFactory.Create(cylinder)) : Ok();
             }
             catch (Exception ex)

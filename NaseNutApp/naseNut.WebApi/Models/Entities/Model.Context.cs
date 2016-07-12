@@ -38,9 +38,9 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<Sampling> Samplings { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Variety> Varieties { get; set; }
-        public virtual DbSet<Cylinder> Cylinders { get; set; }
-        public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
         public virtual DbSet<Humidity> Humidities { get; set; }
         public virtual DbSet<Reception> Receptions { get; set; }
+        public virtual DbSet<Cylinder> Cylinders { get; set; }
+        public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
     }
 }

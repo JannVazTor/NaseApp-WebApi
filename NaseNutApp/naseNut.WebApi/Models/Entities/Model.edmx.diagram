@@ -23,18 +23,18 @@
         <AssociationConnector Association="NASE_DB_WModel.fk_grill_grillIssues" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.fk_sampling_grill" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Cylinder" Width="1.5" PointX="3.75" PointY="20" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.ReceptionEntry" Width="1.5" PointX="6" PointY="15.625" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_cylinder" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_nuttype_receptionEntry" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_producer" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_variety" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Humidity" Width="1.5" PointX="8.25" PointY="16" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_humidity_receptionEntry" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Reception" Width="1.5" PointX="11.25" PointY="9.875" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
         <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Cylinder" Width="1.5" PointX="0.75" PointY="9" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.ReceptionEntry" Width="1.5" PointX="0.75" PointY="12.375" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_cylinder" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_humidity_receptionEntry" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_nuttype_receptionEntry" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_producer" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_variety" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

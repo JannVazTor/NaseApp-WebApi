@@ -126,8 +126,8 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var receptionService = new ReceptionService();
-                var receptions = receptionService.GetReceptionsByCylinders(cylinderId).ToList();
+                var receptionEntryService = new ReceptionEntryService();
+                var receptions = receptionEntryService.GetByCylinderId(cylinderId).ToList();
                 return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReceptionId(receptions)) : Ok();
             }
             catch (Exception ex)

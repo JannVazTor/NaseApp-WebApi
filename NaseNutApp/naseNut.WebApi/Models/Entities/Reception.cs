@@ -34,10 +34,10 @@ namespace naseNut.WebApi.Models.Entities
         public int Folio { get; set; }
         public int ReceptionEntryId { get; set; }
     
-        public virtual ReceptionEntry ReceptionEntry { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }

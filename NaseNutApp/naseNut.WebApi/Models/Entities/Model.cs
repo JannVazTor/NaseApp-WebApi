@@ -38,8 +38,7 @@ namespace naseNut.WebApi.Models.Entities
                 .WillCascadeOnDelete();
 
             modelBuilder.Entity<ReceptionEntry>()
-                .HasOptional(e => e.Cylinder)
-                .WithRequired(e => e.ReceptionEntry);
+                .HasOptional(e => e.Cylinder);
 
             modelBuilder.Entity<ReceptionEntry>()
                 .HasMany(e => e.Humidities)
