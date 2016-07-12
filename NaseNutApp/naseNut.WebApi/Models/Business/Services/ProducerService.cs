@@ -62,6 +62,26 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
+        public List<Grill> GetAll(int id)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var grills = db.Grills
+                                    .Where(w => w.Receptions.Any(u => u.ProducerId == id))
+                                    .ToList();
+                    
+                    return grills;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public List<Producer> GetAll()
         {
             try
