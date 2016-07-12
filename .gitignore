@@ -251,3 +251,4 @@ paket-files/
 .idea/
 *.sln.iml
 /NaseNutApp/naseNut.WebApi/Models/Entities/Model.edmx.sql
+NaseNutApp/naseNut.WebApi/Web.config
