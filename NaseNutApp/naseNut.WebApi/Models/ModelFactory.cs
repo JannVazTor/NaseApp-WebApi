@@ -207,6 +207,47 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<ProducerReportModel> CreateReport(List<Producer> producers) {
+            return producers.Select(p => new ProducerReportModel
+            {
+                Id = p.Id,
+                Folio = p.Receptions.Count != 0 ? string.Join(", ", p.Receptions.Select(c => c.Folio)) : "",
+                Cylinder = p.Receptions.Count != 0 ? string.Join(", ", p.Receptions.Select(c => c.Cylinders.Select(x => x.CylinderName)).Distinct()) : "",
+                DateReceptionCapture = p.Receptions.Count != 0 ? p.Receptions.First().EntryDate.ToString() : "",
+                DateGrillCapture = p.Receptions.Select(r => r.Grills.First()).First().DateCapture.ToString(),
+                KgsOrigen = p.Receptions.Count > 0 ? p.Receptions.SelectMany(x => x.Remissions.Select(g => g.Quantity)).Sum() : 0,
+                KilosFirst = p.Receptions != null && p.Receptions.Count > 0 ? p.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Kilos)).Sum() : 0,
+                KilosSecond = p.Receptions != null && p.Receptions.Count > 0 ? p.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Kilos)).Sum() : 0,
+                SacksP = p.Receptions != null && p.Receptions.Count > 0 ? p.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Sacks)).Sum() : 0,
+                SacksS = p.Receptions != null && p.Receptions.Count > 0 ? p.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Sacks)).Sum() : 0,
+                KilosTotal = p.Receptions != null && p.Receptions.Count > 0 ? p.Receptions.SelectMany(x => x.Grills.Select(g => g.Kilos)).Sum() : 0,
+                Variety = p.Receptions.Count != 0 ? string.Join(", ", p.Receptions.Select(c => c.Variety).Distinct()) : ""
+
+            }).ToList();
+        }
+
+        //public List<reportProducerModel> CreateReport(List<Grill> grills)
+        //{
+           
+        //    return grills.Select(r =>
+        //    new reportProducerModel
+        //    {
+        //        Cilindro = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Cylinders.Select(x=>x.CylinderName)).Distinct()) : "",
+        //        Folio = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio).Distinct()) : "",
+        //        Variedad = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Variety).Distinct()) : "",
+        //        Fecha = r.Receptions.Count != 0 ? (from u in r.Receptions select u.EntryDate).ToString() : "" ,
+        //        FechaProceso = r.DateCapture.ToString() != "" ? r.DateCapture.ToString() : "" ,
+        //        Remisión = r.Receptions != null && r.Receptions.Count > 0 ? (from u in r.Receptions select u.Remissions.First().Id).ToString() : "",
+        //        SacosPrimera = r.Receptions != null && r.Receptions.Count > 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h=> h.Size == 1).Select(g => g.Sacks)).Sum() : 0,
+        //        SacosSegunda = r.Receptions != null && r.Receptions.Count > 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Sacks)).Sum() : 0,
+        //        KgsOrigen = r.Receptions.Count > 0 ? r.Receptions.SelectMany(x => x.Remissions.Select(g => g.Quantity)).Sum() : 0,
+        //        KilosPrimera =  r.Receptions != null && r.Receptions.Count > 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Kilos)).Sum() : 0,
+        //        KilosSegunda =  r.Receptions != null && r.Receptions.Count > 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Kilos)).Sum() : 0,
+        //        KilosT  = r.Receptions != null && r.Receptions.Count > 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size < 3).Select(g => g.Kilos)).Sum() : 0
+
+        //    }).ToList();
+        //}
+
         public class ReceptionModel
         {
             public int Id { get; set; }
@@ -264,6 +305,24 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string ProducerName { get; set; }
+        }
+
+        public class ProducerReportModel
+        {
+            
+            public int Id { get; set; }
+            public string Folio { get; set; }
+            public string Variety { get; set; }
+            public string Remission { get; set; }
+            public string Cylinder { get; set; }
+            public string DateReceptionCapture { get; set; }
+            public string DateGrillCapture { get; set; }
+            public double KgsOrigen { get; set; }
+            public int SacksP { get; set; } = 0;
+            public int SacksS { get; set; } = 0;
+            public double KilosFirst { get; set; } = 0;
+            public double KilosSecond { get; set; } = 0;
+            public double KilosTotal { get; set; }
         }
     }
 }
