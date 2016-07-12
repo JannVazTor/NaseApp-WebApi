@@ -9,7 +9,6 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
-
 namespace naseNut.WebApi.Controllers
 {
     [RoutePrefix("api/grill")]
@@ -36,7 +35,7 @@ namespace naseNut.WebApi.Controllers
                     Variety = model.Variety,
                     Producer = model.Producer,
                     FieldName = model.FieldName,
-                    Status = Convert.ToBoolean(GrillStatus.Entry)
+                    Status = true
                 };
                 var saved = grillService.Save(grill);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -72,12 +71,6 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grill = grillService.GetById(id);
                 if (grill == null) return NotFound();
-                if(grill.Sampling != null)
-                {
-                    var samplingService = new SamplingService();
-                    var sampling = samplingService.GetById(id);
-                    var deleteSampling = samplingService.Delete(sampling);
-                }
                 var deleted = grillService.Delete(grill);
                 return deleted ? (IHttpActionResult)Ok() : InternalServerError();
             }
@@ -164,6 +157,51 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar recuperar los registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpPost]
+        [Route("Issue")]
+        public IHttpActionResult SaveIssue(SaveIssueBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var grillService = new GrillService();
+                var grillIssue = new GrillIssue
+                {
+                    DateCapture = model.DateCapture.ConvertToDate(),
+                    Truck = model.Truck,
+                    Driver = model.Driver,
+                    Box = model.Box,
+                    Remission = model.Remission
+                };
+                var saved = grillService.SaveIssue(grillIssue, model.GrillIds);
+                return saved ? (IHttpActionResult)Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar guardar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllIssues")]
+        public IHttpActionResult GetAllIssues()
+        {
+            try
+            {
+                var issues = _db.GrillIssues.ToList();
+                return issues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(issues)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los registros." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

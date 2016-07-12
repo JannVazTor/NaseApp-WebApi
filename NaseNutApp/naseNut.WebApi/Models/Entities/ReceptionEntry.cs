@@ -12,31 +12,28 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Grill
+    public partial class ReceptionEntry
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Grill()
+        public ReceptionEntry()
         {
-            this.Samplings = new HashSet<Sampling>();
+            this.NutTypes = new HashSet<NutType>();
+            this.Humidities = new HashSet<Humidity>();
             this.Receptions = new HashSet<Reception>();
         }
     
         public int Id { get; set; }
-        public System.DateTime DateCapture { get; set; }
-        public int ReceptionId { get; set; }
-        public int Size { get; set; }
-        public int Sacks { get; set; }
-        public double Kilos { get; set; }
-        public Nullable<int> GrillIssuesId { get; set; }
-        public int Quality { get; set; }
-        public string Variety { get; set; }
-        public string Producer { get; set; }
-        public string FieldName { get; set; }
-        public bool Status { get; set; }
+        public System.DateTime DateEntry { get; set; }
+        public int VarietyId { get; set; }
+        public int ProducerId { get; set; }
     
-        public virtual GrillIssue GrillIssue { get; set; }
+        public virtual Cylinder Cylinder { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sampling> Samplings { get; set; }
+        public virtual ICollection<NutType> NutTypes { get; set; }
+        public virtual Producer Producer { get; set; }
+        public virtual Variety Variety { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Humidity> Humidities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
     }

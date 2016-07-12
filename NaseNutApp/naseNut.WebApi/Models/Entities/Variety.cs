@@ -12,19 +12,18 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Remission
+    public partial class Variety
     {
-        public int Id { get; set; }
-        public string Cultivation { get; set; }
-        public string Batch { get; set; }
-        public double Quantity { get; set; }
-        public string Butler { get; set; }
-        public int TransportNumber { get; set; }
-        public string Driver { get; set; }
-        public string Elaborate { get; set; }
-        public int ReceptionId { get; set; }
-        public System.DateTime DateCapture { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Variety()
+        {
+            this.ReceptionEntries = new HashSet<ReceptionEntry>();
+        }
     
-        public virtual Reception Reception { get; set; }
+        public int Id { get; set; }
+        public string Variety1 { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
     }
 }

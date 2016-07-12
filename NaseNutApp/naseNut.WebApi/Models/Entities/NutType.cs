@@ -12,19 +12,13 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Remission
+    public partial class NutType
     {
         public int Id { get; set; }
-        public string Cultivation { get; set; }
-        public string Batch { get; set; }
-        public double Quantity { get; set; }
-        public string Butler { get; set; }
-        public int TransportNumber { get; set; }
-        public string Driver { get; set; }
-        public string Elaborate { get; set; }
-        public int ReceptionId { get; set; }
-        public System.DateTime DateCapture { get; set; }
+        public byte NutType1 { get; set; }
+        public string TypeName { get; set; }
+        public int ReceptionEntryId { get; set; }
     
-        public virtual Reception Reception { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }

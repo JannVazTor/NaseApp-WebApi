@@ -44,7 +44,7 @@ namespace naseNut.WebApi.Models
                 Elaborate = r.Elaborate,
                 DateCapture = r.DateCapture,
                 FieldName = r.Reception.FieldName,
-                Variety = r.Reception.Variety
+                Variety = r.Reception.ReceptionEntry.Variety.Variety1
             }).ToList();
         }
 
@@ -101,7 +101,7 @@ namespace naseNut.WebApi.Models
                 Producer = g.Producer,
                 FieldName = g.FieldName,
                 Status = g.Status,
-                Sampling = g.Sampling != null ? Create(g.Sampling) : null
+                Sampling = g.Samplings != null ? Create(g.Samplings.OrderBy(d => d.DateCapture).FirstOrDefault()) : null
             }).ToList();
         }
 
@@ -133,6 +133,77 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<GrillIssueModel> Create(List<GrillIssue> issues)
+        {
+            return issues.Select(i => new GrillIssueModel
+            {
+                Id = i.Id,
+                DateCapture = i.DateCapture,
+                Truck = i.Truck,
+                Driver = i.Driver,
+                Box = i.Box,
+                Remission = i.Remission,
+                Grills = Create(i.Grills.Where(g => g.GrillIssuesId == i.Id).ToList())
+            }).ToList();
+        }
+
+        public List<VarietyModel> Create(List<Variety> varieties)
+        {
+            return varieties.Select(v => new VarietyModel
+            {
+                Id = v.Id,
+                VarietyName = v.Variety1
+            }).ToList();
+        }
+
+        public List<ReceptionEntryModel> Create(List<ReceptionEntry> receptionEntries)
+        {
+            return receptionEntries.Select(r => new ReceptionEntryModel
+            {
+                Id = r.Id,
+                Receptions = string.Join(", ", r.Receptions.Select(f => f.Folio)),
+                DateEntry = r.DateEntry,
+                Variety = r.Variety.Variety1,
+                Producer = r.Producer.ProducerName
+            }).ToList();
+        }
+        public class ReceptionEntryModel {
+            public int Id { get; set; }
+            public string Receptions { get; set; }
+            public DateTime DateEntry { get; set; }
+            public string Variety { get; set; }
+            public string Producer { get; set; }
+        }
+        public class SelectionModel
+        {
+            public int Id { get; set; }
+            public System.DateTime Date { get; set; }
+            public int First { get; set; }
+            public int Second { get; set; }
+            public int Third { get; set; }
+            public int Broken { get; set; }
+            public int Germinated { get; set; }
+            public int Vanas { get; set; }
+            public int WithNut { get; set; }
+            public double NutColor { get; set; }
+            public double NutPerformance { get; set; }
+            public double GerminationStart { get; set; }
+            public double SampleWeight { get; set; }
+            public double NutsNumber { get; set; }
+            public double Humidity { get; set; } 
+        }
+
+        public class GrillIssueModel
+        {
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public string Truck { get; set; }
+            public string Driver { get; set; }
+            public string Box { get; set; }
+            public int Remission { get; set; }
+            public List<GrillModel> Grills { get; set; }
+        }
+
         public class SamplingModel
         {
             public int Id { get; set; }
@@ -160,30 +231,16 @@ namespace naseNut.WebApi.Models
             public SamplingModel Sampling { get; set; }
         }
 
-        //public ReceptionModel Create(Reception reception)
-        //{
-        //    return reception = new ReceptionModel
-        //    {
-        //        Id = reception.Id,
-        //        Variety = reception.Variety,
-        //        ReceivedFromField = reception.ReceivedFromField,
-        //        FieldName = reception.FieldName,
-        //        CarRegistration = reception.CarRegistration,
-        //        EntryDate = reception.EntryDate,
-        //        IssueDate = reception.IssueDate,
-        //        HeatHoursDrying = reception.HeatHoursDtrying,
-        //        HumidityPercent = reception.HumidityPercent,
-        //        Observations = reception.Observations,
-        //        ProducerName = reception.Producer != null ? reception.Producer.ProducerName : "",
-        //        Grills = reception.Grill?.Id.ToString() ?? "",
-        //        Cylinder = reception.Cylinders.Count != 0 ? string.Join(", ", reception.Cylinders.Select(c => c.CylinderName)) : ""
-        //    };
-        //}
-
         public class CylinderModel
         {
             public int Id { get; set; }
             public string CylinderName { get; set; }
+        }
+
+        public class VarietyModel
+        {
+            public int Id { get; set; }
+            public string VarietyName { get; set; }
         }
 
         public List<ReceptionModel> Create(List<Reception> receptions)
@@ -192,7 +249,7 @@ namespace naseNut.WebApi.Models
             {
                 Id =  r.Id,
                 Folio = r.Folio,
-                Variety = r.Variety,
+                Variety = r.ReceptionEntry.Variety.Variety1,
                 ReceivedFromField = r.ReceivedFromField,
                 FieldName = r.FieldName,
                 CarRegistration = r.CarRegistration,
@@ -201,9 +258,33 @@ namespace naseNut.WebApi.Models
                 HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
-                ProducerName = r.Producer != null? r.Producer.ProducerName: "",
+                ProducerName = r.ReceptionEntry.Producer.ProducerName,
                 Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
-                Cylinder = r.Cylinders.Count != 0 ? string.Join(", ",r.Cylinders.Select(c => c.CylinderName)):""
+                Cylinder = r.ReceptionEntry.Cylinder.CylinderName,
+            }).ToList();
+        }
+
+        public List<HumiditiesModel> CreateC(List<Humidity> humidities)
+        {
+            return humidities.Select(r => new HumiditiesModel
+            {
+                Id = r.Id,
+                HumidityPercentage = r.HumidityPercent,
+                DateCapture = r.DateCapture,
+                CylinderName = r.ReceptionEntry.Cylinder.CylinderName,
+                Variety = r.ReceptionEntry.Variety.Variety1,
+                ProducerName = r.ReceptionEntry.Producer.ProducerName,
+                Tons = r.ReceptionEntry.Receptions.Sum(rec => rec.ReceivedFromField),
+                EntryDate = r.ReceptionEntry.DateEntry,
+                Folio = string.Join(", ", r.ReceptionEntry.Receptions.Select(re => re.Folio))  
+            }).ToList();
+        }
+
+        public List<ReceptionIdModel> CreateReceptionId(List<Reception> receptions)
+        {
+            return receptions.Select(r => new ReceptionIdModel
+            {
+                ReceptionId = r.Id
             }).ToList();
         }
 
@@ -256,7 +337,7 @@ namespace naseNut.WebApi.Models
             public double ReceivedFromField { get; set; }
             public string FieldName { get; set; }
             public string CarRegistration { get; set; }
-            public DateTime EntryDate { get; set; }
+            public DateTime? EntryDate { get; set; }
             public DateTime? IssueDate { get; set; }
             public double? HeatHoursDrying { get; set; }
             public double? HumidityPercent { get; set; }
@@ -264,6 +345,23 @@ namespace naseNut.WebApi.Models
             public string ProducerName { get; set; }
             public string Grills { get; set; }
             public string Cylinder { get; set; }
+        }
+
+        public class CompleteHumidityModel
+        {
+            public IEnumerable<int> HumidityId { get; set; }
+            public string CylinderName { get; set; }
+            public string Variety { get; set; }
+            public string ProducerName { get; set; }
+            public double Tons { get; set; }
+            public DateTime EntryDate { get; set; }
+            public int ReceptionId { get; set; }
+            public List<IEnumerable<Double>>HumidityPercent { get; set; }
+        }
+
+        public class ReceptionIdModel
+        {
+            public int ReceptionId { get; set; }
         }
 
         public class UserModel

@@ -17,7 +17,6 @@ namespace naseNut.WebApi
         {
             var config = new HttpConfiguration();
             ConfigureAuth(app);
-            config.EnableCors(new EnableCorsAttribute("*", "*", "GET, POST, OPTIONS, PUT, DELETE"));
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);

@@ -7,15 +7,18 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace naseNut.WebApi.Controllers
 {
     [RoutePrefix("api/humidity")]
     public class HumidityController : BaseApiController
     {
+        private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         public IHttpActionResult SaveHumidity(AddHumidityBindingModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -25,12 +28,12 @@ namespace naseNut.WebApi.Controllers
                 var humidityService = new HumidityService();
                 var humidity = new Humidity
                 {
-                    HumidityPercent = model.HumidityPercent,
-                    CylinderId = model.CylinderId,
-                    ReceptionId = model.ReceptionId,
-                    DateCapture = DateTime.Now
+                   HumidityPercent = model.HumidityPercent,
+                   DateCapture = model.DateCapture.ConvertToDate()
                 };
-                var saved = humidityService.Save(humidity);
+                var receptionEntryService = new ReceptionEntryService();
+                var receptionEntry = receptionEntryService.GetById(model.ReceptionEntryId);
+                var saved = humidityService.Save(humidity, receptionEntry);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
@@ -40,15 +43,33 @@ namespace naseNut.WebApi.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getAll")]
-        public IHttpActionResult GetAllHumidity()
+        [HttpDelete]
+        [Route("{id}")]
+        public IHttpActionResult DeleteHumidity(int id)
         {
             try
             {
                 var humidityService = new HumidityService();
-                var humidity = humidityService.GetAll();
-                return humidity != null ? (IHttpActionResult)Ok(TheModelFactory.Create(humidity)) : Ok();
+                var humidity = humidityService.GetById(id);
+                if (humidity == null) return NotFound();
+                var deleted = humidityService.Delete(humidity);
+                return deleted ? (IHttpActionResult) Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+        public IHttpActionResult GetAllHumidities()
+        {
+            try
+            {
+                var humidities = _db.Humidities.ToList();
+                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateC(humidities)) : Ok();
             }
             catch (Exception ex)
             {

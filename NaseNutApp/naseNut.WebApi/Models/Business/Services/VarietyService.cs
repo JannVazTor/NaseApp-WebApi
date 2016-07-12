@@ -7,17 +7,16 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
-    public class HumidityService
+    public class VarietyService : IService<Variety>
     {
-        public bool Save(Humidity humidity, ReceptionEntry receptionEntry)
+        public bool Save(Variety variety)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    db.ReceptionEntries.Attach(receptionEntry);
-                    db.Humidities.Add(humidity);
-                    receptionEntry.Humidities.Add(humidity);
+                    var varietyRepository = new VarietyRepository(db);
+                    varietyRepository.Insert(variety);
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -28,14 +27,14 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Delete(Humidity humidity)
+        public bool Delete(Variety variety)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var humidityRepository = new HumidityRepository(db);
-                    humidityRepository.Delete(humidity);
+                    var varietyRepository = new VarietyRepository(db);
+                    varietyRepository.Delete(variety);
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -45,15 +44,14 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-
-        public Humidity GetById(int id)
+        public List<Variety> GetAll()
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var humidityRepository = new HumidityRepository(db);
-                    return humidityRepository.SearchOne(p => p.Id == id);
+                    var varietyRepository = new VarietyRepository(db);
+                    return varietyRepository.GetAll();
                 }
             }
             catch (Exception ex)
@@ -62,14 +60,14 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-        public List<Humidity> GetAll()
+        public Variety GetById(int id)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var humidityRepository = new HumidityRepository(db);
-                    return humidityRepository.GetAll();
+                    var varietyRepository = new VarietyRepository(db);
+                    return varietyRepository.SearchOne(p => p.Id == id);
                 }
             }
             catch (Exception ex)

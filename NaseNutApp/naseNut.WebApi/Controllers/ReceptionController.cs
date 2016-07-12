@@ -7,6 +7,7 @@ using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace naseNut.WebApi.Controllers
 {
@@ -14,40 +15,6 @@ namespace naseNut.WebApi.Controllers
     public class ReceptionController : BaseApiController
     {
         private NaseNEntities _db = new NaseNEntities();
-        [HttpPost]
-        public IHttpActionResult SaveReception(AddReceptionBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                var receptionService = new ReceptionService();
-                var reception = new Reception
-                {
-                    Variety = model.Variety,
-                    ReceivedFromField = model.ReceivedFromField,
-                    FieldName = model.FieldName,
-                    CarRegistration = model.CarRegistration,
-                    EntryDate = model.EntryDate,
-                    IssueDate = model.IssueDate,
-                    HeatHoursDtrying = model.HeatHoursDrying,
-                    HumidityPercent = model.HumidityPercent,
-                    Observations = model.Observations,
-                    ProducerId = model.ProducerId,
-                    Folio = model.Folio
-                };
-                var saved = receptionService.SaveToCylinder(reception, model.CylinderId);
-                return saved ? (IHttpActionResult)Ok() : BadRequest();
-            }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                "Ocurrio un error al intentar guardar la recepcion." + "\n" + "Detalles del Error: " + ex));
-            }
-        }
-
         [HttpGet]
         [Route("getAll")]
         public IHttpActionResult GetAllReceptions()
@@ -150,6 +117,23 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar actgualizar la recepcion." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("getReceptionsByCylinder")]
+        public IHttpActionResult GetReceptionsByCylinder(int cylinderId)
+        {
+            try
+            {
+                var receptionService = new ReceptionService();
+                var receptions = receptionService.GetReceptionsByCylinders(cylinderId).ToList();
+                return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReceptionId(receptions)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las recepciones que contiene el cilindro." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }
