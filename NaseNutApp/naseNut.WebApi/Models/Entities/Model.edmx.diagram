@@ -5,37 +5,37 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1a74b9b30e3046b1a242945e0ac8657c" Name="Diagram1">
-        <EntityTypeShape EntityType="NASE_DB_WModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetRole" Width="1.5" PointX="8.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetUserClaim" Width="1.5" PointX="13.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetUserLogin" Width="1.5" PointX="13.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetUser" Width="1.5" PointX="11" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Grill" Width="1.5" PointX="3.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.GrillIssue" Width="1.5" PointX="1.5" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.NutType" Width="1.5" PointX="3" PointY="11.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Producer" Width="1.5" PointX="3.75" PointY="15" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Remission" Width="1.5" PointX="8.25" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Sampling" Width="1.5" PointX="6" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.sysdiagram" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Variety" Width="1.5" PointX="3.75" PointY="17.25" IsExpanded="true" />
         <AssociationConnector Association="NASE_DB_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_grill_grillIssues" ManuallyRouted="false" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_sampling_grill" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Humidity" Width="1.5" PointX="8.25" PointY="16" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Reception" Width="1.5" PointX="11.25" PointY="9.875" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.C__MigrationHistory" Width="1.5" PointX="7.75" PointY="7.125" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Cylinder" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Grill" Width="1.5" PointX="3" PointY="12.375" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.GrillIssue" Width="1.5" PointX="0.75" PointY="13.125" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Humidity" Width="1.5" PointX="5.25" PointY="5.25" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.NutType" Width="1.5" PointX="5.25" PointY="2.5" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Producer" Width="1.5" PointX="0.75" PointY="7.25" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.ReceptionEntry" Width="1.5" PointX="3" PointY="3.375" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Remission" Width="1.5" PointX="7.5" PointY="10.875" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Sampling" Width="1.5" PointX="5.25" PointY="15" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Variety" Width="1.5" PointX="0.75" PointY="4" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_cylinder" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_grill_grillIssues" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_sampling_grill" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_humidity_producer" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_nuttype_producer" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_producer" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_variety" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Reception" Width="1.5" PointX="5.25" PointY="8.875" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
         <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Cylinder" Width="1.5" PointX="0.75" PointY="9" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.ReceptionEntry" Width="1.5" PointX="0.75" PointY="12.375" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_cylinder" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_humidity_receptionEntry" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_nuttype_receptionEntry" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_producer" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_variety" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

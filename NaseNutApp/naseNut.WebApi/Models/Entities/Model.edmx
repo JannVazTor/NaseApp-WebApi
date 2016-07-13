@@ -156,7 +156,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateEntry" Type="datetime" Nullable="false" />
           <Property Name="VarietyId" Type="int" Nullable="false" />
           <Property Name="ProducerId" Type="int" Nullable="false" />
@@ -292,7 +292,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_humidity_receptionEntry">
+        <Association Name="fk_humidity_producer">
           <End Role="ReceptionEntry" Type="Self.ReceptionEntry" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -306,7 +306,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_nuttype_receptionEntry">
+        <Association Name="fk_nuttype_producer">
           <End Role="ReceptionEntry" Type="Self.ReceptionEntry" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -460,11 +460,11 @@
             <End Role="Grill" EntitySet="Grill" />
             <End Role="Reception_Grill" EntitySet="Reception_Grill" />
           </AssociationSet>
-          <AssociationSet Name="fk_humidity_receptionEntry" Association="Self.fk_humidity_receptionEntry">
+          <AssociationSet Name="fk_humidity_producer" Association="Self.fk_humidity_producer">
             <End Role="ReceptionEntry" EntitySet="ReceptionEntry" />
             <End Role="Humidity" EntitySet="Humidity" />
           </AssociationSet>
-          <AssociationSet Name="fk_nuttype_receptionEntry" Association="Self.fk_nuttype_receptionEntry">
+          <AssociationSet Name="fk_nuttype_producer" Association="Self.fk_nuttype_producer">
             <End Role="ReceptionEntry" EntitySet="ReceptionEntry" />
             <End Role="NutType" EntitySet="NutType" />
           </AssociationSet>
@@ -501,16 +501,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NASE_DB_WModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
@@ -560,87 +550,6 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
-        <EntityType Name="Grill">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
-          <Property Name="Size" Type="Int32" Nullable="false" />
-          <Property Name="Sacks" Type="Int32" Nullable="false" />
-          <Property Name="Kilos" Type="Double" Nullable="false" />
-          <Property Name="GrillIssuesId" Type="Int32" />
-          <Property Name="Quality" Type="Int32" Nullable="false" />
-          <Property Name="Variety" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Producer" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FieldName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Status" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="GrillIssue" Relationship="Self.fk_grill_grillIssues" FromRole="Grill" ToRole="GrillIssues" />
-          <NavigationProperty Name="Samplings" Relationship="Self.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
-          <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
-        </EntityType>
-        <EntityType Name="GrillIssue">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Truck" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Box" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Remission" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Grills" Relationship="Self.fk_grill_grillIssues" FromRole="GrillIssues" ToRole="Grill" />
-        </EntityType>
-        <EntityType Name="NutType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NutType1" Type="Byte" Nullable="false" />
-          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_nuttype_receptionEntry" FromRole="NutType" ToRole="ReceptionEntry" />
-        </EntityType>
-        <EntityType Name="Producer">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProducerName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="Producer" ToRole="ReceptionEntry" />
-        </EntityType>
-        <EntityType Name="Remission">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Cultivation" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Batch" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Quantity" Type="Double" Nullable="false" />
-          <Property Name="Butler" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TransportNumber" Type="Int32" Nullable="false" />
-          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Elaborate" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Reception" Relationship="NASE_DB_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
-        </EntityType>
-        <EntityType Name="Sampling">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SampleWeight" Type="Double" Nullable="false" />
-          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
-          <Property Name="WalnutNumber" Type="Int32" Nullable="false" />
-          <Property Name="Performance" Type="Double" Nullable="false" />
-          <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
-          <Property Name="GrillId" Type="Int32" />
-          <Property Name="ReceptionEntryId" Type="Int32" />
-          <NavigationProperty Name="Grill" Relationship="Self.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
-        </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -650,14 +559,6 @@
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="Variety">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Variety1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="Variety" ToRole="ReceptionEntry" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -687,50 +588,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_grill_grillIssues">
-          <End Role="GrillIssues" Type="Self.GrillIssue" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Grill" Type="Self.Grill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GrillIssues">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Grill">
-              <PropertyRef Name="GrillIssuesId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_sampling_grill">
-          <End Role="Grill" Type="Self.Grill" Multiplicity="0..1" />
-          <End Role="Sampling" Type="Self.Sampling" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Grill">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Sampling">
-              <PropertyRef Name="GrillId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="AspNetUserRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
         </Association>
         <EntityContainer Name="NaseNEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
-          <EntitySet Name="Grills" EntityType="Self.Grill" />
-          <EntitySet Name="GrillIssues" EntityType="Self.GrillIssue" />
-          <EntitySet Name="NutTypes" EntityType="Self.NutType" />
-          <EntitySet Name="Producers" EntityType="Self.Producer" />
-          <EntitySet Name="Remissions" EntityType="Self.Remission" />
-          <EntitySet Name="Samplings" EntityType="Self.Sampling" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Varieties" EntityType="Self.Variety" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -739,20 +606,54 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="fk_grill_grillIssues" Association="Self.fk_grill_grillIssues">
-            <End Role="GrillIssues" EntitySet="GrillIssues" />
-            <End Role="Grill" EntitySet="Grills" />
-          </AssociationSet>
-          <AssociationSet Name="fk_sampling_grill" Association="Self.fk_sampling_grill">
-            <End Role="Grill" EntitySet="Grills" />
-            <End Role="Sampling" EntitySet="Samplings" />
-          </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="C__MigrationHistory" EntityType="NASE_DB_WModel.C__MigrationHistory" />
+          <EntitySet Name="Cylinders" EntityType="NASE_DB_WModel.Cylinder" />
+          <EntitySet Name="Grills" EntityType="NASE_DB_WModel.Grill" />
+          <EntitySet Name="GrillIssues" EntityType="NASE_DB_WModel.GrillIssue" />
           <EntitySet Name="Humidities" EntityType="NASE_DB_WModel.Humidity" />
+          <EntitySet Name="NutTypes" EntityType="NASE_DB_WModel.NutType" />
+          <EntitySet Name="Producers" EntityType="NASE_DB_WModel.Producer" />
+          <EntitySet Name="ReceptionEntries" EntityType="NASE_DB_WModel.ReceptionEntry" />
+          <EntitySet Name="Remissions" EntityType="NASE_DB_WModel.Remission" />
+          <EntitySet Name="Samplings" EntityType="NASE_DB_WModel.Sampling" />
+          <EntitySet Name="Varieties" EntityType="NASE_DB_WModel.Variety" />
+          <AssociationSet Name="fk_receptionEntry_cylinder" Association="NASE_DB_WModel.fk_receptionEntry_cylinder">
+            <End Role="Cylinder" EntitySet="Cylinders" />
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="fk_grill_grillIssues" Association="NASE_DB_WModel.fk_grill_grillIssues">
+            <End Role="GrillIssue" EntitySet="GrillIssues" />
+            <End Role="Grill" EntitySet="Grills" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sampling_grill" Association="NASE_DB_WModel.fk_sampling_grill">
+            <End Role="Grill" EntitySet="Grills" />
+            <End Role="Sampling" EntitySet="Samplings" />
+          </AssociationSet>
+          <AssociationSet Name="fk_humidity_producer" Association="NASE_DB_WModel.fk_humidity_producer">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="Humidity" EntitySet="Humidities" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nuttype_producer" Association="NASE_DB_WModel.fk_nuttype_producer">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="NutType" EntitySet="NutTypes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_receptionEntry_producer" Association="NASE_DB_WModel.fk_receptionEntry_producer">
+            <End Role="Producer" EntitySet="Producers" />
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="fk_receptionEntry_variety" Association="NASE_DB_WModel.fk_receptionEntry_variety">
+            <End Role="Variety" EntitySet="Varieties" />
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+          </AssociationSet>
           <EntitySet Name="Receptions" EntityType="NASE_DB_WModel.Reception" />
+          <AssociationSet Name="fk_reception_receptionEntry" Association="NASE_DB_WModel.fk_reception_receptionEntry">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
           <AssociationSet Name="fk_remission_reception" Association="NASE_DB_WModel.fk_remission_reception">
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Remission" EntitySet="Remissions" />
@@ -761,85 +662,21 @@
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Reception" EntitySet="Receptions" />
           </AssociationSet>
-          <EntitySet Name="Cylinders" EntityType="NASE_DB_WModel.Cylinder" />
-          <EntitySet Name="ReceptionEntries" EntityType="NASE_DB_WModel.ReceptionEntry" />
-          <AssociationSet Name="fk_receptionEntry_cylinder" Association="NASE_DB_WModel.fk_receptionEntry_cylinder">
-            <End Role="Cylinder" EntitySet="Cylinders" />
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-          </AssociationSet>
-          <AssociationSet Name="fk_humidity_receptionEntry" Association="NASE_DB_WModel.fk_humidity_receptionEntry">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="Humidity" EntitySet="Humidities" />
-          </AssociationSet>
-          <AssociationSet Name="fk_nuttype_receptionEntry" Association="NASE_DB_WModel.fk_nuttype_receptionEntry">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="NutType" EntitySet="NutTypes" />
-          </AssociationSet>
-          <AssociationSet Name="fk_receptionEntry_producer" Association="NASE_DB_WModel.fk_receptionEntry_producer">
-            <End Role="Producer" EntitySet="Producers" />
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-          </AssociationSet>
-          <AssociationSet Name="fk_reception_receptionEntry" Association="NASE_DB_WModel.fk_reception_receptionEntry">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="Reception" EntitySet="Receptions" />
-          </AssociationSet>
-          <AssociationSet Name="fk_receptionEntry_variety" Association="NASE_DB_WModel.fk_receptionEntry_variety">
-            <End Role="Variety" EntitySet="Varieties" />
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-          </AssociationSet>
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="NaseNEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Member Name="Entry" Value="1" />
           <Member Name="Issue" Value="0" />
         </EnumType>
-        <EntityType Name="Humidity">
+        <EntityType Name="C__MigrationHistory">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
-          <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_humidity_receptionEntry" FromRole="Humidity" ToRole="ReceptionEntry" />
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="Reception">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReceivedFromField" Type="Double" Nullable="false" />
-          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="CarRegistration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IssueDate" Type="DateTime" Precision="3" />
-          <Property Name="HeatHoursDtrying" Type="Double" />
-          <Property Name="HumidityPercent" Type="Double" />
-          <Property Name="Observations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="GrillId" Type="Int32" Nullable="false" />
-          <Property Name="Folio" Type="Int32" Nullable="false" />
-          <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Remissions" Relationship="NASE_DB_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
-          <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
-          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="Reception" ToRole="ReceptionEntry" />
-        </EntityType>
-        <Association Name="fk_remission_reception">
-          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.Remission" Role="Remission" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Reception">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Remission">
-              <PropertyRef Name="ReceptionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Reception_Grill">
-          <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
-          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
-        </Association>
         <EntityType Name="Cylinder">
           <Key>
             <PropertyRef Name="Id" />
@@ -849,21 +686,120 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_cylinder" FromRole="Cylinder" ToRole="ReceptionEntry" />
         </EntityType>
+        <EntityType Name="Grill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="Sacks" Type="Int32" Nullable="false" />
+          <Property Name="Kilos" Type="Double" Nullable="false" />
+          <Property Name="GrillIssuesId" Type="Int32" />
+          <Property Name="Quality" Type="Int32" Nullable="false" />
+          <Property Name="Variety" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Producer" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="GrillIssue" Relationship="NASE_DB_WModel.fk_grill_grillIssues" FromRole="Grill" ToRole="GrillIssue" />
+          <NavigationProperty Name="Samplings" Relationship="NASE_DB_WModel.fk_sampling_grill" FromRole="Grill" ToRole="Sampling" />
+          <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.Reception_Grill" FromRole="Grill" ToRole="Reception" />
+        </EntityType>
+        <EntityType Name="GrillIssue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Truck" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Box" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Remission" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.fk_grill_grillIssues" FromRole="GrillIssue" ToRole="Grill" />
+        </EntityType>
+        <EntityType Name="Humidity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
+          <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_humidity_producer" FromRole="Humidity" ToRole="ReceptionEntry" />
+        </EntityType>
+        <EntityType Name="NutType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NutType1" Type="Byte" Nullable="false" />
+          <Property Name="TypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_nuttype_producer" FromRole="NutType" ToRole="ReceptionEntry" />
+        </EntityType>
+        <EntityType Name="Producer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProducerName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="Producer" ToRole="ReceptionEntry" />
+        </EntityType>
         <EntityType Name="ReceptionEntry">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateEntry" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="VarietyId" Type="Int32" Nullable="false" />
           <Property Name="ProducerId" Type="Int32" Nullable="false" />
           <Property Name="CylinderId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Cylinder" Relationship="NASE_DB_WModel.fk_receptionEntry_cylinder" FromRole="ReceptionEntry" ToRole="Cylinder" />
-          <NavigationProperty Name="Humidities" Relationship="NASE_DB_WModel.fk_humidity_receptionEntry" FromRole="ReceptionEntry" ToRole="Humidity" />
-          <NavigationProperty Name="NutTypes" Relationship="NASE_DB_WModel.fk_nuttype_receptionEntry" FromRole="ReceptionEntry" ToRole="NutType" />
+          <NavigationProperty Name="Humidities" Relationship="NASE_DB_WModel.fk_humidity_producer" FromRole="ReceptionEntry" ToRole="Humidity" />
+          <NavigationProperty Name="NutTypes" Relationship="NASE_DB_WModel.fk_nuttype_producer" FromRole="ReceptionEntry" ToRole="NutType" />
           <NavigationProperty Name="Producer" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="ReceptionEntry" ToRole="Producer" />
-          <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="ReceptionEntry" ToRole="Reception" />
           <NavigationProperty Name="Variety" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="ReceptionEntry" ToRole="Variety" />
+          <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="ReceptionEntry" ToRole="Reception" />
+        </EntityType>
+        <EntityType Name="Remission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cultivation" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Batch" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="Butler" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TransportNumber" Type="Int32" Nullable="false" />
+          <Property Name="Driver" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Elaborate" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ReceptionId" Type="Int32" Nullable="false" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Reception" Relationship="NASE_DB_WModel.fk_remission_reception" FromRole="Remission" ToRole="Reception" />
+        </EntityType>
+        <EntityType Name="Sampling">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCapture" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SampleWeight" Type="Double" Nullable="false" />
+          <Property Name="HumidityPercent" Type="Double" Nullable="false" />
+          <Property Name="WalnutNumber" Type="Int32" Nullable="false" />
+          <Property Name="Performance" Type="Double" Nullable="false" />
+          <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
+          <Property Name="GrillId" Type="Int32" />
+          <Property Name="ReceptionEntryId" Type="Int32" />
+          <NavigationProperty Name="Grill" Relationship="NASE_DB_WModel.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
+        </EntityType>
+        <EntityType Name="Variety">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Variety1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="Variety" ToRole="ReceptionEntry" />
         </EntityType>
         <Association Name="fk_receptionEntry_cylinder">
           <End Type="NASE_DB_WModel.Cylinder" Role="Cylinder" Multiplicity="1">
@@ -879,7 +815,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_humidity_receptionEntry">
+        <Association Name="fk_grill_grillIssues">
+          <End Type="NASE_DB_WModel.GrillIssue" Role="GrillIssue" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrillIssue">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Grill">
+              <PropertyRef Name="GrillIssuesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sampling_grill">
+          <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="0..1" />
+          <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sampling">
+              <PropertyRef Name="GrillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_humidity_producer">
           <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -893,7 +855,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_nuttype_receptionEntry">
+        <Association Name="fk_nuttype_producer">
           <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -921,20 +883,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_reception_receptionEntry">
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReceptionEntry">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Reception">
-              <PropertyRef Name="ReceptionEntryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_receptionEntry_variety">
           <End Type="NASE_DB_WModel.Variety" Role="Variety" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -949,22 +897,64 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Reception">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReceivedFromField" Type="Double" Nullable="false" />
+          <Property Name="FieldName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CarRegistration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IssueDate" Type="DateTime" Precision="3" />
+          <Property Name="HeatHoursDtrying" Type="Double" />
+          <Property Name="HumidityPercent" Type="Double" />
+          <Property Name="Observations" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="GrillId" Type="Int32" Nullable="false" />
+          <Property Name="Folio" Type="Int32" Nullable="false" />
+          <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="Reception" ToRole="ReceptionEntry" />
+          <NavigationProperty Name="Remissions" Relationship="NASE_DB_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
+          <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
+        </EntityType>
+        <Association Name="fk_reception_receptionEntry">
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_remission_reception">
+          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Remission" Role="Remission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reception">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Remission">
+              <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Reception_Grill">
+          <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
+          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="NASE_DB_WModelStoreContainer" CdmEntityContainer="NaseNEntities">
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="NASE_DB_WModel.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
@@ -1010,85 +1000,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Grills">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.Grill">
-              <MappingFragment StoreEntitySet="Grill">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
-                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
-                <ScalarProperty Name="GrillIssuesId" ColumnName="GrillIssuesId" />
-                <ScalarProperty Name="Quality" ColumnName="Quality" />
-                <ScalarProperty Name="Variety" ColumnName="Variety" />
-                <ScalarProperty Name="Producer" ColumnName="Producer" />
-                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="GrillIssues">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.GrillIssue">
-              <MappingFragment StoreEntitySet="GrillIssues">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="Truck" ColumnName="Truck" />
-                <ScalarProperty Name="Driver" ColumnName="Driver" />
-                <ScalarProperty Name="Box" ColumnName="Box" />
-                <ScalarProperty Name="Remission" ColumnName="Remission" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NutTypes">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.NutType">
-              <MappingFragment StoreEntitySet="NutType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="NutType1" ColumnName="NutType" />
-                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
-                <ScalarProperty Name="ReceptionEntryId" ColumnName="ReceptionEntryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Producers">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.Producer">
-              <MappingFragment StoreEntitySet="Producer">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ProducerName" ColumnName="ProducerName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Remissions">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.Remission">
-              <MappingFragment StoreEntitySet="Remission">
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Cultivation" ColumnName="Cultivation" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Butler" ColumnName="Butler" />
-                <ScalarProperty Name="TransportNumber" ColumnName="TransportNumber" />
-                <ScalarProperty Name="Driver" ColumnName="Driver" />
-                <ScalarProperty Name="Elaborate" ColumnName="Elaborate" />
-                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Samplings">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.Sampling">
-              <MappingFragment StoreEntitySet="Sampling">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
-                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
-                <ScalarProperty Name="WalnutNumber" ColumnName="WalnutNumber" />
-                <ScalarProperty Name="Performance" ColumnName="Performance" />
-                <ScalarProperty Name="TotalWeightOfEdibleNuts" ColumnName="TotalWeightOfEdibleNuts" />
-                <ScalarProperty Name="GrillId" ColumnName="GrillId" />
-                <ScalarProperty Name="ReceptionEntryId" ColumnName="ReceptionEntryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="NASE_DB_WModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -1100,14 +1011,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Varieties">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.Variety">
-              <MappingFragment StoreEntitySet="Variety">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Variety1" ColumnName="Variety" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="NASE_DB_WModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
@@ -1116,12 +1019,129 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cylinders">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Cylinder">
+              <MappingFragment StoreEntitySet="Cylinder">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CylinderName" ColumnName="CylinderName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grills">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Grill">
+              <MappingFragment StoreEntitySet="Grill">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="Producer" ColumnName="Producer" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="Quality" ColumnName="Quality" />
+                <ScalarProperty Name="GrillIssuesId" ColumnName="GrillIssuesId" />
+                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
+                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GrillIssues">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.GrillIssue">
+              <MappingFragment StoreEntitySet="GrillIssues">
+                <ScalarProperty Name="Remission" ColumnName="Remission" />
+                <ScalarProperty Name="Box" ColumnName="Box" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="Truck" ColumnName="Truck" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Humidities">
             <EntityTypeMapping TypeName="NASE_DB_WModel.Humidity">
               <MappingFragment StoreEntitySet="Humidity">
                 <ScalarProperty Name="ReceptionEntryId" ColumnName="ReceptionEntryId" />
                 <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
                 <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NutTypes">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.NutType">
+              <MappingFragment StoreEntitySet="NutType">
+                <ScalarProperty Name="ReceptionEntryId" ColumnName="ReceptionEntryId" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="NutType1" ColumnName="NutType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producers">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Producer">
+              <MappingFragment StoreEntitySet="Producer">
+                <ScalarProperty Name="ProducerName" ColumnName="ProducerName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReceptionEntries">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.ReceptionEntry">
+              <MappingFragment StoreEntitySet="ReceptionEntry">
+                <ScalarProperty Name="CylinderId" ColumnName="CylinderId" />
+                <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
+                <ScalarProperty Name="VarietyId" ColumnName="VarietyId" />
+                <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Remissions">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Remission">
+              <MappingFragment StoreEntitySet="Remission">
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="ReceptionId" ColumnName="ReceptionId" />
+                <ScalarProperty Name="Elaborate" ColumnName="Elaborate" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="TransportNumber" ColumnName="TransportNumber" />
+                <ScalarProperty Name="Butler" ColumnName="Butler" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Batch" ColumnName="Batch" />
+                <ScalarProperty Name="Cultivation" ColumnName="Cultivation" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Samplings">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Sampling">
+              <MappingFragment StoreEntitySet="Sampling">
+                <ScalarProperty Name="ReceptionEntryId" ColumnName="ReceptionEntryId" />
+                <ScalarProperty Name="GrillId" ColumnName="GrillId" />
+                <ScalarProperty Name="TotalWeightOfEdibleNuts" ColumnName="TotalWeightOfEdibleNuts" />
+                <ScalarProperty Name="Performance" ColumnName="Performance" />
+                <ScalarProperty Name="WalnutNumber" ColumnName="WalnutNumber" />
+                <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
+                <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
+                <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Varieties">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Variety">
+              <MappingFragment StoreEntitySet="Variety">
+                <ScalarProperty Name="Variety1" ColumnName="Variety" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1152,26 +1172,6 @@
               <ScalarProperty Name="Id" ColumnName="grillId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Cylinders">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.Cylinder">
-              <MappingFragment StoreEntitySet="Cylinder">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="CylinderName" ColumnName="CylinderName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReceptionEntries">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.ReceptionEntry">
-              <MappingFragment StoreEntitySet="ReceptionEntry">
-                <ScalarProperty Name="CylinderId" ColumnName="CylinderId" />
-                <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
-                <ScalarProperty Name="VarietyId" ColumnName="VarietyId" />
-                <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
