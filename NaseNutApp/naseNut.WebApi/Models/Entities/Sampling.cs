@@ -25,5 +25,6 @@ namespace naseNut.WebApi.Models.Entities
         public Nullable<int> ReceptionEntryId { get; set; }
     
         public virtual Grill Grill { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }

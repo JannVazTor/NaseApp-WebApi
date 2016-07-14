@@ -101,13 +101,13 @@ namespace naseNut.WebApi.Models
                 Producer = g.Producer,
                 FieldName = g.FieldName,
                 Status = g.Status,
-                Sampling = g.Samplings != null ? Create(g.Samplings.OrderBy(d => d.DateCapture).FirstOrDefault()) : null
+                Sampling = g.Samplings.Count != 0 ? Create(g.Samplings.OrderBy(d => d.DateCapture).FirstOrDefault()) : null
             }).ToList();
         }
 
-        public SamplingModel Create(Sampling sampling)
+        public SamplingGrillModel Create(Sampling sampling)
         {
-            return new SamplingModel
+            return new SamplingGrillModel
             {
                 Id = sampling.Id,
                 DateCapture = sampling.DateCapture,
@@ -119,9 +119,9 @@ namespace naseNut.WebApi.Models
             };
         }
 
-        public List<SamplingModel> Create(List<Sampling> samplings)
+        public List<SamplingGrillModel> CreateSampling(List<Sampling> samplings)
         {
-            return samplings.Select(s => new SamplingModel
+            return samplings.Select(s => new SamplingGrillModel
             {
                 Id = s.Id,
                 DateCapture = s.DateCapture,
@@ -132,7 +132,6 @@ namespace naseNut.WebApi.Models
                 TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts
             }).ToList();
         }
-
         public List<GrillIssueModel> Create(List<GrillIssue> issues)
         {
             return issues.Select(i => new GrillIssueModel
@@ -164,8 +163,51 @@ namespace naseNut.WebApi.Models
                 Receptions = string.Join(", ", r.Receptions.Select(f => f.Folio)),
                 DateEntry = r.DateEntry,
                 Variety = r.Variety.Variety1,
-                Producer = r.Producer.ProducerName
+                Producer = r.Producer.ProducerName,
+                Cylinder = r.Cylinder.CylinderName
             }).ToList();
+        }
+        public List<SamplingReceptionModel> CreateReception(List<Sampling> samplings)
+        {
+            return samplings.Select(s => new SamplingReceptionModel
+            {
+                Id = s.Id,
+                DateCapture = s.DateCapture,
+                SampleWeight = s.SampleWeight,
+                HumidityPercent = s.HumidityPercent,
+                WalnutNumber = s.WalnutNumber,
+                Performance = s.Performance,
+                TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts,
+                NutTypes = Create(s.ReceptionEntry.NutTypes.ToList())
+
+            }).ToList();
+        }
+        public List<NutTypeModel> Create(List<NutType> nutTypes) {
+            return nutTypes.Select(n => new NutTypeModel
+            {
+                Id = n.Id,
+                NutType = n.NutType1,
+                Sacks = (int)n.Sacks,
+                Kilos = (int)n.Kilos
+            }).ToList();
+        }
+        public class NutTypeModel
+        {
+            public int Id { get; set; }
+            public byte NutType { get; set; }
+            public int Sacks { get; set; }
+            public double Kilos { get; set; }
+        }
+        public class SamplingReceptionModel
+        {
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public double SampleWeight { get; set; }
+            public double HumidityPercent { get; set; }
+            public int WalnutNumber { get; set; }
+            public double Performance { get; set; }
+            public double TotalWeightOfEdibleNuts { get; set; }
+            public List<NutTypeModel> NutTypes { get; set; }
         }
         public class ReceptionEntryModel
         {
@@ -174,6 +216,7 @@ namespace naseNut.WebApi.Models
             public DateTime DateEntry { get; set; }
             public string Variety { get; set; }
             public string Producer { get; set; }
+            public string Cylinder { get; set; }
             public List<ReceptionModel> ReceptionList { get; set; }
         }
         public class SelectionModel
@@ -206,7 +249,7 @@ namespace naseNut.WebApi.Models
             public List<GrillModel> Grills { get; set; }
         }
 
-        public class SamplingModel
+        public class SamplingGrillModel
         {
             public int Id { get; set; }
             public DateTime DateCapture { get; set; }
@@ -230,7 +273,7 @@ namespace naseNut.WebApi.Models
             public string Producer { get; set; }
             public string FieldName { get; set; }
             public bool Status { get; set; }
-            public SamplingModel Sampling { get; set; }
+            public SamplingGrillModel Sampling { get; set; }
         }
 
         public class CylinderModel

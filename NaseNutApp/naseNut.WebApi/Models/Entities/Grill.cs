@@ -17,8 +17,8 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Grill()
         {
-            this.Samplings = new HashSet<Sampling>();
             this.Receptions = new HashSet<Reception>();
+            this.Samplings = new HashSet<Sampling>();
         }
     
         public int Id { get; set; }
@@ -36,8 +36,8 @@ namespace naseNut.WebApi.Models.Entities
     
         public virtual GrillIssue GrillIssue { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sampling> Samplings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sampling> Samplings { get; set; }
     }
 }

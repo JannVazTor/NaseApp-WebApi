@@ -16,8 +16,9 @@ namespace naseNut.WebApi.Models.Entities
     {
         public int Id { get; set; }
         public byte NutType1 { get; set; }
-        public string TypeName { get; set; }
         public int ReceptionEntryId { get; set; }
+        public Nullable<int> Sacks { get; set; }
+        public Nullable<double> Kilos { get; set; }
     
         public virtual ReceptionEntry ReceptionEntry { get; set; }
     }

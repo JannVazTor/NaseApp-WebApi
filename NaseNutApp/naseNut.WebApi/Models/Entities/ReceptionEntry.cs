@@ -18,8 +18,9 @@ namespace naseNut.WebApi.Models.Entities
         public ReceptionEntry()
         {
             this.Humidities = new HashSet<Humidity>();
-            this.NutTypes = new HashSet<NutType>();
             this.Receptions = new HashSet<Reception>();
+            this.NutTypes = new HashSet<NutType>();
+            this.Samplings = new HashSet<Sampling>();
         }
     
         public int Id { get; set; }
@@ -31,11 +32,13 @@ namespace naseNut.WebApi.Models.Entities
         public virtual Cylinder Cylinder { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Humidity> Humidities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NutType> NutTypes { get; set; }
         public virtual Producer Producer { get; set; }
         public virtual Variety Variety { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NutType> NutTypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sampling> Samplings { get; set; }
     }
 }

@@ -46,13 +46,28 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public IHttpActionResult GetAllSamplings()
+        [Route("Grills")]
+        public IHttpActionResult GetAllGrillSamplings()
         {
             try
             {
-                var samplings = _db.Samplings.ToList();
-                return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(samplings)) : Ok();
+                var samplings = _db.Samplings.Where(g => g.GrillId != null).ToList();
+                return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateSampling(samplings)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpGet]
+        [Route("Receptions")]
+        public IHttpActionResult GetAllReceptionSamplings()
+        {
+            try
+            {
+                var samplings = _db.Samplings.Where(g => g.ReceptionEntryId != null).ToList();
+                return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReception(samplings)) : Ok();
             }
             catch (Exception ex)
             {
