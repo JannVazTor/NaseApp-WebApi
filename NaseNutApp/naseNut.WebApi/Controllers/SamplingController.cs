@@ -16,7 +16,8 @@ namespace naseNut.WebApi.Controllers
     {
         private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
-        public IHttpActionResult SaveSampling(AddSamplingBindingModel model)
+        [Route("grill")]
+        public IHttpActionResult SaveGrillSampling(AddGrillSamplingBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -27,13 +28,13 @@ namespace naseNut.WebApi.Controllers
                 var samplingService = new SamplingService();
                 var sampling = new Sampling
                 {
-                    Id = model.Id,
                     DateCapture = model.DateCapture,
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,
                     Performance = model.Performance,
-                    TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts
+                    TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts,
+                    GrillId = model.GrillId
                 };
                 var saved = samplingService.Save(sampling);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -44,7 +45,46 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [HttpPost]
+        [Route("receptionEntry")]
+        public IHttpActionResult SaveReceptionEntrySampling(AddReceptionEntrySamplingBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var samplingService = new SamplingService();
+                var nutTypes = new List<NutType>();
+                var sampling = new Sampling
+                {
+                    DateCapture = model.DateCapture,
+                    SampleWeight = model.SampleWeight,
+                    HumidityPercent = model.HumidityPercent,
+                    WalnutNumber = model.WalnutNumber,
+                    Performance = model.Performance,
+                    TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts,
+                    ReceptionEntryId = model.ReceptionEntryId
+                };
+                foreach (var item in model.NutTypes)
+                {
+                    nutTypes.Add(new NutType
+                    {
+                        NutType1 = item.NutType,
+                        Sacks = item.Sacks,
+                        ReceptionEntryId = model.ReceptionEntryId
+                    }); 
+                }
+                var saved = samplingService.Save(sampling, nutTypes, model.ReceptionEntryId);
+                return saved ? (IHttpActionResult)Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar guardar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
         [HttpGet]
         [Route("Grills")]
         public IHttpActionResult GetAllGrillSamplings()
@@ -96,7 +136,7 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpPut]
-        public IHttpActionResult Updatesampling(AddSamplingBindingModel model)
+        public IHttpActionResult Updatesampling(UpdateGrillSamplingBindingModel model)
         {
             try
             {

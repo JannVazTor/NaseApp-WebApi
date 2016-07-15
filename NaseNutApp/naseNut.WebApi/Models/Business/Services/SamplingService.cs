@@ -8,8 +8,35 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
-    public class SamplingService : IService<Sampling>
+    public class SamplingService
     {
+        //Save sampling for ReceptionEntry
+        public bool Save(Sampling sampling, List<NutType> nutTypes, int receptionEntryId)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var samplingRepository = new SamplingRepository(db);
+                    var nutTypeRepository = new NutTypeRepository(db);
+                    var cylinder = db.Cylinders.Where(c => c.ReceptionEntries.Any(r => r.Id == receptionEntryId)).First();
+                    cylinder.Active = true;
+                    db.Cylinders.Attach(cylinder);
+                    db.Entry(cylinder).Property(p => p.Active).IsModified = true;
+                    foreach (var item in nutTypes)
+                    {
+                        nutTypeRepository.Insert(item);
+                    }
+                    samplingRepository.Insert(sampling);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        //Save sampling for Grill
         public bool Save(Sampling sampling)
         {
             try
@@ -60,7 +87,7 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Update(AddSamplingBindingModel model)
+        public bool Update(UpdateGrillSamplingBindingModel model)
         {
             try
             {
