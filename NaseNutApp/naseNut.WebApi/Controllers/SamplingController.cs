@@ -28,7 +28,7 @@ namespace naseNut.WebApi.Controllers
                 var samplingService = new SamplingService();
                 var sampling = new Sampling
                 {
-                    DateCapture = model.DateCapture,
+                    DateCapture = model.DateCapture.ConvertToDate(),
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,
@@ -49,7 +49,7 @@ namespace naseNut.WebApi.Controllers
         [Route("receptionEntry")]
         public IHttpActionResult SaveReceptionEntrySampling(AddReceptionEntrySamplingBindingModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model == null || (model.NutTypes == null || model.NutTypes.Count == 0))
             {
                 return BadRequest();
             }
@@ -59,7 +59,7 @@ namespace naseNut.WebApi.Controllers
                 var nutTypes = new List<NutType>();
                 var sampling = new Sampling
                 {
-                    DateCapture = model.DateCapture,
+                    DateCapture = model.DateCapture.ConvertToDate(),
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,
@@ -73,6 +73,7 @@ namespace naseNut.WebApi.Controllers
                     {
                         NutType1 = item.NutType,
                         Sacks = item.Sacks,
+                        Kilos = item.Kilos,
                         ReceptionEntryId = model.ReceptionEntryId
                     }); 
                 }
@@ -123,10 +124,11 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var samplingService = new SamplingService();
+                var cylinderService = new CylinderService();
                 var sampling = samplingService.GetById(id);
                 if (sampling == null) return NotFound();
-                var deleted = samplingService.Delete(sampling);
-                return deleted ? (IHttpActionResult)Ok() : InternalServerError();
+                var deleted = samplingService.Delete(id);
+                return deleted ? (IHttpActionResult)Ok() : Conflict();
             }
             catch (Exception ex)
             {

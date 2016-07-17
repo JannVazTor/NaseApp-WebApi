@@ -273,7 +273,6 @@
     <Compile Include="Models\Business\Services\SamplingService.cs" />
     <Compile Include="Models\Business\Services\UserService.cs" />
     <Compile Include="Models\Business\Services\VarietyService.cs" />
-    <Compile Include="Models\DTOs\NutTypeDTO.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -425,6 +424,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

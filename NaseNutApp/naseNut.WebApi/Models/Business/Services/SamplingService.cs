@@ -54,13 +54,19 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Delete(Sampling sampling)
+        public bool Delete(int id)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
                     var samplingRepository = new SamplingRepository(db);
+                    var cylinderRepository = new CylinderRepository(db);
+                    var sampling = samplingRepository.GetById(id);
+                    var cylinder = cylinderRepository.GetById(sampling.ReceptionEntry.Cylinder.Id);
+                    cylinder.Active = false;
+                    db.Cylinders.Attach(cylinder);
+                    db.Entry(cylinder).Property(p => p.Active).IsModified = true;
                     samplingRepository.Delete(sampling);
                     return db.SaveChanges() >= 1;
                 }

@@ -178,8 +178,12 @@ namespace naseNut.WebApi.Models
                 WalnutNumber = s.WalnutNumber,
                 Performance = s.Performance,
                 TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts,
-                NutTypes = Create(s.ReceptionEntry.NutTypes.ToList())
-
+                SacksFirst = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 1) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Sacks.ToString() : "",
+                KilosFirst = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 1) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Kilos.ToString() : "",
+                SacksSecond = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 2) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Sacks.ToString() : "",
+                KilosSecond = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 2) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Kilos.ToString() : "",
+                SacksThird = s.ReceptionEntry.NutTypes.Any(n => n.NutType1== 3) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Sacks.ToString() : "",
+                KilosThird = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 3) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Kilos.ToString() : "",
             }).ToList();
         }
         public List<NutTypeModel> Create(List<NutType> nutTypes) {
@@ -207,7 +211,12 @@ namespace naseNut.WebApi.Models
             public int WalnutNumber { get; set; }
             public double Performance { get; set; }
             public double TotalWeightOfEdibleNuts { get; set; }
-            public List<NutTypeModel> NutTypes { get; set; }
+            public string SacksFirst{ get; set; }
+            public string KilosFirst{ get; set; }
+            public string SacksSecond{ get; set; }
+            public string KilosSecond { get; set; }
+            public string SacksThird { get; set; }
+            public string KilosThird { get; set; }
         }
         public class ReceptionEntryModel
         {
