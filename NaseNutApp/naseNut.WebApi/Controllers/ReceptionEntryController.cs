@@ -31,8 +31,6 @@ namespace naseNut.WebApi.Controllers
                     ReceivedFromField = m.ReceivedFromField,
                     FieldName = m.FieldName,
                     CarRegistration = m.CarRegistration,
-                    EntryDate = m.EntryDate == "" ? DateTime.Now : m.EntryDate.ConvertToDate(),
-                    IssueDate = m.IssueDate,
                     HeatHoursDtrying = m.HeatHoursDrying,
                     HumidityPercent = m.HumidityPercent,
                     Observations = m.Observations,

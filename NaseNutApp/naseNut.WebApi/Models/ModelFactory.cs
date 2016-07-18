@@ -307,8 +307,8 @@ namespace naseNut.WebApi.Models
                 ReceivedFromField = r.ReceivedFromField,
                 FieldName = r.FieldName,
                 CarRegistration = r.CarRegistration,
-                EntryDate = r.EntryDate,
-                IssueDate = r.IssueDate,
+                EntryDate = r.ReceptionEntry.DateEntry,
+                IssueDate = r.ReceptionEntry.DateIssue,
                 HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.HumidityPercent,
                 Observations = r.Observations,
@@ -355,8 +355,8 @@ namespace naseNut.WebApi.Models
                 ReceivedFromField = reception.ReceivedFromField,
                 FieldName = reception.FieldName,
                 CarRegistration = reception.CarRegistration,
-                EntryDate = reception.EntryDate,
-                IssueDate = reception.IssueDate,
+                EntryDate = reception.ReceptionEntry.DateEntry,
+                IssueDate = reception.ReceptionEntry.DateIssue,
                 HeatHoursDrying = reception.HeatHoursDtrying,
                 HumidityPercent = reception.HumidityPercent,
                 Observations = reception.Observations,
@@ -381,19 +381,19 @@ namespace naseNut.WebApi.Models
         {
             return receptionEntries.Select(r => new ProducerReportModel
             {
-                Id = r.Producer.Id,
-                Folio = r.Receptions.ToList().Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
+                DateReceptionCapture = r.DateEntry,
+                Variety = r.Variety.Variety1,
+                FieldName = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(g => g.FieldName)) : "",
                 Cylinder = r.Cylinder.CylinderName,
-                DateReceptionCapture = r.Receptions.ToList().Count != 0 ? r.Receptions.First().EntryDate.ToString() : "",
-                DateGrillCapture = r.Receptions.Select(re => re.Grills.First()).First().DateCapture.ToString(),
-                KgsOrigen = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.Remissions.Select(g => g.Quantity)).Sum() : 0,
-                KilosFirst = r.Receptions.ToList().Count != 0  ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Kilos)).Sum() : 0,
-                KilosSecond = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Kilos)).Sum() : 0,
-                SacksP = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Sacks)).Sum() : 0,
-                SacksS = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Sacks)).Sum() : 0,
-                KilosTotal = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.Grills.Select(g => g.Kilos)).Sum() : 0,
-                Variety = r.Variety.Variety1
-
+                Folio = r.Receptions.ToList().Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
+                ProcessDate = r.DateIssue != null ? r.DateIssue : null,
+                KgsOrigen = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Remissions.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Remissions.Select(g => g.Quantity)).Sum() : 0,
+                KilosFirst = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Kilos)).Sum() : 0,
+                KilosSecond = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Kilos)).Sum() : 0,
+                SacksP = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Sacks)).Sum() : 0,
+                SacksS = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Sacks)).Sum() : 0,
+                KilosTotal = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Select(g => g.Kilos)).Sum() : 0,
+                
             }).ToList();
         }
 
@@ -481,8 +481,9 @@ namespace naseNut.WebApi.Models
                 public string Variety { get; set; }
                 public string Remission { get; set; }
                 public string Cylinder { get; set; }
-                public string DateReceptionCapture { get; set; }
-                public string DateGrillCapture { get; set; }
+                public string FieldName { get; set; }
+                public DateTime DateReceptionCapture { get; set; }
+                public DateTime? ProcessDate { get; set; }
                 public double KgsOrigen { get; set; }
                 public int SacksP { get; set; } = 0;
                 public int SacksS { get; set; } = 0;

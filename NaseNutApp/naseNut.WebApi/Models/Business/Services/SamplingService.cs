@@ -19,10 +19,20 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var samplingRepository = new SamplingRepository(db);
                     var nutTypeRepository = new NutTypeRepository(db);
-                    var cylinder = db.Cylinders.Where(c => c.ReceptionEntries.Any(r => r.Id == receptionEntryId)).First();
+                    var cylinderRepository = new CylinderRepository(db);
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
+
+                    var receptionEntry = receptionEntryRepository.GetById(receptionEntryId);
+                    var cylinder = cylinderRepository.GetById(receptionEntry.Cylinder.Id);
+
+                    receptionEntry.DateIssue = DateTime.Now;
+                    db.ReceptionEntries.Attach(receptionEntry);
+                    db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
+
                     cylinder.Active = true;
                     db.Cylinders.Attach(cylinder);
                     db.Entry(cylinder).Property(p => p.Active).IsModified = true;
+
                     foreach (var item in nutTypes)
                     {
                         nutTypeRepository.Insert(item);
@@ -62,11 +72,19 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var samplingRepository = new SamplingRepository(db);
                     var cylinderRepository = new CylinderRepository(db);
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
                     var sampling = samplingRepository.GetById(id);
                     var cylinder = cylinderRepository.GetById(sampling.ReceptionEntry.Cylinder.Id);
+                    var receptionEntry = receptionEntryRepository.GetById(sampling.ReceptionEntry.Id);
+
+                    receptionEntry.DateIssue = null;
+                    db.ReceptionEntries.Attach(receptionEntry);
+                    db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
+
                     cylinder.Active = false;
                     db.Cylinders.Attach(cylinder);
                     db.Entry(cylinder).Property(p => p.Active).IsModified = true;
+
                     samplingRepository.Delete(sampling);
                     return db.SaveChanges() >= 1;
                 }

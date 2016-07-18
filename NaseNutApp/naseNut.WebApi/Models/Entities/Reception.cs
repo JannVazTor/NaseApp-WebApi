@@ -25,8 +25,6 @@ namespace naseNut.WebApi.Models.Entities
         public double ReceivedFromField { get; set; }
         public string FieldName { get; set; }
         public string CarRegistration { get; set; }
-        public System.DateTime EntryDate { get; set; }
-        public Nullable<System.DateTime> IssueDate { get; set; }
         public Nullable<double> HeatHoursDtrying { get; set; }
         public Nullable<double> HumidityPercent { get; set; }
         public string Observations { get; set; }

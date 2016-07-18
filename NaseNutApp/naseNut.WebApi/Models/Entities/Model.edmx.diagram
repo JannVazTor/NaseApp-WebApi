@@ -19,23 +19,23 @@
         <EntityTypeShape EntityType="NASE_DB_WModel.GrillIssue" Width="1.5" PointX="0.75" PointY="13.125" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Humidity" Width="1.5" PointX="5.25" PointY="5.25" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Producer" Width="1.5" PointX="0.75" PointY="7.25" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.ReceptionEntry" Width="1.5" PointX="3" PointY="3.375" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Remission" Width="1.5" PointX="7.5" PointY="10.875" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Variety" Width="1.5" PointX="0.75" PointY="4" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_cylinder" />
         <AssociationConnector Association="NASE_DB_WModel.fk_grill_grillIssues" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.NutType" Width="1.5" PointX="3" PointY="8.625" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Sampling" Width="1.5" PointX="10.25" PointY="10.25" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_sampling_grill" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.ReceptionEntry" Width="1.5" PointX="3" PointY="3" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_cylinder" />
         <AssociationConnector Association="NASE_DB_WModel.fk_humidity_producer" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_nuttype_producer" />
         <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_producer" />
         <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_variety" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_sampling_receptionEntry" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Reception" Width="1.5" PointX="5.25" PointY="8.875" />
         <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
         <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.NutType" Width="1.5" PointX="3" PointY="8.625" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Sampling" Width="1.5" PointX="10.25" PointY="10.25" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_sampling_grill" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_nuttype_producer" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_sampling_receptionEntry" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

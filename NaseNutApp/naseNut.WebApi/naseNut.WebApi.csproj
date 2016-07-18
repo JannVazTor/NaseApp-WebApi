@@ -228,6 +228,7 @@
     <Compile Include="Controllers\ReceptionController.cs" />
     <Compile Include="Controllers\ReceptionEntryController.cs" />
     <Compile Include="Controllers\RemissionController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SamplingController.cs" />
     <Compile Include="Controllers\VarietyController.cs" />
