@@ -8,6 +8,7 @@ using System.Web.Http.ModelBinding;
 using System.Web.Http.Routing;
 using naseNut.WebApi.Models.Entities;
 using naseNut.WebApi.Models.Enum;
+using naseNut.WebApi.Models.Business.Services;
 
 namespace naseNut.WebApi.Models
 {
@@ -199,56 +200,40 @@ namespace naseNut.WebApi.Models
         }
         public List<ReportingProcessModel> CreateReport(List<Variety> varieties)
         {
-            return varieties.Select(v => new ReportingProcessModel
-            {
-                SacksFirstSmall = GetSacks(v.Grills.ToList(), NutSizes.Small , (int)GrillQuality.First),
-                SacksFirstMedium = GetSacks(v.Grills.ToList(), NutSizes.Medium , (int)GrillQuality.Second),
-                SacksFirstLarge = GetSacks(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.Third),
-                KilogramsFirstSmall = GetKilograms(v.Grills.ToList(), NutSizes.Small, (int)GrillQuality.First),
-                KilogramsFirstMedium = GetKilograms(v.Grills.ToList(), NutSizes.Medium, (int)GrillQuality.First),
-                KilogramsFirstLarge = GetKilograms(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.First),
-                KilogramsSecond = GetKilograms(v.Grills.ToList(), null,(int)GrillQuality.Third)
-            }).ToList();
-        }
-        public int GetSacks(List<Grill> grills, NutSizes type, int quality) {
-            var sacks = 0;
-            switch (type)
-            {
-                case NutSizes.Small:
-                    sacks = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 127 && sa.Grill.Quality == quality).Select(s => s.WalnutNumber)).Sum();
-                    break;
-                case NutSizes.Medium:
-                    sacks = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 116 && sa.WalnutNumber <= 126 && sa.Grill.Quality == quality).Select(s => s.WalnutNumber)).Sum();
-                    break;
-                case NutSizes.Large:
-                    sacks = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 82 && sa.WalnutNumber <= 115 && sa.Grill.Quality == quality).Select(s => s.WalnutNumber)).Sum();
-                    break;
-                default:
-                    break;
-            }
-            return sacks;
-        }
-        public double GetKilograms(List<Grill> grills, NutSizes? type, int quality) {
-            var kilograms = 0.0;
-            if (type == null) return grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 127 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum(); 
-            switch (type)
-            {
-                case NutSizes.Small:
-                    kilograms = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 127 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum();
-                    break;
-                case NutSizes.Medium:
-                    kilograms = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 116 && sa.WalnutNumber <= 126 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum();
-                    break;
-                case NutSizes.Large:
-                    kilograms = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 82 && sa.WalnutNumber <= 115 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum();
-                    break;
-                default:
-                    break;
-            }
-            return kilograms;
+            var reportService = new ReportService();
+            return (from v in varieties
+                   let sacksFirstSmall = reportService.GetSacks(v.Grills.ToList(), NutSizes.Small, (int)GrillQuality.First)
+                   let sacksFirstMedium = reportService.GetSacks(v.Grills.ToList(), NutSizes.Medium, (int)GrillQuality.Second)
+                   let sacksFirstLarge = reportService.GetSacks(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.Third)
+                   let kilogramsFirstSmall = reportService.GetKilograms(v.Grills.ToList(), NutSizes.Small, (int)GrillQuality.First)
+                   let kilogramsFirstMedium = reportService.GetKilograms(v.Grills.ToList(), NutSizes.Medium, (int)GrillQuality.First)
+                   let kilogramsFirstLarge = reportService.GetKilograms(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.First)
+                   let totalkilogramsSecond = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.Second)
+                   let totalkilogramsThird = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.Third)
+                   let totalKilogramsFirst = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.First)
+                   let totalKilos = totalKilogramsFirst + totalkilogramsSecond + totalkilogramsThird
+                   let variety = v.Variety1
+                    select new ReportingProcessModel
+                   {
+                       SacksFirstSmall = sacksFirstSmall,
+                       SacksFirstMedium = sacksFirstMedium,
+                       SacksFirstLarge = sacksFirstLarge,
+                       KilogramsFirstSmall = kilogramsFirstSmall,
+                       KilogramsFirstMedium = kilogramsFirstMedium,
+                       KilogramsFirstLarge = kilogramsFirstLarge,
+                       TotalKilogramsSecond = totalkilogramsSecond,
+                       TotalKilogramsThird = totalkilogramsThird,
+                       TotalKilogramsFirst = totalKilogramsFirst,
+                       TotalKilos = totalKilos,
+                       PercentageFirst = (totalKilogramsFirst == 0 || totalKilos == 0) ? "0%" : ((totalKilogramsFirst / totalKilos) * 100).ToString() + "%",
+                       PercentageSecond = (totalkilogramsSecond == 0 || totalKilos == 0) ? "0%" : ((totalkilogramsSecond / totalKilos) * 100).ToString() + "%",
+                       PercentageThird = (totalkilogramsThird == 0 || totalKilos == 0) ? "0%" : ((totalkilogramsThird / totalKilos) * 100).ToString() + "%",
+                       Variety = variety
+                    }).ToList();
         }
         public class ReportingProcessModel
         {
+            public string Variety { get; set; }
             public int SacksFirstSmall { get; set; }
             public int SacksFirstMedium { get; set; }
             public int SacksFirstLarge { get; set; }
@@ -256,13 +241,12 @@ namespace naseNut.WebApi.Models
             public double KilogramsFirstMedium { get; set; }
             public double KilogramsFirstLarge { get; set; }
             public double TotalKilogramsFirst { get; set; }
-            public double KilogramsSecond { get; set; }
-            public double KilogramsThird { get; set; }
+            public double TotalKilogramsSecond { get; set; }
+            public double TotalKilogramsThird { get; set; }
             public double TotalKilos { get; set; }
             public string PercentageFirst { get; set; }
             public string PercentageSecond { get; set; }
             public string PercentageThird { get; set; }
-
         }
         public class NutTypeModel
         {
@@ -452,24 +436,22 @@ namespace naseNut.WebApi.Models
 
            return receptionEntries.Select(r => new ProducerReportModel
             {
-                DateReceptionCapture = r.DateEntry,
-                Variety = r.Variety.Variety1,
-                FieldName = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(g => g.FieldName)) : "",
-                Cylinder = r.Cylinder.CylinderName,
-                Folio = r.Receptions.ToList().Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
-                Cylinder = r.Cylinder.CylinderName,
-                DateReceptionCapture = r.Receptions.ToList().Count != 0 ? r.Receptions.First().EntryDate.ToString() : "",
-                ProcessDate = r.Receptions.Select(x=> x.EntryDate).First().ToString(),
-                KgsOrigen = r.Receptions.ToList().Count != 0 ? r.Receptions.Select(x=> x.ReceivedFromField).Sum() : 0,
-                KilosFirst = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
-                KilosSecond = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
-                SacksP = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks)).Sum() : 0,
-                SacksS = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks)).Sum() : 0,
-                KilosTotal = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Select(g => g.Kilos * g.Sacks)).Sum() : 0,
-                Variety = r.Variety.Variety1,
-                Remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString() 
-                
-            }).ToList();
+               //DateReceptionCapture = r.DateEntry,
+               //Variety = r.Variety.Variety1,
+               //FieldName = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(g => g.FieldName)) : "",
+               //Cylinder = r.Cylinder.CylinderName,
+               //Folio = r.Receptions.ToList().Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
+               //DateReceptionCapture = r.Receptions.ToList().Count != 0 ? r.Receptions.First().EntryDate.ToString() : "",
+               //ProcessDate = r.Receptions.Select(x => x.EntryDate).First().ToString(),
+               //KgsOrigen = r.Receptions.ToList().Count != 0 ? r.Receptions.Select(x => x.ReceivedFromField).Sum() : 0,
+               //KilosFirst = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
+               //KilosSecond = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
+               //SacksP = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks)).Sum() : 0,
+               //SacksS = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks)).Sum() : 0,
+               //KilosTotal = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Select(g => g.Kilos * g.Sacks)).Sum() : 0,
+               //Variety = r.Variety.Variety1,
+               //Remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString()
+           }).ToList();
         }
 
         public class ReceptionModel
@@ -556,7 +538,8 @@ namespace naseNut.WebApi.Models
                 public string Variety { get; set; }
                 public string Remission { get; set; }
                 public string Cylinder { get; set; }
-                public string DateReceptionCapture { get; set; }
+            public string FieldName { get; set; }
+            public DateTime DateReceptionCapture { get; set; }
                 public string ProcessDate { get; set; }
                 public double KgsOrigen { get; set; }
                 public int? SacksP { get; set; } = 0;

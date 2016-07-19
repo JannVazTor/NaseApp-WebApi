@@ -270,6 +270,7 @@
     <Compile Include="Models\Business\Services\ReceptionEntryService.cs" />
     <Compile Include="Models\Business\Services\ReceptionService.cs" />
     <Compile Include="Models\Business\Services\RemissionService.cs" />
+    <Compile Include="Models\Business\Services\ReportService.cs" />
     <Compile Include="Models\Business\Services\RoleService.cs" />
     <Compile Include="Models\Business\Services\SamplingService.cs" />
     <Compile Include="Models\Business\Services\UserService.cs" />
