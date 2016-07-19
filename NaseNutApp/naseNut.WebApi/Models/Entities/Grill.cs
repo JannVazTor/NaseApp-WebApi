@@ -29,12 +29,14 @@ namespace naseNut.WebApi.Models.Entities
         public double Kilos { get; set; }
         public Nullable<int> GrillIssuesId { get; set; }
         public int Quality { get; set; }
-        public string Variety { get; set; }
-        public string Producer { get; set; }
         public string FieldName { get; set; }
         public bool Status { get; set; }
+        public int ProducerId { get; set; }
+        public int VarietyId { get; set; }
     
         public virtual GrillIssue GrillIssue { get; set; }
+        public virtual Producer Producer { get; set; }
+        public virtual Variety Variety { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sampling> Samplings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

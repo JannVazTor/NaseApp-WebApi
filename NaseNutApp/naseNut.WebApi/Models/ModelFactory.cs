@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.Routing;
 using naseNut.WebApi.Models.Entities;
+using naseNut.WebApi.Models.Enum;
 
 namespace naseNut.WebApi.Models
 {
@@ -97,8 +98,8 @@ namespace naseNut.WebApi.Models
                 Sacks = g.Sacks,
                 Kilos = g.Kilos,
                 Quality = g.Quality,
-                Variety = g.Variety,
-                Producer = g.Producer,
+                Variety = g.Variety.Variety1,
+                Producer = g.Producer.ProducerName,
                 FieldName = g.FieldName,
                 Status = g.Status,
                 Sampling = g.Samplings.Count != 0 ? Create(g.Samplings.OrderBy(d => d.DateCapture).FirstOrDefault()) : null
@@ -167,6 +168,7 @@ namespace naseNut.WebApi.Models
                 Cylinder = r.Cylinder.CylinderName
             }).ToList();
         }
+
         public List<SamplingReceptionModel> CreateReception(List<Sampling> samplings)
         {
             return samplings.Select(s => new SamplingReceptionModel
@@ -194,6 +196,73 @@ namespace naseNut.WebApi.Models
                 Sacks = (int)n.Sacks,
                 Kilos = (int)n.Kilos
             }).ToList();
+        }
+        public List<ReportingProcessModel> CreateReport(List<Variety> varieties)
+        {
+            return varieties.Select(v => new ReportingProcessModel
+            {
+                SacksFirstSmall = GetSacks(v.Grills.ToList(), NutSizes.Small , (int)GrillQuality.First),
+                SacksFirstMedium = GetSacks(v.Grills.ToList(), NutSizes.Medium , (int)GrillQuality.Second),
+                SacksFirstLarge = GetSacks(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.Third),
+                KilogramsFirstSmall = GetKilograms(v.Grills.ToList(), NutSizes.Small, (int)GrillQuality.First),
+                KilogramsFirstMedium = GetKilograms(v.Grills.ToList(), NutSizes.Medium, (int)GrillQuality.First),
+                KilogramsFirstLarge = GetKilograms(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.First),
+                KilogramsSecond = GetKilograms(v.Grills.ToList(), null,(int)GrillQuality.Third)
+            }).ToList();
+        }
+        public int GetSacks(List<Grill> grills, NutSizes type, int quality) {
+            var sacks = 0;
+            switch (type)
+            {
+                case NutSizes.Small:
+                    sacks = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 127 && sa.Grill.Quality == quality).Select(s => s.WalnutNumber)).Sum();
+                    break;
+                case NutSizes.Medium:
+                    sacks = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 116 && sa.WalnutNumber <= 126 && sa.Grill.Quality == quality).Select(s => s.WalnutNumber)).Sum();
+                    break;
+                case NutSizes.Large:
+                    sacks = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 82 && sa.WalnutNumber <= 115 && sa.Grill.Quality == quality).Select(s => s.WalnutNumber)).Sum();
+                    break;
+                default:
+                    break;
+            }
+            return sacks;
+        }
+        public double GetKilograms(List<Grill> grills, NutSizes? type, int quality) {
+            var kilograms = 0.0;
+            if (type == null) return grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 127 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum(); 
+            switch (type)
+            {
+                case NutSizes.Small:
+                    kilograms = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 127 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum();
+                    break;
+                case NutSizes.Medium:
+                    kilograms = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 116 && sa.WalnutNumber <= 126 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum();
+                    break;
+                case NutSizes.Large:
+                    kilograms = grills.SelectMany(g => g.Samplings.Where(sa => sa.WalnutNumber >= 82 && sa.WalnutNumber <= 115 && sa.Grill.Quality == quality).Select(s => s.Grill.Kilos)).Sum();
+                    break;
+                default:
+                    break;
+            }
+            return kilograms;
+        }
+        public class ReportingProcessModel
+        {
+            public int SacksFirstSmall { get; set; }
+            public int SacksFirstMedium { get; set; }
+            public int SacksFirstLarge { get; set; }
+            public double KilogramsFirstSmall { get; set; }
+            public double KilogramsFirstMedium { get; set; }
+            public double KilogramsFirstLarge { get; set; }
+            public double TotalKilogramsFirst { get; set; }
+            public double KilogramsSecond { get; set; }
+            public double KilogramsThird { get; set; }
+            public double TotalKilos { get; set; }
+            public string PercentageFirst { get; set; }
+            public string PercentageSecond { get; set; }
+            public string PercentageThird { get; set; }
+
         }
         public class NutTypeModel
         {

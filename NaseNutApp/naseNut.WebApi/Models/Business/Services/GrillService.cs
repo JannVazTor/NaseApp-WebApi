@@ -165,11 +165,11 @@ namespace naseNut.WebApi.Models.Business.Services
                     grill.DateCapture = model.DateCapture.ConvertToDate(); 
                     grill.FieldName = model.FieldName;
                     grill.Kilos = model.Kilos;
-                    grill.Producer = model.Producer;
+                    grill.ProducerId = model.ProducerId;
                     grill.Quality = model.Quality;
                     grill.Sacks = model.Sacks;
                     grill.Size = model.Size;
-                    grill.Variety = model.Variety;
+                    grill.VarietyId = model.VarietyId;
 
 
                     var grillRepository = new GrillRepository(db);

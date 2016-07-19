@@ -35,11 +35,11 @@ namespace naseNut.WebApi.Models.Entities
         public virtual ICollection<Humidity> Humidities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NutType> NutTypes { get; set; }
-        public virtual Producer Producer { get; set; }
-        public virtual Variety Variety { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sampling> Samplings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
+        public virtual Producer Producer { get; set; }
+        public virtual Variety Variety { get; set; }
     }
 }

@@ -12,19 +12,15 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Sampling
+    public partial class NutSize
     {
         public int Id { get; set; }
-        public System.DateTime DateCapture { get; set; }
-        public double SampleWeight { get; set; }
-        public double HumidityPercent { get; set; }
-        public int WalnutNumber { get; set; }
-        public double Performance { get; set; }
-        public double TotalWeightOfEdibleNuts { get; set; }
-        public Nullable<int> GrillId { get; set; }
-        public Nullable<int> ReceptionEntryId { get; set; }
+        public int Small { get; set; }
+        public int MediumStart { get; set; }
+        public int MediumEnd { get; set; }
+        public int LargeStart { get; set; }
+        public int LargeEnd { get; set; }
     
-        public virtual ReceptionEntry ReceptionEntry { get; set; }
-        public virtual Grill Grill { get; set; }
+        public virtual Variety Variety { get; set; }
     }
 }

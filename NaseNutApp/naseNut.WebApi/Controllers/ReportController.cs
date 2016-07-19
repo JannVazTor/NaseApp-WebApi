@@ -29,5 +29,19 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el reporte de productores." + "\n" + "Detalles del Error: " + ex));
             }
         }
+        [HttpGet]
+        [Route("reportingProcess")]
+        public IHttpActionResult GetReportingProcess() {
+            try
+            {
+                var varieties = _db.Varieties.ToList();
+                return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(varieties)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener el reporte de proceso." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

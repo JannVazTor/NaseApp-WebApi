@@ -317,6 +317,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\NutSize.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\NutType.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -341,6 +344,7 @@
     <Compile Include="Models\Entities\Variety.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enum\Enum.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

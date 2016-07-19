@@ -26,7 +26,14 @@ namespace naseNut.WebApi.Controllers
                 var varietyService = new VarietyService();
                 var variety = new Variety
                 {
-                    Variety1 = model.VarietyName
+                    Variety1 = model.VarietyName,
+                    NutSize = new NutSize {
+                        Small = model.Small,
+                        MediumStart = model.MediumStart,
+                        MediumEnd = model.MediumEnd,
+                        LargeStart = model.LargeStart,
+                        LargeEnd = model.LargeEnd
+                    }
                 };
                 var saved = varietyService.Save(variety);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

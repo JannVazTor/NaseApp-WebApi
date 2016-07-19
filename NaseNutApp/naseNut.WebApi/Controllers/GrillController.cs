@@ -9,6 +9,8 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
+using naseNut.WebApi.Models.Enum;
+
 namespace naseNut.WebApi.Controllers
 {
     [RoutePrefix("api/grill")]
@@ -32,8 +34,8 @@ namespace naseNut.WebApi.Controllers
                     Sacks = model.Sacks,
                     Kilos = model.Kilos,
                     Quality = model.Quality,
-                    Variety = model.Variety,
-                    Producer = model.Producer,
+                    VarietyId = model.VarietyId,
+                    ProducerId = model.ProducerId,
                     FieldName = model.FieldName,
                     Status = true
                 };

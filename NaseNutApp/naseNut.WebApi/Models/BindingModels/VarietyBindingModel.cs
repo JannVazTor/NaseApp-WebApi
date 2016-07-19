@@ -10,5 +10,15 @@ namespace naseNut.WebApi.Models.BindingModels
     {
         [Required]
         public string VarietyName { get; set; }
+        [Required]
+        public int Small { get; set; }
+        [Required]
+        public int MediumStart { get; set; }
+        [Required]
+        public int MediumEnd { get; set; }
+        [Required]
+        public int LargeStart { get; set; }
+        [Required]
+        public int LargeEnd { get; set; }
     }
 }

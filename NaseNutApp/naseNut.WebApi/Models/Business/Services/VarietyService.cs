@@ -15,8 +15,7 @@ namespace naseNut.WebApi.Models.Business.Services
             {
                 using (var db = new NaseNEntities())
                 {
-                    var varietyRepository = new VarietyRepository(db);
-                    varietyRepository.Insert(variety);
+                    db.Varieties.Add(variety);
                     return db.SaveChanges() >= 1;
                 }
             }

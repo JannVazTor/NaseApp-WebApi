@@ -19,9 +19,9 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int Quality { get; set; }
         [Required]
-        public string Variety { get; set; }
+        public int VarietyId { get; set; }
         [Required]
-        public string Producer { get; set; }
+        public int ProducerId { get; set; }
         [Required]
         public string FieldName { get; set; }
     }
