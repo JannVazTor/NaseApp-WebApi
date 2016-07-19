@@ -448,20 +448,26 @@ namespace naseNut.WebApi.Models
         }
         public List<ProducerReportModel> CreateReport(List<ReceptionEntry> receptionEntries)
         {
-            return receptionEntries.Select(r => new ProducerReportModel
+           Random num = new Random();
+
+           return receptionEntries.Select(r => new ProducerReportModel
             {
                 DateReceptionCapture = r.DateEntry,
                 Variety = r.Variety.Variety1,
                 FieldName = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(g => g.FieldName)) : "",
                 Cylinder = r.Cylinder.CylinderName,
                 Folio = r.Receptions.ToList().Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
-                ProcessDate = r.DateIssue != null ? r.DateIssue : null,
-                KgsOrigen = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Remissions.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Remissions.Select(g => g.Quantity)).Sum() : 0,
-                KilosFirst = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Kilos)).Sum() : 0,
-                KilosSecond = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Kilos)).Sum() : 0,
-                SacksP = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 1).Select(g => g.Sacks)).Sum() : 0,
-                SacksS = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Where(h => h.Size == 2).Select(g => g.Sacks)).Sum() : 0,
-                KilosTotal = r.Receptions.ToList().Count != 0 && r.Receptions.Any(g => g.Grills.ToList().Count != 0) ? r.Receptions.SelectMany(x => x.Grills.Select(g => g.Kilos)).Sum() : 0,
+                Cylinder = r.Cylinder.CylinderName,
+                DateReceptionCapture = r.Receptions.ToList().Count != 0 ? r.Receptions.First().EntryDate.ToString() : "",
+                ProcessDate = r.Receptions.Select(x=> x.EntryDate).First().ToString(),
+                KgsOrigen = r.Receptions.ToList().Count != 0 ? r.Receptions.Select(x=> x.ReceivedFromField).Sum() : 0,
+                KilosFirst = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
+                KilosSecond = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
+                SacksP = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks)).Sum() : 0,
+                SacksS = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks)).Sum() : 0,
+                KilosTotal = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Select(g => g.Kilos * g.Sacks)).Sum() : 0,
+                Variety = r.Variety.Variety1,
+                Remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString() 
                 
             }).ToList();
         }
@@ -550,15 +556,14 @@ namespace naseNut.WebApi.Models
                 public string Variety { get; set; }
                 public string Remission { get; set; }
                 public string Cylinder { get; set; }
-                public string FieldName { get; set; }
-                public DateTime DateReceptionCapture { get; set; }
-                public DateTime? ProcessDate { get; set; }
+                public string DateReceptionCapture { get; set; }
+                public string ProcessDate { get; set; }
                 public double KgsOrigen { get; set; }
-                public int SacksP { get; set; } = 0;
-                public int SacksS { get; set; } = 0;
-                public double KilosFirst { get; set; } = 0;
-                public double KilosSecond { get; set; } = 0;
-                public double KilosTotal { get; set; }
+                public int? SacksP { get; set; } = 0;
+                public int? SacksS { get; set; } = 0;
+                public double? KilosFirst { get; set; } = 0;
+                public double? KilosSecond { get; set; } = 0;
+                public double? KilosTotal { get; set; }
             }
         }
     }
