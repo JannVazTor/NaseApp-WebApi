@@ -44,6 +44,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var producers = _db.ReceptionEntries.Where(r => r.ProducerId == id).ToList();
+
                 return producers.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(producers)) : Ok();
             }
             catch (Exception ex)
