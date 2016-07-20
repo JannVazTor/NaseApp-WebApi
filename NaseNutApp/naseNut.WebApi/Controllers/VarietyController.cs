@@ -14,6 +14,7 @@ namespace naseNut.WebApi.Controllers
     [RoutePrefix("api/variety")]
     public class VarietyController : BaseApiController
     {
+        private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         public IHttpActionResult SaveVariety(AddVarietyBindingModel model)
         {
@@ -46,13 +47,11 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
         public IHttpActionResult GetAllVarieties()
         {
             try
             {
-                var varietyService = new VarietyService();
-                var varieties = varietyService.GetAll();
+                var varieties = _db.Varieties.ToList();
                 return varieties != null ? (IHttpActionResult)Ok(TheModelFactory.Create(varieties)) : Ok();
             }
             catch (Exception ex)

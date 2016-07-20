@@ -50,7 +50,6 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
         public IHttpActionResult GetAllGrills()
         {
             try

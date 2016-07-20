@@ -103,7 +103,11 @@ namespace naseNut.WebApi.Models
                 Producer = g.Producer.ProducerName,
                 FieldName = g.FieldName,
                 Status = g.Status,
-                Sampling = g.Samplings.Count != 0 ? Create(g.Samplings.OrderBy(d => d.DateCapture).FirstOrDefault()) : null
+                SampleWeight = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
+                HumidityPercent = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString(): "",
+                WalnutNumber = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().WalnutNumber.ToString():"",
+                Performance = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.ToString() : "",
+                TotalWeightOfEdibleNuts = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
             }).ToList();
         }
 
@@ -153,7 +157,12 @@ namespace naseNut.WebApi.Models
             return varieties.Select(v => new VarietyModel
             {
                 Id = v.Id,
-                VarietyName = v.Variety1
+                VarietyName = v.Variety1,
+                Small = v.NutSize.Small,
+                MediumStart = v.NutSize.MediumStart,
+                MediumEnd = v.NutSize.MediumEnd,
+                LargeStart = v.NutSize.LargeStart,
+                LargeEnd = v.NutSize.LargeEnd
             }).ToList();
         }
 
@@ -335,7 +344,13 @@ namespace naseNut.WebApi.Models
             public string Producer { get; set; }
             public string FieldName { get; set; }
             public bool Status { get; set; }
+            public int MyProperty { get; set; }
             public SamplingGrillModel Sampling { get; set; }
+            public string SampleWeight { get; internal set; }
+            public string HumidityPercent { get; internal set; }
+            public string WalnutNumber { get; internal set; }
+            public string Performance { get; internal set; }
+            public string TotalWeightOfEdibleNuts { get; internal set; }
         }
 
         public class CylinderModel
@@ -348,6 +363,11 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string VarietyName { get; set; }
+            public int Small { get; set; }
+            public int MediumStart { get; set; }
+            public int MediumEnd { get; set; }
+            public int LargeStart { get; set; }
+            public int LargeEnd { get; set; }
         }
 
         public List<ReceptionModel> Create(List<Reception> receptions)
