@@ -34,7 +34,8 @@ namespace naseNut.WebApi.Controllers
                 var receptionEntryService = new ReceptionEntryService();
                 var receptionEntry = receptionEntryService.GetById(model.ReceptionEntryId);
                 var saved = humidityService.Save(humidity, receptionEntry);
-                return saved ? (IHttpActionResult)Ok() : BadRequest();
+                var humidities = _db.Humidities.Where(x => x.ReceptionEntryId == model.ReceptionEntryId).ToList();
+                return saved ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -59,6 +60,21 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult GetAllHumiditiesbyId(int id)
+        {
+            try
+            {
+                var humidities = _db.Humidities.Where(x=> x.ReceptionEntryId == id).ToList();
+                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los registros de humedad." + "\n" + "Detalles del Error: " + ex));
             }
         }
 
