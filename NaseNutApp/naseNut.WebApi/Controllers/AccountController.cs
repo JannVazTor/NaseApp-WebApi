@@ -22,6 +22,8 @@ using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
 using naseNut.WebApi.Providers;
 using naseNut.WebApi.Results;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace naseNut.WebApi.Controllers
 {
@@ -210,7 +212,6 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar al usuario." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -330,3 +331,5 @@ namespace naseNut.WebApi.Controllers
         #endregion
     }
 }
+
+ 

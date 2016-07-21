@@ -151,7 +151,6 @@ namespace naseNut.WebApi.Models
                 Grills = Create(i.Grills.Where(g => g.GrillIssuesId == i.Id).ToList())
             }).ToList();
         }
-
         public List<VarietyModel> Create(List<Variety> varieties)
         {
             return varieties.Select(v => new VarietyModel
@@ -345,7 +344,6 @@ namespace naseNut.WebApi.Models
             public string FieldName { get; set; }
             public bool Status { get; set; }
             public int MyProperty { get; set; }
-            public SamplingGrillModel Sampling { get; set; }
             public string SampleWeight { get; internal set; }
             public string HumidityPercent { get; internal set; }
             public string WalnutNumber { get; internal set; }
