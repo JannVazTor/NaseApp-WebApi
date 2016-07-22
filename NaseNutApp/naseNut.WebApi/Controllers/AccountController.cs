@@ -154,6 +154,7 @@ namespace naseNut.WebApi.Controllers
         }
 
         // POST api/Account/Register
+        [Authorize(Roles = "admin")]
         [AllowAnonymous]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
@@ -177,7 +178,7 @@ namespace naseNut.WebApi.Controllers
 
             return added.Succeeded ?(IHttpActionResult)Ok():InternalServerError();
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("getAll")]
         public IHttpActionResult GetAllAccounts()
@@ -193,7 +194,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los usuarios." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteUserAccount(string id)

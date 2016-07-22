@@ -10,6 +10,7 @@ using naseNut.WebApi.Models.BindingModels;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin,remRecepUser")]
     [RoutePrefix("api/remission")]
     public class RemissionController : BaseApiController
     {

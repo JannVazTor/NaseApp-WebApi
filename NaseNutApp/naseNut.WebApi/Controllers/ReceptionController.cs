@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin,remRecepUser")]
     [RoutePrefix("api/reception")]
     public class ReceptionController : BaseApiController
     {

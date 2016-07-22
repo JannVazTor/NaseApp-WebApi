@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin,remRecepUser")]
     [RoutePrefix("api/receptionEntry")]
     public class ReceptionEntryController : BaseApiController
     {

@@ -11,6 +11,7 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/variety")]
     public class VarietyController : BaseApiController
     {

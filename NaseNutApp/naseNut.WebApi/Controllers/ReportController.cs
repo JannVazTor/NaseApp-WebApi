@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/report")]
     public class ReportController : BaseApiController
     {

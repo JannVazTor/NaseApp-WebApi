@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin,humidityUser")]
     [RoutePrefix("api/humidity")]
     public class HumidityController : BaseApiController
     {
