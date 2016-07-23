@@ -26,17 +26,15 @@ namespace naseNut.WebApi.Controllers
             }
             try
             {
-                var humidityService = new HumidityService();
                 var humidity = new Humidity
                 {
                    HumidityPercent = model.HumidityPercent,
-                   DateCapture = model.DateCapture.ConvertToDate()
+                   DateCapture = DateTime.Now,
+                   ReceptionEntryId = model.ReceptionEntryId
                 };
-                var receptionEntryService = new ReceptionEntryService();
-                var receptionEntry = receptionEntryService.GetById(model.ReceptionEntryId);
-                var saved = humidityService.Save(humidity, receptionEntry);
-                var humidities = _db.Humidities.Where(x => x.ReceptionEntryId == model.ReceptionEntryId).ToList();
-                return saved ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : BadRequest();
+                var humidityService = new HumidityService();
+                var saved = humidityService.Save(humidity);
+                return saved ? (IHttpActionResult)Ok() : Conflict();
             }
             catch (Exception ex)
             {
@@ -63,14 +61,15 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
         [HttpGet]
-        [Route("{id}")]
-        public IHttpActionResult GetAllHumiditiesbyId(int id)
+        [Route("getByReceptionEntry/{id}")]
+        public IHttpActionResult GetAllHumidities(int id)
         {
             try
             {
-                var humidities = _db.Humidities.Where(x=> x.ReceptionEntryId == id).ToList();
-                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : Ok();
+                var humidities = _db.ReceptionEntries.Where(r => r.Id == id).FirstOrDefault();
+                return humidities != null ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : Ok();
             }
             catch (Exception ex)
             {
@@ -78,15 +77,12 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los registros de humedad." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
         [HttpGet]
-        [Route("getAll")]
-        public IHttpActionResult GetAllHumidities()
-        {
+        public IHttpActionResult GetAll() {
             try
             {
                 var humidities = _db.Humidities.ToList();
-                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateC(humidities)) : Ok();
+                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateH(humidities)) : Ok();
             }
             catch (Exception ex)
             {

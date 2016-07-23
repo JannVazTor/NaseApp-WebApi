@@ -50,16 +50,6 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-        public List<HumidityModel> Create(List<Humidity> humidity)
-        {
-            return humidity.Select(h => new HumidityModel
-            {
-                Id = h.Id,
-                HumidityPercent = h.HumidityPercent,
-                DateCapture = h.DateCapture
-            }).ToList();
-        }
-
         public List<RoleModel> Create(List<AspNetRole> roles)
         {
             return roles.Select(r => new RoleModel
@@ -389,22 +379,39 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-        public List<HumiditiesModel> CreateC(List<Humidity> humidities)
+        public HumiditiesModel Create(ReceptionEntry receptionEntry)
         {
-            return humidities.Select(r => new HumiditiesModel
+            return new HumiditiesModel
             {
-                Id = r.Id,
-                HumidityPercentage = r.HumidityPercent,
-                DateCapture = r.DateCapture,
-                CylinderName = r.ReceptionEntry.Cylinder.CylinderName,
-                Variety = r.ReceptionEntry.Variety.Variety1,
-                ProducerName = r.ReceptionEntry.Producer.ProducerName,
-                Tons = r.ReceptionEntry.Receptions.Sum(rec => rec.ReceivedFromField),
-                EntryDate = r.ReceptionEntry.DateEntry,
-                Folio = string.Join(", ", r.ReceptionEntry.Receptions.Select(re => re.Folio))
+                Humidities = Create(receptionEntry.Humidities.ToList()),
+                CylinderName = receptionEntry.Cylinder.CylinderName,
+                FieldName = string.Join(", ", receptionEntry.Receptions.Select(re => re.FieldName)),
+                Tons = receptionEntry.Receptions.Sum(rec => rec.ReceivedFromField),
+                EntryDate = receptionEntry.DateEntry,
+                Folio = string.Join(", ", receptionEntry.Receptions.Select(re => re.Folio))
+            };
+        }
+        public List<HumidityModel> Create(List<Humidity> humidities) {
+            return humidities.Select(h => new HumidityModel
+            {
+                Id = h.Id,
+                DateCapture = h.DateCapture,
+                HumidityPercentage = h.HumidityPercent
             }).ToList();
         }
-
+        public List<HumiditiesManageModel> CreateH(List<Humidity> humidities) {
+            return humidities.Select(h => new HumiditiesManageModel
+            {
+                Id = h.Id,
+                HumidityPercentage = h.HumidityPercent,
+                DateCapture = h.DateCapture,
+                CylinderName = h.ReceptionEntry.Cylinder.CylinderName,
+                EntryDate = h.ReceptionEntry.DateEntry,
+                FieldName = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.FieldName)),
+                Folio = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.Folio)),
+                Tons = h.ReceptionEntry.Receptions.Sum(r => r.ReceivedFromField)
+            }).ToList();
+        }
         public List<ReceptionEntryModel> CreateReceptionId(List<ReceptionEntry> receptionEntries)
         {
             return receptionEntries.Select(r => new ReceptionEntryModel
@@ -438,15 +445,29 @@ namespace naseNut.WebApi.Models
         }
         public class HumiditiesModel
         {
-            public int Id { get; set; }
-            public double HumidityPercentage { get; set; }
-            public DateTime DateCapture { get; set; }
             public string CylinderName { get; set; }
-            public string Variety { get; set; }
-            public string ProducerName { get; set; }
+            public string FieldName { get; set; }
             public double Tons { get; set; }
-            public DateTime? EntryDate { get; set; }
+            public DateTime EntryDate { get; set; }
             public string Folio { get; set; }
+            public List<HumidityModel> Humidities { get; set; }
+        }
+        public class HumiditiesManageModel
+        {
+            public string CylinderName { get; set; }
+            public string FieldName { get; set; }
+            public double Tons { get; set; }
+            public DateTime EntryDate { get; set; }
+            public string Folio { get; set; }
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public double HumidityPercentage { get; set; }
+        }
+        public class HumidityModel
+        {
+            public int Id { get; set; }
+            public DateTime DateCapture{ get; set; }
+            public double HumidityPercentage { get; set; }
         }
         public List<ProducerReportModel> CreateReport(List<ReceptionEntry> receptionEntries)
         {
@@ -519,14 +540,6 @@ namespace naseNut.WebApi.Models
                 public string Id { get; set; }
                 public string Name { get; set; }
             }
-
-            public class HumidityModel
-            {
-                public int Id { get; set; }
-                public double HumidityPercent { get; set; }
-                public DateTime DateCapture { get; set; }
-            }
-
             public class RemissionModel
             {
                 public int Id { get; set; }
