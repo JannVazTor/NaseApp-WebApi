@@ -209,7 +209,7 @@ namespace naseNut.WebApi.Models
                    let kilogramsFirstMedium = reportService.GetKilograms(v.Grills.ToList(), NutSizes.Medium, (int)GrillQuality.First)
                    let kilogramsFirstLarge = reportService.GetKilograms(v.Grills.ToList(), NutSizes.Large, (int)GrillQuality.First)
                    let totalkilogramsSecond = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.Second)
-                   let totalkilogramsThird = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.Third)
+                   let totalkilogramsThird = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.Third) 
                    let totalKilogramsFirst = reportService.GetKilograms(v.Grills.ToList(), null, (int)GrillQuality.First)
                    let totalKilos = totalKilogramsFirst + totalkilogramsSecond + totalkilogramsThird
                    let variety = v.Variety1
@@ -230,6 +230,45 @@ namespace naseNut.WebApi.Models
                        PercentageThird = (totalkilogramsThird == 0 || totalKilos == 0) ? "0%" : ((totalkilogramsThird / totalKilos) * 100).ToString() + "%",
                        Variety = variety
                     }).ToList();
+        }
+
+        public List<DailyProcessModel> CreateReport(List<Grill> grills, List<Reception> receptions, List<Sampling> samplings, DateTime date)
+        {
+            var reportService = new ReportService();
+            var datedGrills = from grill in grills
+                where grill.GrillIssue.DateCapture == date
+                select grill;
+            return (from r in samplings  where r.ReceptionEntry.DateIssue == date
+                    let sacksFirstSmall = reportService.GetSacks(datedGrills.ToList(), NutSizes.Small, (int)GrillQuality.First)
+                    let sacksFirstMedium = reportService.GetSacks(datedGrills.ToList(), NutSizes.Medium, (int)GrillQuality.First)
+                    let folio = reportService.GetFolio(receptions, r.Grill.ReceptionId)
+                    select new DailyProcessModel
+                    {
+                        Date = date,
+                        Producer = r.ReceptionEntry.Producer.ToString(),
+                        Folio = folio,
+                        Cylinder = r.ReceptionEntry.Cylinder.ToString(),
+                        Variety = r.ReceptionEntry.Variety.ToString(),
+                        SacksFirstSmall = sacksFirstSmall,
+                        SacksFirstMedium = sacksFirstMedium,
+                        Total = sacksFirstSmall + sacksFirstMedium,
+                        QualityPercent = 50 + '%',
+                        Germinated = 100
+                    }).ToList();
+        }
+
+        public class DailyProcessModel
+        {
+            public DateTime Date { get; set; }
+            public string Producer { get; set; }
+            public Reception Folio { get; set; }
+            public string Cylinder { get; set; }
+            public string Variety { get; set; }
+            public int SacksFirstSmall { get; set; }
+            public int SacksFirstMedium { get; set; }
+            public int Total { get; set; }
+            public double QualityPercent { get; set; }
+            public int Germinated { get; set; }
         }
         public class ReportingProcessModel
         {

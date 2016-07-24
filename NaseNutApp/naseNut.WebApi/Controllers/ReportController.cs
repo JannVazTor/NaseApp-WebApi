@@ -43,5 +43,23 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el reporte de proceso." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("dailyProcessReport")]
+        public IHttpActionResult GetDailyProcessReport(DateTime date)
+        {
+            try
+            {
+                var grills = _db.Grills.ToList();
+                var samplings = _db.Samplings.ToList();
+                var receptions = _db.Receptions.ToList();
+                return grills.Count != 0 ? (IHttpActionResult) Ok(TheModelFactory.CreateReport(grills, receptions, samplings, date)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener el reporte diario de proceso." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

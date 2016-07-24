@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
@@ -59,6 +60,15 @@ namespace naseNut.WebApi.Models.Business.Services
                     break;
             }
             return kilograms;
+        }
+
+        public Reception GetFolio(List<Reception> receptions, int receptionId)
+        {
+            var folio = (from reception in receptions
+                where reception.Id == receptionId
+                select reception).FirstOrDefault();
+            
+            return folio;
         }
     }
 }
