@@ -229,6 +229,49 @@ namespace naseNut.WebApi.Models
                        Variety = variety
                     }).ToList();
         }
+        public List<GrillIssueReportModel> CreateReport(List<Grill> issues)
+        {
+            return issues.Select(i => new GrillIssueReportModel
+            {
+                Id = i.Id,
+                DateCapture = i.DateCapture,
+                Quality = i.Quality,
+                Variety = i.Variety.Variety1,
+                Size = i.Size,
+                Sacks = i.Sacks,
+                Kilos = i.Kilos,
+                Performance = i.Samplings.Any() ? i.Samplings.OrderBy(d => d.DateCapture).First().Performance.ToString() : "0",
+                WalnutNumber = i.Samplings.Any() ? i.Samplings.OrderBy(d => d.DateCapture).First().WalnutNumber.ToString() : "0",
+                HumidityPercent = i.Samplings.Any() ? i.Samplings.OrderBy(d => d.DateCapture).First().HumidityPercent.ToString() : "0",
+                Producer = i.Producer.ProducerName,
+                GrillIssueId = i.GrillIssue.Id,
+                IssueDateCapture = i.GrillIssue.DateCapture,
+                Truck = i.GrillIssue.Truck,
+                Driver = i.GrillIssue.Driver,
+                Box = i.GrillIssue.Box,
+                Remission = i.GrillIssue.Remission
+            }).ToList();
+        }
+        public class GrillIssueReportModel
+        {
+            public int Id { get; set; }
+            public DateTime DateCapture { get; set; }
+            public string Truck { get; set; }
+            public string Driver { get; set; }
+            public string Box { get; set; }
+            public int Remission { get; set; }
+            public int Quality { get; internal set; }
+            public string Variety { get; internal set; }
+            public int Sacks { get; internal set; }
+            public int Size { get; internal set; }
+            public double Kilos { get; internal set; }
+            public string Performance { get; internal set; }
+            public string WalnutNumber { get; internal set; }
+            public string HumidityPercent { get; internal set; }
+            public string Producer { get; internal set; }
+            public int GrillIssueId { get; internal set; }
+            public DateTime IssueDateCapture { get; internal set; }
+        }
         public class ReportingProcessModel
         {
             public string Variety { get; set; }

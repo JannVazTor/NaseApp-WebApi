@@ -11,11 +11,11 @@ using System.Web.Http;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize(Roles = "admin,remRecepUser")]
     [RoutePrefix("api/receptionEntry")]
     public class ReceptionEntryController : BaseApiController
     {
         NaseNEntities _db = new NaseNEntities();
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpPost]
         public IHttpActionResult SaveReceptionEntry(AddReceptionEntryBindingModel model)
         {
@@ -46,6 +46,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar la recepcion." + "\n" + "Detalles del Error: " + ex));
             }
         }
+        [Authorize(Roles = "admin,remRecepUser,humidityUser")]
         [HttpGet]
         public IHttpActionResult GetAllReceptionEntries() {
             try
