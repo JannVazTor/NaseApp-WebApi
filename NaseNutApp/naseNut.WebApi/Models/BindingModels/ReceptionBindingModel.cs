@@ -11,7 +11,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public double ReceivedFromField { get; set; }
         [Required]
-        public string FieldName { get; set; }
+        public int FieldId { get; set; }
         [Required]
         public string CarRegistration { get; set; }
         public string EntryDate { get; set; }
@@ -38,7 +38,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public double ReceivedFromField { get; set; }
         [Required]
-        public string FieldName { get; set; }
+        public int FieldId { get; set; }
         [Required]
         public string CarRegistration { get; set; }
         public DateTime EntryDate { get; set; } = DateTime.Now;

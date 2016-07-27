@@ -163,7 +163,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grill = db.Grills.Find(id);
                     if (grill == null) return false;
                     grill.DateCapture = model.DateCapture.ConvertToDate(); 
-                    grill.FieldName = model.FieldName;
+                    grill.FieldId = model.FieldId;
                     grill.Kilos = model.Kilos;
                     grill.ProducerId = model.ProducerId;
                     grill.Quality = model.Quality;

@@ -221,8 +221,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\CylinderController.cs" />
+    <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\GrillController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeDashController.cs" />
     <Compile Include="Controllers\HumidityController.cs" />
     <Compile Include="Controllers\ProducerController.cs" />
     <Compile Include="Controllers\ReceptionController.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Models\BindingModels\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BindingModels\CylinderBindingModel.cs" />
+    <Compile Include="Models\BindingModels\FieldBindingModel.cs" />
     <Compile Include="Models\BindingModels\GrillBindingModel.cs" />
     <Compile Include="Models\BindingModels\HumidityBindingModel.cs" />
     <Compile Include="Models\BindingModels\IssuesBindingModel.cs" />
@@ -250,6 +253,7 @@
     <Compile Include="Models\BindingModels\VarietyBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
+    <Compile Include="Models\Business\Repositories\FieldRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillIssueRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
@@ -265,7 +269,9 @@
     <Compile Include="Models\Business\Repositories\VarietyRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
     <Compile Include="Models\Business\Services\CylinderService.cs" />
+    <Compile Include="Models\Business\Services\FieldService.cs" />
     <Compile Include="Models\Business\Services\GrillService.cs" />
+    <Compile Include="Models\Business\Services\HomeService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
     <Compile Include="Models\Business\Services\ProducerService.cs" />
     <Compile Include="Models\Business\Services\ReceptionEntryService.cs" />
@@ -292,6 +298,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\C__MigrationHistory.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Field.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Grill.cs">

@@ -30,7 +30,7 @@ namespace naseNut.WebApi.Controllers
                 var receptions = model.Receptions.Select(m => new Reception
                 {
                     ReceivedFromField = m.ReceivedFromField,
-                    FieldName = m.FieldName,
+                    FieldId = m.FieldId,
                     CarRegistration = m.CarRegistration,
                     HeatHoursDtrying = m.HeatHoursDrying,
                     HumidityPercent = m.HumidityPercent,

@@ -23,6 +23,6 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int ProducerId { get; set; }
         [Required]
-        public string FieldName { get; set; }
+        public int FieldId{ get; set; }
     }
 }

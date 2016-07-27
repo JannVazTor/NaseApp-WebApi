@@ -115,7 +115,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     if (reception != null)
                     {
                         reception.CarRegistration = model.CarRegistration;
-                        reception.FieldName = model.FieldName;
+                        reception.FieldId = model.FieldId;
                         reception.HeatHoursDtrying = model.HeatHoursDrying;
                         reception.HumidityPercent = model.HumidityPercent;
                         reception.ReceivedFromField = model.ReceivedFromField;

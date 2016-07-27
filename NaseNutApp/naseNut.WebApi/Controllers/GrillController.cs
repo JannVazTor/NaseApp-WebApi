@@ -37,7 +37,7 @@ namespace naseNut.WebApi.Controllers
                     Quality = model.Quality,
                     VarietyId = model.VarietyId,
                     ProducerId = model.ProducerId,
-                    FieldName = model.FieldName,
+                    FieldId = model.FieldId,
                     Status = true
                 };
                 var saved = grillService.Save(grill);

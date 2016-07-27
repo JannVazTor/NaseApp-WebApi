@@ -12,22 +12,22 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Variety
+    public partial class Field
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Variety()
+        public Field()
         {
             this.Grills = new HashSet<Grill>();
-            this.ReceptionEntries = new HashSet<ReceptionEntry>();
+            this.Receptions = new HashSet<Reception>();
         }
     
         public int Id { get; set; }
-        public string Variety1 { get; set; }
+        public string FieldName { get; set; }
+        public double Hectares { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
-        public virtual NutSize NutSize { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
+        public virtual ICollection<Reception> Receptions { get; set; }
     }
 }

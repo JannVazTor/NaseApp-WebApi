@@ -45,7 +45,7 @@ namespace naseNut.WebApi.Models
                 Driver = r.Driver,
                 Elaborate = r.Elaborate,
                 DateCapture = r.DateCapture,
-                FieldName = r.Reception.FieldName,
+                FieldName = r.Reception.Field.FieldName,
                 Variety = r.Reception.ReceptionEntry.Variety.Variety1
             }).ToList();
         }
@@ -91,7 +91,7 @@ namespace naseNut.WebApi.Models
                 Quality = g.Quality,
                 Variety = g.Variety.Variety1,
                 Producer = g.Producer.ProducerName,
-                FieldName = g.FieldName,
+                FieldName = g.Field.FieldName,
                 Status = g.Status,
                 SampleWeight = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
                 HumidityPercent = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString(): "",
@@ -252,6 +252,107 @@ namespace naseNut.WebApi.Models
                 Remission = i.GrillIssue.Remission
             }).ToList();
         }
+
+
+        public List<ReceptionModel> Create(List<Reception> receptions)
+        {
+            return receptions.Select(r => new ReceptionModel
+            {
+                Id = r.Id,
+                Folio = r.Folio,
+                Variety = r.ReceptionEntry.Variety.Variety1,
+                ReceivedFromField = r.ReceivedFromField,
+                FieldName = r.Field.FieldName,
+                CarRegistration = r.CarRegistration,
+                EntryDate = r.ReceptionEntry.DateEntry,
+                IssueDate = r.ReceptionEntry.DateIssue,
+                HeatHoursDrying = r.HeatHoursDtrying,
+                HumidityPercent = r.HumidityPercent,
+                Observations = r.Observations,
+                ProducerName = r.ReceptionEntry.Producer.ProducerName,
+                Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
+                Cylinder = r.ReceptionEntry.Cylinder.CylinderName
+            }).ToList();
+        }
+
+        public HumiditiesModel Create(ReceptionEntry receptionEntry)
+        {
+            return new HumiditiesModel
+            {
+                Humidities = Create(receptionEntry.Humidities.ToList()),
+                CylinderName = receptionEntry.Cylinder.CylinderName,
+                FieldName = string.Join(", ", receptionEntry.Receptions.Select(re => re.Field.FieldName)),
+                Tons = receptionEntry.Receptions.Sum(rec => rec.ReceivedFromField),
+                EntryDate = receptionEntry.DateEntry,
+                Folio = string.Join(", ", receptionEntry.Receptions.Select(re => re.Folio))
+            };
+        }
+        public List<HumidityModel> Create(List<Humidity> humidities) {
+            return humidities.Select(h => new HumidityModel
+            {
+                Id = h.Id,
+                DateCapture = h.DateCapture,
+                HumidityPercentage = h.HumidityPercent
+            }).ToList();
+        }
+        public List<HumiditiesManageModel> CreateH(List<Humidity> humidities) {
+            return humidities.Select(h => new HumiditiesManageModel
+            {
+                Id = h.Id,
+                HumidityPercentage = h.HumidityPercent,
+                DateCapture = h.DateCapture,
+                CylinderName = h.ReceptionEntry.Cylinder.CylinderName,
+                EntryDate = h.ReceptionEntry.DateEntry,
+                FieldName = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.Field.FieldName)),
+                Folio = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.Folio)),
+                Tons = h.ReceptionEntry.Receptions.Sum(r => r.ReceivedFromField)
+            }).ToList();
+        }
+        public List<ReceptionEntryModel> CreateReceptionId(List<ReceptionEntry> receptionEntries)
+        {
+            return receptionEntries.Select(r => new ReceptionEntryModel
+            {
+                Id = r.Id,
+                DateEntry = r.DateEntry,
+                Producer = r.Producer.ProducerName,
+                Variety = r.Variety.Variety1,
+                ReceptionList = Create(r.Receptions.ToList())
+            }).ToList();
+        }
+        public ReceptionModel Create(Reception reception)
+        {
+            return new ReceptionModel
+            {
+                Id = reception.Id,
+                Folio = reception.Folio,
+                Variety = reception.ReceptionEntry.Variety.Variety1,
+                ReceivedFromField = reception.ReceivedFromField,
+                FieldName = reception.Field.FieldName,
+                CarRegistration = reception.CarRegistration,
+                EntryDate = reception.ReceptionEntry.DateEntry,
+                IssueDate = reception.ReceptionEntry.DateIssue,
+                HeatHoursDrying = reception.HeatHoursDtrying,
+                HumidityPercent = reception.HumidityPercent,
+                Observations = reception.Observations,
+                ProducerName = reception.ReceptionEntry.Producer.ProducerName,
+                Grills = reception.Grills != null && reception.Grills.Count != 0 ? string.Join(", ", reception.Grills.Select(g => g.Id)) : "",
+                Cylinder = reception.ReceptionEntry.Cylinder.CylinderName
+            };
+        }
+        public List<FieldModel> Create(List<Field> fields) {
+            return fields.Select(f => new FieldModel
+            {
+                Id = f.Id,
+                FieldName = f.FieldName,
+                Hectares = f.Hectares
+            }).ToList();
+        }
+        public class FieldModel
+        {
+            public int Id { get; set; }
+            public string FieldName { get; set; }
+            public double Hectares { get; set; }
+        }
         public class GrillIssueReportModel
         {
             public int Id { get; set; }
@@ -305,9 +406,9 @@ namespace naseNut.WebApi.Models
             public int WalnutNumber { get; set; }
             public double Performance { get; set; }
             public double TotalWeightOfEdibleNuts { get; set; }
-            public string SacksFirst{ get; set; }
-            public string KilosFirst{ get; set; }
-            public string SacksSecond{ get; set; }
+            public string SacksFirst { get; set; }
+            public string KilosFirst { get; set; }
+            public string SacksSecond { get; set; }
             public string KilosSecond { get; set; }
             public string SacksThird { get; set; }
             public string KilosThird { get; set; }
@@ -399,92 +500,6 @@ namespace naseNut.WebApi.Models
             public int MediumEnd { get; set; }
             public int LargeStart { get; set; }
             public int LargeEnd { get; set; }
-        }
-
-        public List<ReceptionModel> Create(List<Reception> receptions)
-        {
-            return receptions.Select(r => new ReceptionModel
-            {
-                Id = r.Id,
-                Folio = r.Folio,
-                Variety = r.ReceptionEntry.Variety.Variety1,
-                ReceivedFromField = r.ReceivedFromField,
-                FieldName = r.FieldName,
-                CarRegistration = r.CarRegistration,
-                EntryDate = r.ReceptionEntry.DateEntry,
-                IssueDate = r.ReceptionEntry.DateIssue,
-                HeatHoursDrying = r.HeatHoursDtrying,
-                HumidityPercent = r.HumidityPercent,
-                Observations = r.Observations,
-                ProducerName = r.ReceptionEntry.Producer.ProducerName,
-                Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
-                Cylinder = r.ReceptionEntry.Cylinder.CylinderName
-            }).ToList();
-        }
-
-        public HumiditiesModel Create(ReceptionEntry receptionEntry)
-        {
-            return new HumiditiesModel
-            {
-                Humidities = Create(receptionEntry.Humidities.ToList()),
-                CylinderName = receptionEntry.Cylinder.CylinderName,
-                FieldName = string.Join(", ", receptionEntry.Receptions.Select(re => re.FieldName)),
-                Tons = receptionEntry.Receptions.Sum(rec => rec.ReceivedFromField),
-                EntryDate = receptionEntry.DateEntry,
-                Folio = string.Join(", ", receptionEntry.Receptions.Select(re => re.Folio))
-            };
-        }
-        public List<HumidityModel> Create(List<Humidity> humidities) {
-            return humidities.Select(h => new HumidityModel
-            {
-                Id = h.Id,
-                DateCapture = h.DateCapture,
-                HumidityPercentage = h.HumidityPercent
-            }).ToList();
-        }
-        public List<HumiditiesManageModel> CreateH(List<Humidity> humidities) {
-            return humidities.Select(h => new HumiditiesManageModel
-            {
-                Id = h.Id,
-                HumidityPercentage = h.HumidityPercent,
-                DateCapture = h.DateCapture,
-                CylinderName = h.ReceptionEntry.Cylinder.CylinderName,
-                EntryDate = h.ReceptionEntry.DateEntry,
-                FieldName = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.FieldName)),
-                Folio = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.Folio)),
-                Tons = h.ReceptionEntry.Receptions.Sum(r => r.ReceivedFromField)
-            }).ToList();
-        }
-        public List<ReceptionEntryModel> CreateReceptionId(List<ReceptionEntry> receptionEntries)
-        {
-            return receptionEntries.Select(r => new ReceptionEntryModel
-            {
-                Id = r.Id,
-                DateEntry = r.DateEntry,
-                Producer = r.Producer.ProducerName,
-                Variety = r.Variety.Variety1,
-                ReceptionList = Create(r.Receptions.ToList())
-            }).ToList();
-        }
-        public ReceptionModel Create(Reception reception)
-        {
-            return new ReceptionModel
-            {
-                Id = reception.Id,
-                Folio = reception.Folio,
-                Variety = reception.ReceptionEntry.Variety.Variety1,
-                ReceivedFromField = reception.ReceivedFromField,
-                FieldName = reception.FieldName,
-                CarRegistration = reception.CarRegistration,
-                EntryDate = reception.ReceptionEntry.DateEntry,
-                IssueDate = reception.ReceptionEntry.DateIssue,
-                HeatHoursDrying = reception.HeatHoursDtrying,
-                HumidityPercent = reception.HumidityPercent,
-                Observations = reception.Observations,
-                ProducerName = reception.ReceptionEntry.Producer.ProducerName,
-                Grills = reception.Grills != null && reception.Grills.Count != 0 ? string.Join(", ", reception.Grills.Select(g => g.Id)) : "",
-                Cylinder = reception.ReceptionEntry.Cylinder.CylinderName
-            };
         }
         public class HumiditiesModel
         {
