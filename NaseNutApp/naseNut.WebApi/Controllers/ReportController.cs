@@ -85,6 +85,21 @@ namespace naseNut.WebApi.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar obtener las salidas de parrillas." + "\n" + "Detalles del Error: " + ex));
             }
-        } 
+        }
+        [HttpGet]
+        [Route("originReport")]
+        public IHttpActionResult GetOriginReportt()
+        {
+            try
+            {
+                var fields = _db.Fields.ToList();
+                return fields.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateOrginReport(fields)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las salidas de parrillas." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

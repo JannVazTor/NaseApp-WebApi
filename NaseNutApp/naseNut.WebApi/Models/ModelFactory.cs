@@ -253,7 +253,19 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-
+        public List<OriginReport> CreateOrginReport(List<Field> Fields)
+        {
+            return Fields.Select(f => new OriginReport
+            {
+                Field = f.FieldName,
+                Hectares = f.Hectares,
+                varieties = f.Grills.GroupBy(x=> x.Variety.Variety1).Select(v=> new varietyForField
+                {
+                    Name = v.Select(x=> x.Variety.Variety1).ToString(),
+                    Kilos = v.Select(x=> x.Kilos).Sum()
+                }).ToList() 
+            }).ToList();
+        }
         public List<ReceptionModel> Create(List<Reception> receptions)
         {
             return receptions.Select(r => new ReceptionModel
@@ -617,6 +629,19 @@ namespace naseNut.WebApi.Models
             {
                 public int Id { get; set; }
                 public string ProducerName { get; set; }
+            }
+
+            public class OriginReport
+            {
+                public string Field { get; set; }
+                public double Hectares { get; set; }
+                public List<varietyForField> varieties { get; set; }
+
+            }
+            public class varietyForField
+            {
+                public string Name { get; set; }
+                public double Kilos { get; set; }
             }
 
             public class ProducerReportModel
