@@ -93,7 +93,8 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var fields = _db.Fields.ToList();
-                return fields.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateOrginReport(fields)) : Ok();
+                var varieties = _db.Varieties.ToList();
+                return fields.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(fields, varieties)) : Ok();
             }
             catch (Exception ex)
             {

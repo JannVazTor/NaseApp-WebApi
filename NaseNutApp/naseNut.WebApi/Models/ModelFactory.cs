@@ -253,18 +253,30 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-        public List<OriginReport> CreateOrginReport(List<Field> Fields)
+        public List<OriginReportModel> CreateReport(List<Field> fields, List<Variety> varieties)
         {
-            return Fields.Select(f => new OriginReport
-            {
-                Field = f.FieldName,
-                Hectares = f.Hectares,
-                varieties = f.Grills.GroupBy(x=> x.Variety.Variety1).Select(v=> new varietyForField
-                {
-                    Name = v.Select(x=> x.Variety.Variety1).ToString(),
-                    Kilos = v.Select(x=> x.Kilos).Sum()
-                }).ToList() 
-            }).ToList();
+            return (from f in fields
+                    let field = f.FieldName
+                    let hectares = f.Hectares
+                    let fieldsWithVarieties = varieties.Select(v => new OriginDataModel
+                    {
+                        Total = v.Grills.Where(g => g.Field.Id == f.Id).Sum(g => g.Kilos),
+                        Variety = v.Variety1
+                    }).ToList()
+                    let totalProduction = fieldsWithVarieties.Sum(f => f.Total)
+                    let performancePerHa = totalProduction / hectares
+                    select new OriginReportModel
+                    {
+                        Field = field,
+                        Hectares = hectares,
+                        varieties = fieldsWithVarieties,
+                        TotalProduction = totalProduction,
+                        PerformancePerHa = performancePerHa
+                    }).ToList();
+        }
+        public class OriginDataModel {
+            public double Total { get; set; }
+            public string Variety { get; set; }
         }
         public List<ReceptionModel> Create(List<Reception> receptions)
         {
@@ -631,12 +643,13 @@ namespace naseNut.WebApi.Models
                 public string ProducerName { get; set; }
             }
 
-            public class OriginReport
+            public class OriginReportModel
             {
                 public string Field { get; set; }
                 public double Hectares { get; set; }
-                public List<varietyForField> varieties { get; set; }
-
+                public List<OriginDataModel> varieties { get; set; }
+                public double TotalProduction { get; set; }
+                public double PerformancePerHa { get; set; }
             }
             public class varietyForField
             {
