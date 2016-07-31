@@ -78,6 +78,21 @@ namespace naseNut.WebApi.Controllers
             }
         }
         [HttpGet]
+        [Route("getLastHumiditiesSamplings")]
+        public IHttpActionResult GetLastSamplings() {
+            try
+            {
+                var lastSamplings = _db.ReceptionEntries.Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).ToList();
+                return lastSamplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateH(lastSamplings)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los registros de humedad." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
         public IHttpActionResult GetAll() {
             try
             {

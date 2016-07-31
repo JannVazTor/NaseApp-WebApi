@@ -31,7 +31,7 @@
         <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
         <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Cylinder" Width="1.5" PointX="3.75" PointY="2.875" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Cylinder" Width="1.5" PointX="0.875" PointY="1.5" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Field" Width="1.5" PointX="6.375" PointY="11.875" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Producer" Width="1.5" PointX="3.75" PointY="10.5" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Variety" Width="1.5" PointX="0.75" PointY="7.375" />
