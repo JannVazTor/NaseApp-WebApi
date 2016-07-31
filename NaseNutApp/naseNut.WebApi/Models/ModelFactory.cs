@@ -266,23 +266,23 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-        public List<OriginReportModel> CreateReport(List<Field> fields, List<Variety> varieties)
+        public List<OriginReportModel> CreateReport(List<Field> fields, List<Variety> varietiesL)
         {
             return (from f in fields
                     let field = f.FieldName
                     let hectares = f.Hectares
-                    let fieldsWithVarieties = varieties.Select(v => new OriginDataModel
+                    let varieties = varietiesL.Select(v => new OriginDataModel
                     {
                         Total = v.Grills.Where(g => g.Field.Id == f.Id).Sum(g => g.Kilos),
                         Variety = v.Variety1
                     }).ToList()
-                    let totalProduction = fieldsWithVarieties.Sum(f => f.Total)
+                    let totalProduction = varieties.Sum(f => f.Total)
                     let performancePerHa = totalProduction / hectares
                     select new OriginReportModel
                     {
                         Field = field,
                         Hectares = hectares,
-                        varieties = fieldsWithVarieties,
+                        Varieties = varieties,
                         TotalProduction = totalProduction,
                         PerformancePerHa = performancePerHa
                     }).ToList();
@@ -657,7 +657,7 @@ namespace naseNut.WebApi.Models
             {
                 public string Field { get; set; }
                 public double Hectares { get; set; }
-                public List<OriginDataModel> varieties { get; set; }
+                public List<OriginDataModel> Varieties { get; set; }
                 public double TotalProduction { get; set; }
                 public double PerformancePerHa { get; set; }
             }
