@@ -16,6 +16,6 @@ namespace naseNut.WebApi.Models.BindingModels
         public string Driver { get; set; }
         public string Box { get; set; }
         [Required]
-        public List<int> GrillIds { get; set; }
+        public List<int> GrillsIds { get; set; }
     }
 }

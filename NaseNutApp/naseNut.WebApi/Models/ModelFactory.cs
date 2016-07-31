@@ -23,6 +23,19 @@ namespace naseNut.WebApi.Models
             _appUserManager = appUserManager;
         }
 
+        public PieChartModel[] CreateDash(List<Variety> varieties)
+        {
+            return varieties.Select(v => new PieChartModel
+            {
+                name = v.Variety1,
+                y = v.Grills.Where(g => g.Variety.Id == v.Id).Sum(g => g.Kilos)
+            }).ToList().ToArray();
+        }
+        public class PieChartModel
+        {
+            public string name { get; set; }
+            public double y { get; set; }
+        }
         public List<ProducerModel> Create(List<Producer> producers)
         {
             return producers.Select(p => new ProducerModel
@@ -554,24 +567,21 @@ namespace naseNut.WebApi.Models
         public List<ProducerReportModel> CreateReport(List<ReceptionEntry> receptionEntries)
         {
            Random num = new Random();
-
            return receptionEntries.Select(r => new ProducerReportModel
             {
-               //DateReceptionCapture = r.DateEntry,
-               //Variety = r.Variety.Variety1,
-               //FieldName = r.Receptions.Count != 0 ? string.Join(", ", r.Receptions.Select(g => g.FieldName)) : "",
-               //Cylinder = r.Cylinder.CylinderName,
-               //Folio = r.Receptions.ToList().Count != 0 ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
-               //DateReceptionCapture = r.Receptions.ToList().Count != 0 ? r.Receptions.First().EntryDate.ToString() : "",
-               //ProcessDate = r.Receptions.Select(x => x.EntryDate).First().ToString(),
-               //KgsOrigen = r.Receptions.ToList().Count != 0 ? r.Receptions.Select(x => x.ReceivedFromField).Sum() : 0,
-               //KilosFirst = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
-               //KilosSecond = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks * y.Kilos)).Sum() : 0,
-               //SacksP = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks)).Sum() : 0,
-               //SacksS = r.NutTypes.Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks)).Sum() : 0,
-               //KilosTotal = r.Receptions.ToList().Count != 0 ? r.Receptions.SelectMany(x => x.ReceptionEntry.NutTypes.Select(g => g.Kilos * g.Sacks)).Sum() : 0,
-               //Variety = r.Variety.Variety1,
-               //Remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString()
+               DateReceptionCapture = r.DateEntry,
+               Variety = r.Variety.Variety1,
+               FieldName = r.Receptions.Any() ? string.Join(", ", r.Receptions.Select(g => g.Field.FieldName)) : "",
+               Remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString(),
+               Cylinder = r.Cylinder.CylinderName,
+               Folio = r.Receptions.Any() ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
+               KgsOrigen = r.Receptions.Any() ? r.Receptions.Select(x => x.ReceivedFromField).Sum() : 0,
+               ProcessDate = r.DateIssue != null ? r.DateIssue.ToString() : "",
+               SacksP = r.NutTypes.Any() ? (int)r.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks).Sum() : 0,
+               KilosFirst = r.NutTypes.Any() ? (double)r.NutTypes.Where(n => n.NutType1 == 1).Select(y => y.Sacks * y.Kilos).Sum() : 0,
+               SacksS = r.NutTypes.Any() ? (int)r.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks).Sum() : 0,
+               KilosSecond = r.NutTypes.Any() ? (double)r.NutTypes.Where(n => n.NutType1 == 2).Select(y => y.Sacks * y.Kilos).Sum() : 0,
+               KilosTotal = r.Receptions.Any() ? (double)r.NutTypes.Select(g => g.Kilos * g.Sacks).Sum() : 0
            }).ToList();
         }
 
@@ -651,29 +661,21 @@ namespace naseNut.WebApi.Models
                 public double TotalProduction { get; set; }
                 public double PerformancePerHa { get; set; }
             }
-            public class varietyForField
-            {
-                public string Name { get; set; }
-                public double Kilos { get; set; }
-            }
-
             public class ProducerReportModel
             {
-
-                public int Id { get; set; }
                 public string Folio { get; set; }
                 public string Variety { get; set; }
                 public string Remission { get; set; }
                 public string Cylinder { get; set; }
-            public string FieldName { get; set; }
-            public DateTime DateReceptionCapture { get; set; }
+                public string FieldName { get; set; }
+                public DateTime DateReceptionCapture { get; set; }
                 public string ProcessDate { get; set; }
                 public double KgsOrigen { get; set; }
-                public int? SacksP { get; set; } = 0;
-                public int? SacksS { get; set; } = 0;
-                public double? KilosFirst { get; set; } = 0;
-                public double? KilosSecond { get; set; } = 0;
-                public double? KilosTotal { get; set; }
+                public int SacksP { get; set; }
+                public int SacksS { get; set; }
+                public double KilosFirst { get; set; }
+                public double KilosSecond { get; set; }
+                public double KilosTotal { get; set; }
             }
         }
     }

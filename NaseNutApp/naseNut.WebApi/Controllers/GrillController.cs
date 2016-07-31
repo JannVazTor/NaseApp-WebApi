@@ -181,7 +181,7 @@ namespace naseNut.WebApi.Controllers
                     Box = model.Box,
                     Remission = model.Remission
                 };
-                var saved = grillService.SaveIssue(grillIssue, model.GrillIds);
+                var saved = grillService.SaveIssue(grillIssue, model.GrillsIds);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
