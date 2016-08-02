@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin,humidityUser")]
     [RoutePrefix("api/humidity")]
     public class HumidityController : BaseApiController
     {
@@ -25,16 +26,15 @@ namespace naseNut.WebApi.Controllers
             }
             try
             {
-                var humidityService = new HumidityService();
                 var humidity = new Humidity
                 {
                    HumidityPercent = model.HumidityPercent,
-                   DateCapture = model.DateCapture.ConvertToDate()
+                   DateCapture = DateTime.Now,
+                   ReceptionEntryId = model.ReceptionEntryId
                 };
-                var receptionEntryService = new ReceptionEntryService();
-                var receptionEntry = receptionEntryService.GetById(model.ReceptionEntryId);
-                var saved = humidityService.Save(humidity, receptionEntry);
-                return saved ? (IHttpActionResult)Ok() : BadRequest();
+                var humidityService = new HumidityService();
+                var saved = humidityService.Save(humidity);
+                return saved ? (IHttpActionResult)Ok() : Conflict();
             }
             catch (Exception ex)
             {
@@ -63,13 +63,26 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public IHttpActionResult GetAllHumidities()
+        [Route("getByReceptionEntry/{id}")]
+        public IHttpActionResult GetAllHumidities(int id)
         {
             try
             {
+                var humidities = _db.ReceptionEntries.Where(r => r.Id == id).FirstOrDefault();
+                return humidities != null ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los registros de humedad." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpGet]
+        public IHttpActionResult GetAll() {
+            try
+            {
                 var humidities = _db.Humidities.ToList();
-                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateC(humidities)) : Ok();
+                return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateH(humidities)) : Ok();
             }
             catch (Exception ex)
             {

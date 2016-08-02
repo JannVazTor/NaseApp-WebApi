@@ -13,6 +13,7 @@ using naseNut.WebApi.Models.Enum;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin,grillUser")]
     [RoutePrefix("api/grill")]
     public class GrillController: BaseApiController
     {
@@ -50,7 +51,6 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
         public IHttpActionResult GetAllGrills()
         {
             try

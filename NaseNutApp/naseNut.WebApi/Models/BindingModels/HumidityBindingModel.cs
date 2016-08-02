@@ -11,8 +11,6 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public double HumidityPercent { get; set; }
         [Required]
-        public string DateCapture { get; set; }
-        [Required]
         public int ReceptionEntryId { get; set; }
     }
 }

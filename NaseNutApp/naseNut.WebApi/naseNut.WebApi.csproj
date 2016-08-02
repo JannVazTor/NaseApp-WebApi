@@ -253,6 +253,7 @@
     <Compile Include="Models\Business\Repositories\GrillIssueRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
+    <Compile Include="Models\Business\Repositories\NutSizeRepository.cs" />
     <Compile Include="Models\Business\Repositories\NutTypeRepository.cs" />
     <Compile Include="Models\Business\Repositories\ProducerRepository.cs" />
     <Compile Include="Models\Business\Repositories\ReceptionEntryRepository.cs" />

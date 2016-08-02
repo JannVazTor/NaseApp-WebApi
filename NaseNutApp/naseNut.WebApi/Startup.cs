@@ -6,11 +6,13 @@ using System.Web.Http.Cors;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using naseNut.WebApi.Models.Business.Services;
 
 [assembly: OwinStartup(typeof(naseNut.WebApi.Startup))]
 
 namespace naseNut.WebApi
 {
+    
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
@@ -20,6 +22,8 @@ namespace naseNut.WebApi
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
+            var roleService = new RoleService();
+            roleService.CreateRoles();
         }
 
         public void ConfigureOAuth(IAppBuilder app)

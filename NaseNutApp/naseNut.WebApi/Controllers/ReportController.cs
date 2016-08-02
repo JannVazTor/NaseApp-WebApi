@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/report")]
     public class ReportController : BaseApiController
     {
@@ -43,23 +44,47 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el reporte de proceso." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
         [HttpGet]
-        [Route("dailyProcessReport")]
-        public IHttpActionResult GetDailyProcessReport(DateTime date)
-        {
+        [Route("currentInventoryGrills")]
+        public IHttpActionResult GetCurrentInvetoryReport() {
             try
             {
-                var grills = _db.Grills.ToList();
-                var samplings = _db.Samplings.ToList();
-                var receptions = _db.Receptions.ToList();
-                return grills.Count != 0 ? (IHttpActionResult) Ok(TheModelFactory.CreateReport(grills, receptions, samplings, date)) : Ok();
+                var grills = _db.Grills.Where(g => g.Status).ToList();
+                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
-                "Ocurrio un error al intentar obtener el reporte diario de proceso." + "\n" + "Detalles del Error: " + ex));
+                "Ocurrio un error al intentar obtener el inventario actual de proceso." + "\n" + "Detalles del Error: " + ex));
             }
         }
+        [HttpGet]
+        [Route("processInventory")]
+        public IHttpActionResult GetProcessInventory() {
+            try
+            {
+                var grills = _db.Grills.ToList();
+                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener el inventario de proceso." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpGet]
+        [Route("grillIssues")]
+        public IHttpActionResult GetGrillIssuesReport() {
+            try
+            {
+                var grillIssues = _db.GrillIssues.ToList();
+                return grillIssues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grillIssues)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las salidas de parrillas." + "\n" + "Detalles del Error: " + ex));
+            }
+        } 
     }
 }

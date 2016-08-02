@@ -11,6 +11,7 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/cylinder")]
     public class CylinderController:BaseApiController
     {

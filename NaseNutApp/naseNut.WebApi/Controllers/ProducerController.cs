@@ -10,6 +10,7 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/producer")]
     public class ProducerController : BaseApiController
     {

@@ -13,6 +13,7 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/roles")]
     public class RoleController : BaseApiController
     {

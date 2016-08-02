@@ -33,6 +33,9 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var varietyRepository = new VarietyRepository(db);
+                    var nutSizeRepository = new NutSizeRepository(db);
+                    var nutSize = nutSizeRepository.GetById(variety.Id);
+                    nutSizeRepository.Delete(nutSize);
                     varietyRepository.Delete(variety);
                     return db.SaveChanges() >= 1;
                 }
