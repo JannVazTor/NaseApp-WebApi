@@ -138,11 +138,6 @@ namespace naseNut.WebApi.Models
                     }).ToList();
         }
 
-        public class DailyProcess
-        {
-            public  List<DailyProcessModel> DailyProcessList { get; set; } 
-            public List<int> TotalsList { get; set; } 
-        }
 
         public SamplingGrillModel Create(Sampling sampling)
         {
@@ -306,7 +301,7 @@ namespace naseNut.WebApi.Models
                         Total = v.Grills.Where(g => g.Field.Id == f.Id).Sum(g => g.Kilos),
                         Variety = v.Variety1
                     }).ToList()
-                    let totalProduction = varieties.Sum(f => f.Total)
+                    let totalProduction = varieties.Sum(g => g.Total)
                     let performancePerHa = totalProduction / hectares
                     select new OriginReportModel
                     {
@@ -593,6 +588,20 @@ namespace naseNut.WebApi.Models
             public int Id { get; set; }
             public DateTime DateCapture{ get; set; }
             public double HumidityPercentage { get; set; }
+        }
+
+        public class DailyProcessModel
+        {
+            public string Date { get; set; }
+            public string Producer { get; set; }
+            public string Folio { get; set; }
+            public string Cylinder { get; set; }
+            public string Variety { get; set; }
+            public int SacksFirstSmall { get; set; }
+            public int SacksFirstMedium { get; set; }
+            public int Total { get; set; }
+            public string QualityPercent { get; set; }
+            public int? Germinated { get; set; }
         }
         public List<ProducerReportModel> CreateReport(List<ReceptionEntry> receptionEntries)
         {
