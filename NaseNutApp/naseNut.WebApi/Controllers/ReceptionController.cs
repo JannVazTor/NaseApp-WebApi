@@ -97,22 +97,18 @@ namespace naseNut.WebApi.Controllers
 
         [HttpPut]
         [Route("{Id}")]
-        public IHttpActionResult UpdateReception(int Id,UpdateReceptionBindingModel model)
+        public IHttpActionResult UpdateReception(int Id, AddOrUpdateReceptionBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
-            
             try
             {
-
                 var receptionService = new ReceptionService();
-                var update = receptionService.Update(Id,model);
-                 
-                return update?(IHttpActionResult)Ok() : BadRequest();
-
-               
+                if (receptionService.GetById(Id) == null) return NotFound();
+                var update = receptionService.Update(Id, model);
+                return update?(IHttpActionResult)Ok() : BadRequest();  
             }
             catch (Exception ex)
             {

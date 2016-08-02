@@ -80,8 +80,24 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetGrillIssuesReport() {
             try
             {
-                var grillIssues = _db.GrillIssues.ToList();
-                return grillIssues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grillIssues)) : Ok();
+                var grills = _db.Grills.Where(s => s.GrillIssue != null).ToList();
+                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(grills)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las salidas de parrillas." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpGet]
+        [Route("originReport")]
+        public IHttpActionResult GetOriginReportt()
+        {
+            try
+            {
+                var fields = _db.Fields.ToList();
+                var varieties = _db.Varieties.ToList();
+                return fields.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(fields, varieties)) : Ok();
             }
             catch (Exception ex)
             {

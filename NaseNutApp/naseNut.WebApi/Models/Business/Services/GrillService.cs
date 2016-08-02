@@ -153,25 +153,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-        public bool Update(int id, AddGrillBindingModel model)
+        public bool Update(int id, AddOrUpdateGrillBindingModel model)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                   
                     var grill = db.Grills.Find(id);
                     if (grill == null) return false;
                     grill.DateCapture = model.DateCapture.ConvertToDate(); 
-                    grill.FieldName = model.FieldName;
+                    grill.FieldId = model.FieldId;
                     grill.Kilos = model.Kilos;
                     grill.ProducerId = model.ProducerId;
                     grill.Quality = model.Quality;
                     grill.Sacks = model.Sacks;
                     grill.Size = model.Size;
                     grill.VarietyId = model.VarietyId;
-
-
                     var grillRepository = new GrillRepository(db);
                     grillRepository.Update(grill);
                     return db.SaveChanges() >= 1;

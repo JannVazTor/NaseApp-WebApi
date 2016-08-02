@@ -121,7 +121,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     var sampling = db.Samplings.Find(model.Id);
                     if (sampling != null)
                     {
-                        sampling.DateCapture = model.DateCapture;
+                        sampling.DateCapture = model.DateCapture.ConvertToDate();
                         sampling.HumidityPercent= model.HumidityPercent;
                         sampling.Performance = (model.TotalWeightOfEdibleNuts / model.SampleWeight) * 100;
                         sampling.SampleWeight = model.SampleWeight;
