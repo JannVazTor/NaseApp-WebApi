@@ -61,14 +61,5 @@ namespace naseNut.WebApi.Models.Business.Services
             }
             return kilograms;
         }
-
-        public Reception GetFolio(List<Reception> receptions, int receptionId)
-        {
-            var folio = (from reception in receptions
-                where reception.Id == receptionId
-                select reception).FirstOrDefault();
-            
-            return folio;
-        }
     }
 }

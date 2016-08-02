@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.Routing;
+using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Entities;
 using naseNut.WebApi.Models.Enum;
 using naseNut.WebApi.Models.Business.Services;
@@ -99,6 +101,34 @@ namespace naseNut.WebApi.Models
                 Performance = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.ToString() : "",
                 TotalWeightOfEdibleNuts = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
             }).ToList();
+        }
+
+        public List<DailyProcessModel> CreateReport(List<ReceptionEntry> receptionEntries, string date)
+        {
+            var reportService = new ReportService();
+            return (from s in receptionEntries
+                    let grill = s.Variety.Grills.ToList()
+                    let sacksFirstMedium = reportService.GetSacks(grill, NutSizes.Medium, (int)GrillQuality.First)
+                    let sacksFirstSmall =  reportService.GetSacks(grill, NutSizes.Small, (int)GrillQuality.First)
+                    select new DailyProcessModel
+                    {
+                        Date = date,
+                        Producer = s.Producer.ProducerName,
+                        Folio = s.Receptions.ToList().Count != 0 ? string.Join(", ", s.Receptions.Select(c => c.Folio)) : "",
+                        Cylinder = s.Cylinder.CylinderName,
+                        Variety = s.Variety.Variety1,
+                        SacksFirstSmall = sacksFirstSmall,
+                        SacksFirstMedium = sacksFirstMedium,
+                        Total = sacksFirstSmall + sacksFirstMedium,
+                        QualityPercent = s.Samplings.Count != 0 ? s.Samplings.OrderBy(x=> x.DateCapture).FirstOrDefault().Performance.ToString(CultureInfo.InvariantCulture) + "%" : "",
+                        Germinated = s.NutTypes.Count != 0 ? s.Receptions.SelectMany(x=> x.ReceptionEntry.NutTypes.Where(n=> n.NutType1 == 2).Select(y=> y.Sacks)).Sum() : 0,
+                    }).ToList();
+        }
+
+        public class DailyProcess
+        {
+            public  List<DailyProcessModel> DailyProcessList { get; set; } 
+            public List<int> TotalsList { get; set; } 
         }
 
         public SamplingGrillModel Create(Sampling sampling)
@@ -230,43 +260,18 @@ namespace naseNut.WebApi.Models
                     }).ToList();
         }
 
-        public List<DailyProcessModel> CreateReport(List<Grill> grills, List<Reception> receptions, List<Sampling> samplings, DateTime date)
-        {
-            var reportService = new ReportService();
-            var datedGrills = from grill in grills
-                where grill.GrillIssue.DateCapture == date
-                select grill;
-            return (from r in samplings  where r.ReceptionEntry.DateIssue == date
-                    let sacksFirstSmall = reportService.GetSacks(datedGrills.ToList(), NutSizes.Small, (int)GrillQuality.First)
-                    let sacksFirstMedium = reportService.GetSacks(datedGrills.ToList(), NutSizes.Medium, (int)GrillQuality.First)
-                    let folio = reportService.GetFolio(receptions, r.Grill.ReceptionId)
-                    select new DailyProcessModel
-                    {
-                        Date = date,
-                        Producer = r.ReceptionEntry.Producer.ToString(),
-                        Folio = folio,
-                        Cylinder = r.ReceptionEntry.Cylinder.ToString(),
-                        Variety = r.ReceptionEntry.Variety.ToString(),
-                        SacksFirstSmall = sacksFirstSmall,
-                        SacksFirstMedium = sacksFirstMedium,
-                        Total = sacksFirstSmall + sacksFirstMedium,
-                        QualityPercent = 50 + '%',
-                        Germinated = 100
-                    }).ToList();
-        }
-
         public class DailyProcessModel
         {
-            public DateTime Date { get; set; }
+            public string Date { get; set; }
             public string Producer { get; set; }
-            public Reception Folio { get; set; }
+            public string Folio { get; set; }
             public string Cylinder { get; set; }
             public string Variety { get; set; }
             public int SacksFirstSmall { get; set; }
             public int SacksFirstMedium { get; set; }
             public int Total { get; set; }
-            public double QualityPercent { get; set; }
-            public int Germinated { get; set; }
+            public string QualityPercent { get; set; }
+            public int? Germinated { get; set; }
         }
         public class ReportingProcessModel
         {
@@ -530,7 +535,7 @@ namespace naseNut.WebApi.Models
                //Variety = r.Variety.Variety1,
                //Remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString()
            }).ToList();
-        }
+        } 
 
         public class ReceptionModel
             {

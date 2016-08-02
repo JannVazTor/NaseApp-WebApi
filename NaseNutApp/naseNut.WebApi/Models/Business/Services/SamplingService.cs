@@ -123,7 +123,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     {
                         sampling.DateCapture = model.DateCapture;
                         sampling.HumidityPercent= model.HumidityPercent;
-                        sampling.Performance = model.Performance;
+                        sampling.Performance = (model.TotalWeightOfEdibleNuts / model.SampleWeight) * 100;
                         sampling.SampleWeight = model.SampleWeight;
                         sampling.TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts;
                         sampling.WalnutNumber = model.WalnutNumber;

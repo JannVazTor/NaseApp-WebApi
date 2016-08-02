@@ -18,7 +18,6 @@ namespace naseNut.WebApi.Models.BindingModels
         public double HumidityPercent { get; set; }
         [Required]
         public int WalnutNumber { get; set; }
-        [Required]
         public double Performance { get; set; }
         [Required]
         public double TotalWeightOfEdibleNuts { get; set; }
@@ -35,7 +34,6 @@ namespace naseNut.WebApi.Models.BindingModels
         public double HumidityPercent { get; set; }
         [Required]
         public int WalnutNumber { get; set; }
-        [Required]
         public double Performance { get; set; }
         [Required]
         public double TotalWeightOfEdibleNuts { get; set; }
@@ -59,7 +57,6 @@ namespace naseNut.WebApi.Models.BindingModels
         public double HumidityPercent { get; set; }
         [Required]
         public int WalnutNumber { get; set; }
-        [Required]
         public double Performance { get; set; }
         [Required]
         public double TotalWeightOfEdibleNuts { get; set; }
