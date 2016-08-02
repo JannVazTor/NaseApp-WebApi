@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,7 +18,7 @@ namespace naseNut.WebApi.Controllers
     {
         private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
-        public IHttpActionResult SaveGrill(AddGrillBindingModel model)
+        public IHttpActionResult SaveGrill(AddOrUpdateGrillBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -204,6 +203,26 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar obtener los registros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpPut]
+        [Route("{id}")]
+        public IHttpActionResult UpdateGrill(int id, AddOrUpdateGrillBindingModel model) {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var grillService = new GrillService();
+                if (grillService.GetById(id) == null) return NotFound();
+                var modified = grillService.Update(id, model);
+                return modified ? (IHttpActionResult)Ok() : Conflict();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar actualizar la parrilla." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }

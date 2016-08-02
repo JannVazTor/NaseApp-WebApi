@@ -52,7 +52,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int Id { get; set; }
         [Required]
-        public DateTime DateCapture { get; set; }
+        public string DateCapture { get; set; }
         [Required]
         public double SampleWeight { get; set; }
         [Required]

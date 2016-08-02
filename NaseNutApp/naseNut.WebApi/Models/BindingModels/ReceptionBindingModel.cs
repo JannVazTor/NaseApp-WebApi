@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace naseNut.WebApi.Models.BindingModels
 {
-    public class AddReceptionBindingModel
+    public class AddOrUpdateReceptionBindingModel
     {
         [Required]
         public int Folio { get; set; }
@@ -14,8 +14,6 @@ namespace naseNut.WebApi.Models.BindingModels
         public int FieldId { get; set; }
         [Required]
         public string CarRegistration { get; set; }
-        public string EntryDate { get; set; }
-        public DateTime? IssueDate { get; set; }
         public double? HeatHoursDrying { get; set; }
         public double? HumidityPercent { get; set; }
         [Required]
@@ -31,23 +29,6 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int ProducerId { get; set; }
         [Required]
-        public List<AddReceptionBindingModel> Receptions { get; set; }
-    }
-    public class UpdateReceptionBindingModel
-    {
-        [Required]
-        public double ReceivedFromField { get; set; }
-        [Required]
-        public int FieldId { get; set; }
-        [Required]
-        public string CarRegistration { get; set; }
-        public DateTime EntryDate { get; set; } = DateTime.Now;
-        public DateTime? IssueDate { get; set; }
-        public double? HeatHoursDrying { get; set; }
-        public double? HumidityPercent { get; set; }
-        [Required]
-        public string Observations { get; set; }
-        [Required]
-        public int ProducerId { get; set; }
+        public List<AddOrUpdateReceptionBindingModel> Receptions { get; set; }
     }
 }

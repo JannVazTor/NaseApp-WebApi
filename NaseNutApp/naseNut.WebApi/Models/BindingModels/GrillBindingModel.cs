@@ -7,7 +7,7 @@ using System.Web;
 
 namespace naseNut.WebApi.Models.BindingModels
 {
-    public class AddGrillBindingModel
+    public class AddOrUpdateGrillBindingModel
     {
         [Required]
         public string DateCapture { get; set; }

@@ -103,9 +103,8 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-        public bool Update(int id,UpdateReceptionBindingModel model)
+        public bool Update(int id, AddOrUpdateReceptionBindingModel model)
         {
-
             try
             {
                 using (var db = new NaseNEntities())
@@ -119,7 +118,7 @@ namespace naseNut.WebApi.Models.Business.Services
                         reception.HeatHoursDtrying = model.HeatHoursDrying;
                         reception.HumidityPercent = model.HumidityPercent;
                         reception.ReceivedFromField = model.ReceivedFromField;
-
+                        reception.Observations = model.Observations;
                         var receptionRepository = new ReceptionRepository(db);
                         receptionRepository.Update(reception);
                         return db.SaveChanges() >= 1;

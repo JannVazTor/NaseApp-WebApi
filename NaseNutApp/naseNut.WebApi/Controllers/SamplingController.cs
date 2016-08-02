@@ -141,6 +141,10 @@ namespace naseNut.WebApi.Controllers
         [HttpPut]
         public IHttpActionResult Updatesampling(UpdateGrillSamplingBindingModel model)
         {
+            if (!ModelState.IsValid || model == null)
+            {
+                return BadRequest();
+            }
             try
             {
                 var samplingService = new SamplingService();
