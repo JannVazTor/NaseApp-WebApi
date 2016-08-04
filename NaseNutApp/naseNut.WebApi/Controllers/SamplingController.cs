@@ -33,7 +33,7 @@ namespace naseNut.WebApi.Controllers
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,
-                    Performance = model.Performance,
+                    Performance = (model.TotalWeightOfEdibleNuts / model.SampleWeight) * 100,
                     TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts,
                     GrillId = model.GrillId
                 };
@@ -64,7 +64,7 @@ namespace naseNut.WebApi.Controllers
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,
-                    Performance = model.Performance,
+                    Performance = (model.TotalWeightOfEdibleNuts / model.SampleWeight) * 100,
                     TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts,
                     ReceptionEntryId = model.ReceptionEntryId
                 };

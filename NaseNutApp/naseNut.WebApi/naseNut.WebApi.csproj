@@ -248,6 +248,7 @@
     <Compile Include="Models\BindingModels\ProducerBindingModel.cs" />
     <Compile Include="Models\BindingModels\ReceptionBindingModel.cs" />
     <Compile Include="Models\BindingModels\RemissionBindingModel.cs" />
+    <Compile Include="Models\BindingModels\ReportBindingModel.cs" />
     <Compile Include="Models\BindingModels\RoleBindingModel.cs" />
     <Compile Include="Models\BindingModels\SamplingBindingModel.cs" />
     <Compile Include="Models\BindingModels\VarietyBindingModel.cs" />

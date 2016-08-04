@@ -24,11 +24,11 @@ namespace naseNut.WebApi.Models.Entities
         }
     
         public int Id { get; set; }
-        public System.DateTime DateEntry { get; set; }
+        public DateTime DateEntry { get; set; }
         public int VarietyId { get; set; }
         public int ProducerId { get; set; }
         public int CylinderId { get; set; }
-        public Nullable<System.DateTime> DateIssue { get; set; }
+        public DateTime? DateIssue { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Humidity> Humidities { get; set; }
