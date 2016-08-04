@@ -50,8 +50,6 @@ namespace naseNut.WebApi.Models
             return remissions.Select(r => new RemissionModel
             {
                 Id = r.Id,
-                Cultivation = r.Cultivation,
-                Batch = r.Batch,
                 Quantity = r.Quantity,
                 Butler = r.Butler,
                 TransportNumber = r.TransportNumber,
@@ -87,7 +85,8 @@ namespace naseNut.WebApi.Models
             return cylinders.Select(c => new CylinderModel
             {
                 Id = c.Id,
-                CylinderName = c.CylinderName
+                CylinderName = c.CylinderName,
+                State = c.Active
             }).ToList();
         }
 
@@ -287,10 +286,12 @@ namespace naseNut.WebApi.Models
                         PerformancePerHa = performancePerHa
                     }).ToList();
         }
+
         public class OriginDataModel {
             public double Total { get; set; }
             public string Variety { get; set; }
         }
+
         public List<ReceptionModel> Create(List<Reception> receptions)
         {
             return receptions.Select(r => new ReceptionModel
@@ -381,7 +382,9 @@ namespace naseNut.WebApi.Models
             {
                 Id = f.Id,
                 FieldName = f.FieldName,
-                Hectares = f.Hectares
+                Hectares = f.Hectares,
+                Batch = f.Batch,
+                Box = f.Box
             }).ToList();
         }
         public class FieldModel
@@ -389,6 +392,8 @@ namespace naseNut.WebApi.Models
             public int Id { get; set; }
             public string FieldName { get; set; }
             public double Hectares { get; set; }
+            public string Batch { get; set; }
+            public string Box { get; set; }
         }
         public class GrillIssueReportModel
         {
@@ -526,6 +531,7 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string CylinderName { get; set; }
+            public bool State { get; set; }
         }
 
         public class VarietyModel

@@ -82,7 +82,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetLastSamplings() {
             try
             {
-                var lastSamplings = _db.ReceptionEntries.Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).ToList();
+                var lastSamplings = _db.ReceptionEntries.Where(r => r.Humidities.Any()).Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).ToList();
                 return lastSamplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateH(lastSamplings)) : Ok();
             }
             catch (Exception ex)

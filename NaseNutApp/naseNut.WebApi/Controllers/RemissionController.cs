@@ -28,8 +28,6 @@ namespace naseNut.WebApi.Controllers
                 var remissionService = new RemissionService();
                 var remission = new Remission
                 {
-                    Cultivation = model.Cultivation,
-                    Batch = model.Batch,
                     Quantity = model.Quantity,
                     Butler = model.Butler,
                     TransportNumber = model.TransportNumber,

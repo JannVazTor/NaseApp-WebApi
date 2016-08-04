@@ -29,10 +29,6 @@ namespace naseNut.WebApi.Models.Business.Services
                     db.ReceptionEntries.Attach(receptionEntry);
                     db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
 
-                    cylinder.Active = true;
-                    db.Cylinders.Attach(cylinder);
-                    db.Entry(cylinder).Property(p => p.Active).IsModified = true;
-
                     foreach (var item in nutTypes)
                     {
                         nutTypeRepository.Insert(item);
@@ -80,10 +76,6 @@ namespace naseNut.WebApi.Models.Business.Services
                     receptionEntry.DateIssue = null;
                     db.ReceptionEntries.Attach(receptionEntry);
                     db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
-
-                    cylinder.Active = false;
-                    db.Cylinders.Attach(cylinder);
-                    db.Entry(cylinder).Property(p => p.Active).IsModified = true;
 
                     samplingRepository.Delete(sampling);
                     return db.SaveChanges() >= 1;
