@@ -15,8 +15,6 @@ namespace naseNut.WebApi.Models.Entities
     public partial class Remission
     {
         public int Id { get; set; }
-        public string Cultivation { get; set; }
-        public string Batch { get; set; }
         public double Quantity { get; set; }
         public string Butler { get; set; }
         public int TransportNumber { get; set; }

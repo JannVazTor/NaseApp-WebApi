@@ -84,9 +84,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     var remissionRepository = new RemissionRepository(db);
                     var remission = db.Remissions.Find(id);
 
-                    remission.Batch = model.Batch;
                     remission.Butler = model.Butler;
-                    remission.Cultivation = model.Cultivation;
                     remission.DateCapture = model.DateCapture;
                     remission.Driver = model.Driver;
                     remission.Elaborate = model.Elaborate;

@@ -52,8 +52,6 @@ namespace naseNut.WebApi.Models
             return remissions.Select(r => new RemissionModel
             {
                 Id = r.Id,
-                Cultivation = r.Cultivation,
-                Batch = r.Batch,
                 Quantity = r.Quantity,
                 Butler = r.Butler,
                 TransportNumber = r.TransportNumber,
