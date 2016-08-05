@@ -17,16 +17,16 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Field()
         {
+            this.Batches = new HashSet<Batch>();
             this.Grills = new HashSet<Grill>();
             this.Receptions = new HashSet<Reception>();
         }
     
         public int Id { get; set; }
         public string FieldName { get; set; }
-        public double Hectares { get; set; }
-        public string Batch { get; set; }
-        public string Box { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Batch> Batches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

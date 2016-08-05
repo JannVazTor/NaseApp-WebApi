@@ -95,9 +95,9 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var fields = _db.Fields.ToList();
+                var batches = _db.Batches.ToList();
                 var varieties = _db.Varieties.ToList();
-                return fields.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(fields, varieties)) : Ok();
+                return batches.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(batches, varieties)) : Ok();
             }
             catch (Exception ex)
             {

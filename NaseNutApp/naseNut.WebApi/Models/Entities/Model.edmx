@@ -66,6 +66,22 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Batch" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Hectares" Type="float" Nullable="false" />
+          <Property Name="FieldId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Box">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Box" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
         <EntityType Name="Cylinder">
           <Key>
             <PropertyRef Name="Id" />
@@ -80,9 +96,6 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FieldName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Hectares" Type="float" Nullable="false" />
-          <Property Name="Batch" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="Box" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Grill">
           <Key>
@@ -227,6 +240,20 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Variety" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <Association Name="fk_batch_box">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Box" Type="Self.Box" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Box">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -280,6 +307,20 @@
             </Principal>
             <Dependent Role="AspNetUserRoles">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_field_batch">
+          <End Role="Field" Type="Self.Field" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Batch" Type="Self.Batch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Field">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Batch">
+              <PropertyRef Name="FieldId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -518,6 +559,8 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Batch" EntityType="Self.Batch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Box" EntityType="Self.Box" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cylinder" EntityType="Self.Cylinder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Field" EntityType="Self.Field" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
@@ -533,6 +576,10 @@
           <EntitySet Name="Sampling" EntityType="Self.Sampling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Variety" EntityType="Self.Variety" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_batch_box" Association="Self.fk_batch_box">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="Box" EntitySet="Box" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -548,6 +595,10 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_field_batch" Association="Self.fk_field_batch">
+            <End Role="Field" EntitySet="Field" />
+            <End Role="Batch" EntitySet="Batch" />
           </AssociationSet>
           <AssociationSet Name="fk_grill_field" Association="Self.fk_grill_field">
             <End Role="Field" EntitySet="Field" />
@@ -800,7 +851,12 @@
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Remission" EntitySet="Remissions" />
           </AssociationSet>
+          <EntitySet Name="Batches" EntityType="NASE_DB_WModel.Batch" />
           <EntitySet Name="Fields" EntityType="NASE_DB_WModel.Field" />
+          <AssociationSet Name="fk_field_batch" Association="NASE_DB_WModel.fk_field_batch">
+            <End Role="Field" EntitySet="Fields" />
+            <End Role="Batch" EntitySet="Batches" />
+          </AssociationSet>
           <AssociationSet Name="fk_grill_field" Association="NASE_DB_WModel.fk_grill_field">
             <End Role="Field" EntitySet="Fields" />
             <End Role="Grill" EntitySet="Grills" />
@@ -808,6 +864,11 @@
           <AssociationSet Name="fk_reception_field" Association="NASE_DB_WModel.fk_reception_field">
             <End Role="Field" EntitySet="Fields" />
             <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
+          <EntitySet Name="Boxes" EntityType="NASE_DB_WModel.Box" />
+          <AssociationSet Name="fk_batch_box" Association="NASE_DB_WModel.fk_batch_box">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="Box" EntitySet="Boxes" />
           </AssociationSet>
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
@@ -1170,18 +1231,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Batch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Batch1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Hectares" Type="Double" Nullable="false" />
+          <Property Name="FieldId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Field" Relationship="NASE_DB_WModel.fk_field_batch" FromRole="Batch" ToRole="Field" />
+          <NavigationProperty Name="Box" Relationship="NASE_DB_WModel.fk_batch_box" FromRole="Batch" ToRole="Box" />
+        </EntityType>
         <EntityType Name="Field">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FieldName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Hectares" Type="Double" Nullable="false" />
-          <Property Name="Batch" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Box" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Batches" Relationship="NASE_DB_WModel.fk_field_batch" FromRole="Field" ToRole="Batch" />
           <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.fk_grill_field" FromRole="Field" ToRole="Grill" />
           <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.fk_reception_field" FromRole="Field" ToRole="Reception" />
         </EntityType>
+        <Association Name="fk_field_batch">
+          <End Type="NASE_DB_WModel.Field" Role="Field" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Batch" Role="Batch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Field">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Batch">
+              <PropertyRef Name="FieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_grill_field">
           <End Type="NASE_DB_WModel.Field" Role="Field" Multiplicity="1" />
           <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
@@ -1205,6 +1289,28 @@
             </Principal>
             <Dependent Role="Reception">
               <PropertyRef Name="FieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Box">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Box1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Batch" Relationship="NASE_DB_WModel.fk_batch_box" FromRole="Box" ToRole="Batch" />
+        </EntityType>
+        <Association Name="fk_batch_box">
+          <End Type="NASE_DB_WModel.Batch" Role="Batch" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Box" Role="Box" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Box">
+              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1441,13 +1547,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Batches">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Batch">
+              <MappingFragment StoreEntitySet="Batch">
+                <ScalarProperty Name="FieldId" ColumnName="FieldId" />
+                <ScalarProperty Name="Hectares" ColumnName="Hectares" />
+                <ScalarProperty Name="Batch1" ColumnName="Batch" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Fields">
             <EntityTypeMapping TypeName="NASE_DB_WModel.Field">
               <MappingFragment StoreEntitySet="Field">
-                <ScalarProperty Name="Box" ColumnName="Box" />
-                <ScalarProperty Name="Batch" ColumnName="Batch" />
-                <ScalarProperty Name="Hectares" ColumnName="Hectares" />
                 <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Boxes">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.Box">
+              <MappingFragment StoreEntitySet="Box">
+                <ScalarProperty Name="Box1" ColumnName="Box" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

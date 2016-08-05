@@ -137,7 +137,6 @@ namespace naseNut.WebApi.Models
                     }).ToList();
         }
 
-
         public SamplingGrillModel Create(Sampling sampling)
         {
             return new SamplingGrillModel
@@ -290,26 +289,27 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-        public List<OriginReportModel> CreateReport(List<Field> fields, List<Variety> varietiesL)
+        public List<OriginReportModel> CreateReport(List<Batch> batch, List<Variety> varietiesL)
         {
-            return (from f in fields
-                    let field = f.FieldName
-                    let hectares = f.Hectares
-                    let varieties = varietiesL.Select(v => new OriginDataModel
-                    {
-                        Total = v.Grills.Where(g => g.Field.Id == f.Id).Sum(g => g.Kilos),
-                        Variety = v.Variety1
-                    }).ToList()
-                    let totalProduction = varieties.Sum(g => g.Total)
-                    let performancePerHa = totalProduction / hectares
-                    select new OriginReportModel
-                    {
-                        Field = field,
-                        Hectares = hectares,
-                        Varieties = varieties,
-                        TotalProduction = totalProduction,
-                        PerformancePerHa = performancePerHa
-                    }).ToList();
+            return null;
+            //return (from b in batch
+            //        let field = b.Batch1
+            //        let hectares = b.Hectares
+            //        let varieties = varietiesL.Select(v => new OriginDataModel
+            //        {
+            //            Total = v.ReceptionEntries.Where(r => r.Variety.Id == v.Id && r.Receptions.Where(re => re.Field.Batches.Where(b => b.Id == b.Id))).Sum(r => r.NutTypes.Select(n => n.Kilos)),
+            //            Variety = v.Variety1
+            //        }).ToList()
+            //        let totalProduction = varieties.Sum(g => g.Total)
+            //        let performancePerHa = totalProduction / hectares
+            //        select new OriginReportModel
+            //        {
+            //            Field = field,
+            //            Hectares = hectares,
+            //            Varieties = varieties,
+            //            TotalProduction = totalProduction,
+            //            PerformancePerHa = performancePerHa
+            //        }).ToList();
         }
 
         public class OriginDataModel {
@@ -402,15 +402,42 @@ namespace naseNut.WebApi.Models
                 Cylinder = reception.ReceptionEntry.Cylinder.CylinderName
             };
         }
+        public List<FieldModel> Create(List<Batch> batches, bool isDropdown) {
+            if (isDropdown)
+            {
+                return batches.Select(b => new FieldModel {
+                    Id = b.Id,
+                    Batch = b.Batch1
+                }).ToList();
+            }
+            return batches.Select(b => new FieldModel
+            {
+                Id = b.Field.Id,
+                FieldName = b.Field.FieldName,
+                Hectares = b.Hectares,
+                Batch = b.Batch1,
+                Box = b.Box != null ? b.Box.Box1 : ""
+            }).ToList();
+        }
+        public List<BoxModel> Create(List<Box> boxes)
+        {
+            return boxes.Select(b => new BoxModel
+            {
+                Id = b.Id,
+                Box = b.Box1
+            }).ToList();
+        }
         public List<FieldModel> Create(List<Field> fields) {
             return fields.Select(f => new FieldModel
             {
                 Id = f.Id,
-                FieldName = f.FieldName,
-                Hectares = f.Hectares,
-                Batch = f.Batch,
-                Box = f.Box
+                FieldName = f.FieldName
             }).ToList();
+        }
+        public class BoxModel
+        {
+            public int Id { get; set; }
+            public string Box { get; set; }
         }
         public class FieldModel
         {

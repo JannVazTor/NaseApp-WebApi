@@ -40,9 +40,13 @@
         <AssociationConnector Association="NASE_DB_WModel.fk_receptionEntry_variety" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Remission" Width="1.5" PointX="2.875" PointY="21.125" />
         <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Field" Width="1.5" PointX="6.375" PointY="10" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Batch" Width="1.5" PointX="14.75" PointY="9.875" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Field" Width="1.5" PointX="12.5" PointY="10" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_field_batch" />
         <AssociationConnector Association="NASE_DB_WModel.fk_grill_field" />
         <AssociationConnector Association="NASE_DB_WModel.fk_reception_field" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Box" Width="1.5" PointX="17" PointY="10.125" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_batch_box" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
