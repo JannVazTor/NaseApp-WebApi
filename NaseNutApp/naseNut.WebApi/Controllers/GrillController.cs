@@ -29,7 +29,7 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grill = new Grill
                 {
-                    DateCapture = model.DateCapture.ConvertToDate(), 
+                    DateCapture = model.DateCapture, 
                     Size = model.Size,
                     Sacks = model.Sacks,
                     Kilos = model.Kilos,

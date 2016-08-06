@@ -9,13 +9,8 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int Folio { get; set; }
         [Required]
-        public double ReceivedFromField { get; set; }
-        [Required]
-        public int FieldId { get; set; }
-        [Required]
         public string CarRegistration { get; set; }
         public double? HeatHoursDrying { get; set; }
-        public double? HumidityPercent { get; set; }
         [Required]
         public string Observations { get; set; }
     }

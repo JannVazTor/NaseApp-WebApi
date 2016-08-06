@@ -29,11 +29,8 @@ namespace naseNut.WebApi.Controllers
                 var receptionEntryService = new ReceptionEntryService();
                 var receptions = model.Receptions.Select(m => new Reception
                 {
-                    ReceivedFromField = m.ReceivedFromField,
-                    FieldId = m.FieldId,
                     CarRegistration = m.CarRegistration,
                     HeatHoursDtrying = m.HeatHoursDrying,
-                    HumidityPercent = m.HumidityPercent,
                     Observations = m.Observations,
                     Folio = m.Folio
                 }).ToList();

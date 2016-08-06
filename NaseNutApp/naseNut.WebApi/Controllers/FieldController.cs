@@ -141,6 +141,25 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las Huertas/Lotes." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("batchesInField/{fieldId}")]
+        public IHttpActionResult GetBatchesInField(int fieldId)
+        {
+            try
+            {
+                var fieldService = new FieldService();
+                if (fieldService.GetById(fieldId) == null) return NotFound();
+                var batches = _db.Batches.Where(b => b.Field.Id == fieldId).ToList();
+                return batches != null ? (IHttpActionResult)Ok(TheModelFactory.Create(batches, true)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las Huertas/Lotes." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpGet]
         [Route("boxes")]
         public IHttpActionResult GetBoxes()
@@ -149,6 +168,24 @@ namespace naseNut.WebApi.Controllers
             {
                 var fieldService = new FieldService();
                 var boxes = _db.Boxes.ToList();
+                return boxes != null ? (IHttpActionResult)Ok(TheModelFactory.Create(boxes)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los cuadros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpGet]
+        [Route("boxesInBatch/{batchId}")]
+        public IHttpActionResult GetBoxesInBatch(int batchId)
+        {
+            try
+            {
+                var batchService = new BatchService();
+                if (batchService.GetById(batchId) == null) return NotFound();
+                var boxes = _db.Boxes.Where(b => b.Batch.Id == batchId).ToList();
                 return boxes != null ? (IHttpActionResult)Ok(TheModelFactory.Create(boxes)) : Ok();
             }
             catch (Exception ex)

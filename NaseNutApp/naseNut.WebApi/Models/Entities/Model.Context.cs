@@ -38,13 +38,13 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
         public virtual DbSet<NutSize> NutSizes { get; set; }
         public virtual DbSet<Grill> Grills { get; set; }
-        public virtual DbSet<Reception> Receptions { get; set; }
         public virtual DbSet<Cylinder> Cylinders { get; set; }
         public virtual DbSet<Producer> Producers { get; set; }
         public virtual DbSet<Variety> Varieties { get; set; }
-        public virtual DbSet<Remission> Remissions { get; set; }
         public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<Field> Fields { get; set; }
         public virtual DbSet<Box> Boxes { get; set; }
+        public virtual DbSet<Remission> Remissions { get; set; }
+        public virtual DbSet<Reception> Receptions { get; set; }
     }
 }

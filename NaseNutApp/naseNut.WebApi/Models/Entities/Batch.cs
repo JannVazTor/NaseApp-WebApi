@@ -14,6 +14,12 @@ namespace naseNut.WebApi.Models.Entities
     
     public partial class Batch
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Batch()
+        {
+            this.Remissions = new HashSet<Remission>();
+        }
+    
         public int Id { get; set; }
         public string Batch1 { get; set; }
         public double Hectares { get; set; }
@@ -21,5 +27,7 @@ namespace naseNut.WebApi.Models.Entities
     
         public virtual Field Field { get; set; }
         public virtual Box Box { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Remission> Remissions { get; set; }
     }
 }

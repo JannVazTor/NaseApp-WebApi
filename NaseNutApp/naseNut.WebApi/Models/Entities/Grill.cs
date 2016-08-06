@@ -37,10 +37,10 @@ namespace naseNut.WebApi.Models.Entities
         public virtual GrillIssue GrillIssue { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sampling> Samplings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reception> Receptions { get; set; }
         public virtual Producer Producer { get; set; }
         public virtual Variety Variety { get; set; }
         public virtual Field Field { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reception> Receptions { get; set; }
     }
 }

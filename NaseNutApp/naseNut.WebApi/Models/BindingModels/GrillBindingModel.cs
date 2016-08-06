@@ -10,7 +10,8 @@ namespace naseNut.WebApi.Models.BindingModels
     public class AddOrUpdateGrillBindingModel
     {
         [Required]
-        public string DateCapture { get; set; }
+        public DateTime DateCapture { get; set; }
+        [Required]
         public int Size { get; set; }
         [Required]
         public int Sacks { get; set; }

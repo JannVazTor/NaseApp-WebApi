@@ -18,7 +18,6 @@ namespace naseNut.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult SaveRemission(AddRemissionBindingModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -33,8 +32,11 @@ namespace naseNut.WebApi.Controllers
                     TransportNumber = model.TransportNumber,
                     Driver = model.Driver,
                     Elaborate = model.Elaborate,
-                    ReceptionId = model.ReceptionId,
-                    DateCapture = DateTime.Now
+                    ReceptionId = _db.Receptions.First(r => r.Folio == model.Folio).Id,
+                    DateCapture = model.DateCapture,
+                    FieldId = model.FieldId,
+                    BatchId = model.BatchId,
+                    BoxId = model.BoxId
                 };
                 var saved = remissionService.Save(remission);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

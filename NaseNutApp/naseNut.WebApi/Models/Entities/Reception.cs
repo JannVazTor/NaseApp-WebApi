@@ -17,26 +17,22 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reception()
         {
-            this.Grills = new HashSet<Grill>();
             this.Remissions = new HashSet<Remission>();
+            this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
-        public double ReceivedFromField { get; set; }
         public string CarRegistration { get; set; }
         public Nullable<double> HeatHoursDtrying { get; set; }
-        public Nullable<double> HumidityPercent { get; set; }
         public string Observations { get; set; }
         public int GrillId { get; set; }
         public int Folio { get; set; }
         public int ReceptionEntryId { get; set; }
-        public int FieldId { get; set; }
     
         public virtual ReceptionEntry ReceptionEntry { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Grill> Grills { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
-        public virtual Field Field { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grill> Grills { get; set; }
     }
 }
