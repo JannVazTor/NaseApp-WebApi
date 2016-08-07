@@ -75,7 +75,7 @@ namespace naseNut.WebApi.Controllers
                         NutType1 = item.NutType,
                         Sacks = item.Sacks,
                         Kilos = item.Kilos,
-                        ReceptionEntryId = model.ReceptionEntryId
+                        SamplingId = sampling.Id
                     }); 
                 }
                 var saved = samplingService.Save(sampling, nutTypes, model.ReceptionEntryId);

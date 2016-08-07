@@ -14,6 +14,12 @@ namespace naseNut.WebApi.Models.Entities
     
     public partial class Sampling
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Sampling()
+        {
+            this.NutTypes = new HashSet<NutType>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime DateCapture { get; set; }
         public double SampleWeight { get; set; }
@@ -26,5 +32,7 @@ namespace naseNut.WebApi.Models.Entities
     
         public virtual ReceptionEntry ReceptionEntry { get; set; }
         public virtual Grill Grill { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NutType> NutTypes { get; set; }
     }
 }

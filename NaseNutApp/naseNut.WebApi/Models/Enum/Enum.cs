@@ -20,4 +20,9 @@ namespace naseNut.WebApi.Models.Enum
         Medium = 2,
         Large = 1
     }
+    public enum NutQuality {
+        First = 1,
+        Second = 2,
+        Third = 3
+    }
 }
