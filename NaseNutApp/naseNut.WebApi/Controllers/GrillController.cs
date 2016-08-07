@@ -174,7 +174,7 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 var grillIssue = new GrillIssue
                 {
-                    DateCapture = model.DateCapture.ConvertToDate(),
+                    DateCapture = model.DateCapture,
                     Truck = model.Truck,
                     Driver = model.Driver,
                     Box = model.Box,

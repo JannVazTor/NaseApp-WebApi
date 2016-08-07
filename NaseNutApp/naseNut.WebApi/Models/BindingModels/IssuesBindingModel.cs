@@ -11,9 +11,12 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int Remission { get; set; }
         [Required]
-        public string DateCapture { get; set; }
+        public DateTime DateCapture { get; set; }
+        [Required]
         public string Truck { get; set; }
+        [Required]
         public string Driver { get; set; }
+        [Required]
         public string Box { get; set; }
         [Required]
         public List<int> GrillsIds { get; set; }

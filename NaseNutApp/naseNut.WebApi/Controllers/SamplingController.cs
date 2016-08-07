@@ -29,7 +29,7 @@ namespace naseNut.WebApi.Controllers
                 var samplingService = new SamplingService();
                 var sampling = new Sampling
                 {
-                    DateCapture = model.DateCapture.ConvertToDate(),
+                    DateCapture = model.DateCapture,
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,
@@ -60,7 +60,7 @@ namespace naseNut.WebApi.Controllers
                 var nutTypes = new List<NutType>();
                 var sampling = new Sampling
                 {
-                    DateCapture = model.DateCapture.ConvertToDate(),
+                    DateCapture = model.DateCapture,
                     SampleWeight = model.SampleWeight,
                     HumidityPercent = model.HumidityPercent,
                     WalnutNumber = model.WalnutNumber,

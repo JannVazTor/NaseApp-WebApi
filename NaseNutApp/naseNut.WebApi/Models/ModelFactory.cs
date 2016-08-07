@@ -58,7 +58,9 @@ namespace naseNut.WebApi.Models
                 Driver = r.Driver,
                 Elaborate = r.Elaborate,
                 DateCapture = r.DateCapture,
-                FieldName = r.Field.FieldName + " " + r.Batch.Batch1 + " " + r.Box.Box1,
+                FieldName = r.Field.FieldName,
+                Batch = r.Batch.Batch1,
+                Box = r.Box.Box1,
                 Variety = r.Reception.ReceptionEntry.Variety.Variety1
             }).ToList();
         }
@@ -213,14 +215,23 @@ namespace naseNut.WebApi.Models
                 SampleWeight = s.SampleWeight,
                 HumidityPercent = s.HumidityPercent,
                 WalnutNumber = s.WalnutNumber,
-                Performance = s.Performance,
+                Performance = s.Performance.RoundTwoDigitsDouble(),
                 TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts,
-                SacksFirst = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 1) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Sacks.ToString() : "",
-                KilosFirst = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 1) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Kilos.ToString() : "",
-                SacksSecond = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 2) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Sacks.ToString() : "",
-                KilosSecond = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 2) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Kilos.ToString() : "",
-                SacksThird = s.ReceptionEntry.NutTypes.Any(n => n.NutType1== 3) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Sacks.ToString() : "",
-                KilosThird = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 3) ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Kilos.ToString() : "",
+                SacksFirst = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 1) 
+                            ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Sacks.ToString() : "",
+                KilosFirst = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 1) 
+                            ? (s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Kilos 
+                                * s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 1).First().Sacks).ToString() : "",
+                SacksSecond = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 2) 
+                            ? (s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Sacks).ToString() : "",
+                KilosSecond = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 2)
+                            ? (s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Kilos
+                                * s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 2).First().Sacks).ToString() : "",
+                SacksThird = s.ReceptionEntry.NutTypes.Any(n => n.NutType1== 3) 
+                            ? s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Sacks.ToString() : "",
+                KilosThird = s.ReceptionEntry.NutTypes.Any(n => n.NutType1 == 3) 
+                            ? (s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Kilos 
+                                * s.ReceptionEntry.NutTypes.Where(n => n.NutType1 == 3).First().Sacks).ToString() : "",
             }).ToList();
         }
         public List<NutTypeModel> Create(List<NutType> nutTypes) {
@@ -294,16 +305,17 @@ namespace naseNut.WebApi.Models
             return (from b in batches
                     let batch = b.Batch1
                     let hectares = b.Hectares
-                    let varieties = varietiesL.Select(v => new OriginDataModel
-                    {
-                        //(clean walnut * raw nut(batch))/raw nut = clean walnut(batch)
-                        Total = ((double)nutTypes.Where(n => n.ReceptionEntry.Variety.Id == v.Id).Sum(n => n.Kilos) 
-                                * remissions.Where(r => r.Reception.ReceptionEntry.Variety.Id == v.Id && r.Batch.Id == b.Id).Sum(t => t.Quantity))
-                                /remissions.Where(r => r.Reception.ReceptionEntry.Variety.Id == v.Id).Sum(t => t.Quantity),
-                        Variety = v.Variety1
-                    }).ToList()
-                    let totalProduction = varieties.Sum(g => g.Total)
-                    let performancePerHa = totalProduction / hectares
+                    let varieties = (from v in varietiesL
+                                     let cleanWalnut = (double)nutTypes.Where(n => n.ReceptionEntry.Variety.Id == v.Id).Sum(n => (n.Kilos * n.Sacks))
+                                     let rawWalnutInBatch = remissions.Where(r => r.Reception.ReceptionEntry.Variety.Id == v.Id && r.Batch.Id == b.Id).Sum(t => t.Quantity)
+                                     let rawWalnut = remissions.Where(r => r.Reception.ReceptionEntry.Variety.Id == v.Id).Sum(t => t.Quantity)
+                                     let cleanWalnutInBatch = rawWalnut != 0 ? ((cleanWalnut * rawWalnutInBatch)/rawWalnut).RoundTwoDigitsDouble() : 0 
+                                     select new OriginDataModel {
+                                         Variety = v.Variety1,
+                                         Total = cleanWalnutInBatch 
+                                     }).ToList()
+                    let totalProduction = varieties.Sum(g => g.Total).RoundTwoDigitsDouble()
+                    let performancePerHa = hectares != 0 ? (totalProduction / hectares).RoundTwoDigitsDouble() : 0
                     select new OriginReportModel
                     {
                         Field = batch,
@@ -346,7 +358,7 @@ namespace naseNut.WebApi.Models
             {
                 Humidities = Create(receptionEntry.Humidities.ToList()),
                 CylinderName = receptionEntry.Cylinder.CylinderName,
-                FieldName = "",
+                FieldName = receptionEntry.Receptions.Select(r => r.Remissions).FirstOrDefault() != null ? string.Join(", ", receptionEntry.Receptions.SelectMany(r => r.Remissions.Select(re => re.Batch.Batch1))) : "",
                 Tons = receptionEntry.Receptions.Sum(r => r.Remissions.Sum(re => re.Quantity)),
                 EntryDate = receptionEntry.DateEntry,
                 Folio = string.Join(", ", receptionEntry.Receptions.Select(re => re.Folio))
@@ -368,7 +380,7 @@ namespace naseNut.WebApi.Models
                 DateCapture = h.DateCapture,
                 CylinderName = h.ReceptionEntry.Cylinder.CylinderName,
                 EntryDate = h.ReceptionEntry.DateEntry,
-                FieldName = h.ReceptionEntry.Receptions.Any(re => re.Remissions != null && re.Remissions.Count != 0) ? string.Join(", ", h.ReceptionEntry.Receptions.Select(r => r.Remissions.Select(rem => rem.Batch.Batch1))) : "",
+                FieldName = h.ReceptionEntry.Receptions.Select(r => r.Remissions).FirstOrDefault() != null ? string.Join(", ", h.ReceptionEntry.Receptions.SelectMany(r => r.Remissions.Select(re => re.Batch.Batch1))) : "",
                 Folio = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.Folio)),
                 Tons = h.ReceptionEntry.Receptions.Sum(r => r.Remissions.Sum(re => re.Quantity))
             }).ToList();
@@ -435,6 +447,34 @@ namespace naseNut.WebApi.Models
                 Id = f.Id,
                 FieldName = f.FieldName
             }).ToList();
+        }
+        public UpdateRemissionModel Create(Remission remission) {
+            return new UpdateRemissionModel
+            {
+                Id = remission.Id,
+                Quantity = remission.Quantity,
+                Butler = remission.Butler,
+                TransportNumber = remission.TransportNumber,
+                Driver = remission.Driver,
+                Elaborate = remission.Elaborate,
+                DateCapture = remission.DateCapture,
+                BatchId = remission.BatchId,
+                FieldId = remission.FieldId,
+                BoxId = remission.BoxId        
+            };
+        }
+        public class UpdateRemissionModel {
+            public int Id { get; set; }
+            public double Quantity { get; set; }
+            public string Butler { get; set; }
+            public int TransportNumber { get; set; }
+            public string Driver { get; set; }
+            public string Elaborate { get; set; }
+            public int ReceptionId { get; set; }
+            public System.DateTime DateCapture { get; set; }
+            public int BatchId { get; set; }
+            public int BoxId { get; set; }
+            public int FieldId { get; set; }
         }
         public class BoxModel
         {
@@ -719,7 +759,8 @@ namespace naseNut.WebApi.Models
                 public DateTime DateCapture { get; set; }
                 public string FieldName { get; set; }
                 public string Variety { get; set; }
-            }
+                public string Box { get; set; }
+        }
 
             public class ProducerModel
             {
