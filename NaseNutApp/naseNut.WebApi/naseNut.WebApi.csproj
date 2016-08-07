@@ -275,6 +275,7 @@
     <Compile Include="Models\Business\Services\BoxService.cs" />
     <Compile Include="Models\Business\Services\CylinderService.cs" />
     <Compile Include="Models\Business\Services\FieldService.cs" />
+    <Compile Include="Models\Business\Services\GrillIssueService.cs" />
     <Compile Include="Models\Business\Services\GrillService.cs" />
     <Compile Include="Models\Business\Services\HomeService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />

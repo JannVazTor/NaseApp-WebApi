@@ -180,30 +180,18 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool SaveIssue(GrillIssue grillIssue, List<int> grillsId)
+        public bool RemoveGrillFromGrillIssue(int id)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var grillIssueRepository = new GrillIssueRepository(db);
-                    grillIssueRepository.Insert(grillIssue);
-                    var saved = db.SaveChanges() >= 1;
-                    if (!saved) return false;
-                    var grills = db.Grills.Where(g => grillsId.Any(id => id == g.Id)).ToList();
-
-                    grillIssueRepository.Update(grillIssue);
-                    foreach (var grill in grills)
-                    {
-                        grillIssue.Grills.Add(grill);
-                    }
-                    var added = db.SaveChanges() >= 1;
-                    if (!added) return false;
-                    foreach (var grill in grills)
-                    {
-                        UpdateStatus(grill.Id, false);
-                    }
-                    return true;
+                    var grillRepository = new GrillRepository(db);
+                    var grill = db.Grills.First(g => g.Id == id);
+                    grill.GrillIssuesId = null;
+                    grill.Status = true;
+                    grillRepository.Update(grill);
+                    return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception ex)

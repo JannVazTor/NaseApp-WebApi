@@ -171,7 +171,7 @@ namespace naseNut.WebApi.Controllers
             }
             try
             {
-                var grillService = new GrillService();
+                var grillIssueService = new GrillIssueService();
                 var grillIssue = new GrillIssue
                 {
                     DateCapture = model.DateCapture,
@@ -180,7 +180,7 @@ namespace naseNut.WebApi.Controllers
                     Box = model.Box,
                     Remission = model.Remission
                 };
-                var saved = grillService.SaveIssue(grillIssue, model.GrillsIds);
+                var saved = grillIssueService.Save(grillIssue, model.GrillsIds);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
@@ -205,6 +205,26 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los registros." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpDelete]
+        [Route("grillIssue/{id}")]
+        public IHttpActionResult DeleteGrillIssue(int id)
+        {
+            try
+            {
+                var grillIssueService = new GrillIssueService();
+                var grillIssue = grillIssueService.GetById(id);
+                if (grillIssue == null) return NotFound();
+                var deleted = grillIssueService.Delete(id);
+                return deleted ? (IHttpActionResult)Ok() : Conflict();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener los registros." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpPut]
         [Route("{id}")]
         public IHttpActionResult UpdateGrill(int id, AddOrUpdateGrillBindingModel model) {
@@ -223,6 +243,22 @@ namespace naseNut.WebApi.Controllers
             {
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
                 "Ocurrio un error al intentar actualizar la parrilla." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpPut]
+        [Route("removeGrillFromGrillIssue/{id}")]
+        public IHttpActionResult RemoveGrillFromGrillIssue(int id) {
+            try
+            {
+                var grillService = new GrillService();
+                if (grillService.GetById(id) == null) return NotFound();
+                var removed = grillService.RemoveGrillFromGrillIssue(id);
+                return removed ? (IHttpActionResult)Ok() : Conflict();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar cambiar el estado de la parrilla." + "\n" + "Detalles del Error: " + ex));
             }
         }
     }
