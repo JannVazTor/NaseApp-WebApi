@@ -60,6 +60,31 @@ namespace naseNut.WebApi.Models.Business.Services
             }
             return sacks;
         }
+        public int GetSacks(ReceptionEntry receptionEntries, NutSizes type, int quality)
+        {
+            var sacks = 0;
+            switch (type)
+            {
+                case NutSizes.Small:
+                    sacks = receptionEntries.Samplings.SelectMany(s => s.NutTypes).Any()
+                        ? (int)receptionEntries.Samplings.Where(sa => sa.WalnutNumber >= sa.ReceptionEntry.Variety.NutSize.Small)
+                            .SelectMany(n => n.NutTypes.Where(nu => nu.NutType1 == quality)).Sum(n => n.Sacks) : 0;
+                    break;
+                case NutSizes.Medium:
+                    sacks = receptionEntries.Samplings.SelectMany(s => s.NutTypes).Any()
+                        ? (int)receptionEntries.Samplings.Where(sa => sa.WalnutNumber >= sa.ReceptionEntry.Variety.NutSize.MediumStart && sa.WalnutNumber <= sa.ReceptionEntry.Variety.NutSize.MediumEnd)
+                            .SelectMany(n => n.NutTypes.Where(nu => nu.NutType1 == (int)NutQuality.First)).Sum(n => n.Sacks) : 0;
+                    break;
+                case NutSizes.Large:
+                    sacks = receptionEntries.Samplings.SelectMany(s => s.NutTypes).Any()
+                        ? (int)receptionEntries.Samplings.Where(sa => sa.WalnutNumber >= sa.ReceptionEntry.Variety.NutSize.LargeStart && sa.WalnutNumber <= sa.ReceptionEntry.Variety.NutSize.LargeEnd)
+                            .SelectMany(n => n.NutTypes.Where(nu => nu.NutType1 == (int)NutQuality.First)).Sum(n => n.Sacks) : 0;
+                    break;
+                default:
+                    break;
+            }
+            return sacks;
+        }
         public double GetKilograms(List<Grill> grills, NutSizes? type, int quality)
         {
             var kilograms = 0.0;
