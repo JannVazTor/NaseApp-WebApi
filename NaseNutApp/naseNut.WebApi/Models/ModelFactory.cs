@@ -137,7 +137,7 @@ namespace naseNut.WebApi.Models
                         SacksFirstMedium = sacksFirstMedium,
                         Total = sacksFirstSmall + sacksFirstMedium + sacksFirstLarge,
                         QualityPercent = s.Samplings.Count != 0 ? s.Samplings.OrderBy(x=> x.DateCapture).FirstOrDefault().Performance.ToString(CultureInfo.InvariantCulture) + "%" : "",
-                        Germinated = s.Samplings.SelectMany(s => s.NutTypes).Any() ? s.Receptions.SelectMany(x=> x.ReceptionEntry.Samplings.SelectMany(n => n.NutTypes).Where(n=> n.NutType1 == 2).Select(y=> y.Sacks)).Sum() : 0,
+                        Germinated = s.Samplings.SelectMany(x => x.NutTypes).Any() ? s.Receptions.SelectMany(x=> x.ReceptionEntry.Samplings.SelectMany(n => n.NutTypes).Where(n=> n.NutType1 == 2).Select(y=> y.Sacks)).Sum() : 0,
                     }).ToList();
         }
 
