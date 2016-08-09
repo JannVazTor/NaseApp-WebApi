@@ -32,7 +32,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<GrillIssue> GrillIssues { get; set; }
         public virtual DbSet<Humidity> Humidities { get; set; }
-        public virtual DbSet<Remission> Remissions { get; set; }
         public virtual DbSet<NutType> NutTypes { get; set; }
         public virtual DbSet<Sampling> Samplings { get; set; }
         public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
@@ -40,8 +39,9 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<Grill> Grills { get; set; }
         public virtual DbSet<Reception> Receptions { get; set; }
         public virtual DbSet<Cylinder> Cylinders { get; set; }
-        public virtual DbSet<Field> Fields { get; set; }
         public virtual DbSet<Producer> Producers { get; set; }
         public virtual DbSet<Variety> Varieties { get; set; }
+        public virtual DbSet<Remission> Remissions { get; set; }
+        public virtual DbSet<Field> Fields { get; set; }
     }
 }

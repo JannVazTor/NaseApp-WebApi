@@ -29,7 +29,9 @@ namespace naseNut.WebApi.Controllers
                 var field = new Field
                 {
                     FieldName = model.FieldName,
-                    Hectares = model.Hectares
+                    Hectares = model.Hectares,
+                    Batch = model.Batch,
+                    Box = model.Box
                 };
                 var saved = fieldService.Save(field);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

@@ -9,10 +9,6 @@ namespace naseNut.WebApi.Models.BindingModels
     public class AddRemissionBindingModel
     {
         [Required]
-        public string Cultivation { get; set; }
-        [Required]
-        public string Batch { get; set; }
-        [Required]
         public double Quantity { get; set; }
         [Required]
         public string Butler { get; set; }
@@ -28,10 +24,6 @@ namespace naseNut.WebApi.Models.BindingModels
     public class UpdateRemissionBindingModel
     {
         [Required]
-        public string Cultivation { get; set; }
-        [Required]
-        public string Batch { get; set; }
-        [Required]
         public double Quantity { get; set; }
         [Required]
         public string Butler { get; set; }
@@ -41,9 +33,5 @@ namespace naseNut.WebApi.Models.BindingModels
         public string Driver { get; set; }
         [Required]
         public string Elaborate { get; set; }
-        [Required]
-        public DateTime DateCapture { get; set; } = DateTime.Now;
-
-
     }
 }

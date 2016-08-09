@@ -12,5 +12,9 @@ namespace naseNut.WebApi.Models.BindingModels
         public string FieldName { get; set; }
         [Required]
         public double Hectares { get; set; }
+        [Required]
+        public string Batch { get; set; }
+        [Required]
+        public string Box { get; set; }
     }
 }

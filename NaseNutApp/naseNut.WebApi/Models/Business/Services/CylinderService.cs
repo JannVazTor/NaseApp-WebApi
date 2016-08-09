@@ -75,7 +75,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-        public bool ActiveCylinder(int id, bool state) {
+        public bool ChangeCylinderState(int id, bool state) {
             try
             {
                 using (var db = new NaseNEntities())

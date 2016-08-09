@@ -24,6 +24,8 @@ namespace naseNut.WebApi.Models.Entities
         public int Id { get; set; }
         public string FieldName { get; set; }
         public double Hectares { get; set; }
+        public string Batch { get; set; }
+        public string Box { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
