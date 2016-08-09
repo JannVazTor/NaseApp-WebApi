@@ -22,7 +22,13 @@ namespace naseNut.WebApi.Models.Entities
         public string Elaborate { get; set; }
         public int ReceptionId { get; set; }
         public System.DateTime DateCapture { get; set; }
+        public int BatchId { get; set; }
+        public int BoxId { get; set; }
+        public int FieldId { get; set; }
     
+        public virtual Batch Batch { get; set; }
+        public virtual Box Box { get; set; }
+        public virtual Field Field { get; set; }
         public virtual Reception Reception { get; set; }
     }
 }

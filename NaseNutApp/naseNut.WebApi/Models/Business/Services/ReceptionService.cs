@@ -114,10 +114,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     if (reception != null)
                     {
                         reception.CarRegistration = model.CarRegistration;
-                        reception.FieldId = model.FieldId;
                         reception.HeatHoursDtrying = model.HeatHoursDrying;
-                        reception.HumidityPercent = model.HumidityPercent;
-                        reception.ReceivedFromField = model.ReceivedFromField;
                         reception.Observations = model.Observations;
                         var receptionRepository = new ReceptionRepository(db);
                         receptionRepository.Update(reception);

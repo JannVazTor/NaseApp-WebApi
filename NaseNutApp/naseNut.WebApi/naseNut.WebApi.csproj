@@ -253,6 +253,8 @@
     <Compile Include="Models\BindingModels\SamplingBindingModel.cs" />
     <Compile Include="Models\BindingModels\VarietyBindingModel.cs" />
     <Compile Include="Models\Business\IService.cs" />
+    <Compile Include="Models\Business\Repositories\BatchRepository.cs" />
+    <Compile Include="Models\Business\Repositories\BoxRepository.cs" />
     <Compile Include="Models\Business\Repositories\CylinderRepository.cs" />
     <Compile Include="Models\Business\Repositories\FieldRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillIssueRepository.cs" />
@@ -269,8 +271,11 @@
     <Compile Include="Models\Business\Repositories\UserRepository.cs" />
     <Compile Include="Models\Business\Repositories\VarietyRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
+    <Compile Include="Models\Business\Services\BatchService.cs" />
+    <Compile Include="Models\Business\Services\BoxService.cs" />
     <Compile Include="Models\Business\Services\CylinderService.cs" />
     <Compile Include="Models\Business\Services\FieldService.cs" />
+    <Compile Include="Models\Business\Services\GrillIssueService.cs" />
     <Compile Include="Models\Business\Services\GrillService.cs" />
     <Compile Include="Models\Business\Services\HomeService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
@@ -293,6 +298,12 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\AspNetUserLogin.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Batch.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Box.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Cylinder.cs">

@@ -11,7 +11,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int GrillId { get; set; }
         [Required]
-        public string DateCapture { get; set; }
+        public DateTime DateCapture { get; set; }
         [Required]
         public double SampleWeight { get; set; }
         [Required]
@@ -27,7 +27,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int ReceptionEntryId { get; set; }
         [Required]
-        public string DateCapture { get; set; } 
+        public DateTime DateCapture { get; set; } 
         [Required]
         public double SampleWeight { get; set; }
         [Required]
@@ -50,7 +50,7 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public int Id { get; set; }
         [Required]
-        public string DateCapture { get; set; }
+        public DateTime DateCapture { get; set; }
         [Required]
         public double SampleWeight { get; set; }
         [Required]

@@ -29,11 +29,8 @@ namespace naseNut.WebApi.Controllers
                 var receptionEntryService = new ReceptionEntryService();
                 var receptions = model.Receptions.Select(m => new Reception
                 {
-                    ReceivedFromField = m.ReceivedFromField,
-                    FieldId = m.FieldId,
                     CarRegistration = m.CarRegistration,
                     HeatHoursDtrying = m.HeatHoursDrying,
-                    HumidityPercent = m.HumidityPercent,
                     Observations = m.Observations,
                     Folio = m.Folio
                 }).ToList();
@@ -51,7 +48,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetAllReceptionEntries() {
             try
             {
-                var receptionEntries = _db.ReceptionEntries.Where(r => !r.Cylinder.Active).ToList();
+                var receptionEntries = _db.ReceptionEntries.Where(r => !r.Cylinder.Active && !r.Samplings.Any()).ToList();
                 return receptionEntries != null ? (IHttpActionResult)Ok(TheModelFactory.Create(receptionEntries)) : Ok();
             }
             catch (Exception ex)

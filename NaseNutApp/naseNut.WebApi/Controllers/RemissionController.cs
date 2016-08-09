@@ -18,7 +18,6 @@ namespace naseNut.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult SaveRemission(AddRemissionBindingModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -33,8 +32,11 @@ namespace naseNut.WebApi.Controllers
                     TransportNumber = model.TransportNumber,
                     Driver = model.Driver,
                     Elaborate = model.Elaborate,
-                    ReceptionId = model.ReceptionId,
-                    DateCapture = DateTime.Now
+                    ReceptionId = _db.Receptions.First(r => r.Folio == model.Folio).Id,
+                    DateCapture = model.DateCapture,
+                    FieldId = model.FieldId,
+                    BatchId = model.BatchId,
+                    BoxId = model.BoxId
                 };
                 var saved = remissionService.Save(remission);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -47,7 +49,6 @@ namespace naseNut.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
         public IHttpActionResult GetAllRemissions()
         {
             try
@@ -61,6 +62,25 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las remisiones." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult GetById(int id)
+        {
+            try
+            {
+                var remissionService = new RemissionService();
+                var remission = remissionService.GetById(id);
+                if (remission == null) return NotFound();
+                return  Ok(TheModelFactory.Create(remission));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las remisiones." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteRemission(int id)
