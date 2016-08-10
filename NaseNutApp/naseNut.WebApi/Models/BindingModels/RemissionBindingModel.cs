@@ -28,6 +28,8 @@ namespace naseNut.WebApi.Models.BindingModels
         public int BatchId { get; set; }
         [Required]
         public int BoxId { get; set; }
+        [Required]
+        public int RemissionFolio { get; set; }
     }
     public class UpdateRemissionBindingModel
     {

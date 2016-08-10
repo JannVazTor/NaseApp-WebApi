@@ -25,6 +25,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var remissionService = new RemissionService();
+                if (remissionService.GetByFolio(model.RemissionFolio) != null) return Conflict();
                 var remission = new Remission
                 {
                     Quantity = model.Quantity,
@@ -36,7 +37,8 @@ namespace naseNut.WebApi.Controllers
                     DateCapture = model.DateCapture,
                     FieldId = model.FieldId,
                     BatchId = model.BatchId,
-                    BoxId = model.BoxId
+                    BoxId = model.BoxId,
+                    Folio = model.RemissionFolio
                 };
                 var saved = remissionService.Save(remission);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();

@@ -52,7 +52,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionRepository = new ReceptionRepository(db);
-                    
+
                     var reception = receptionRepository.GetById(id);
                     return reception;
                 }
@@ -63,6 +63,23 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
+        public Reception GetByFolio(int folio)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+
+                    var reception = receptionRepository.SearchOne(r => r.Folio == folio);
+                    return reception;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public bool AddReceptionToGrill(int receptionId, int grillId)
         {
             try

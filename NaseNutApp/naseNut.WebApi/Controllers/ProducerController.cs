@@ -25,6 +25,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var producerService = new ProducerService();
+                if (producerService.GetByProducerName(model.ProducerName) != null) return Conflict();
                 var producer = new Producer
                 {
                     ProducerName = model.ProducerName

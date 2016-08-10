@@ -25,6 +25,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var cylinderService = new CylinderService();
+                if (cylinderService.GetByCylinderName(model.CylinderName) != null) return Conflict();
                 var cylinder = new Cylinder
                 {
                     CylinderName = model.CylinderName,

@@ -39,16 +39,16 @@
         <AssociationConnector Association="NASE_DB_WModel.fk_grill_field" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Box" Width="1.5" PointX="17" PointY="10.125" />
         <AssociationConnector Association="NASE_DB_WModel.fk_batch_box" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.Remission" Width="1.5" PointX="19.25" PointY="9.375" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_remission_batch" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_remission_box" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_remission_field" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Reception" Width="1.5" PointX="6.25" PointY="9.875" />
         <AssociationConnector Association="NASE_DB_WModel.fk_reception_receptionEntry" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
         <EntityTypeShape EntityType="NASE_DB_WModel.NutType" Width="1.5" PointX="10.5" PointY="13.625" />
         <AssociationConnector Association="NASE_DB_WModel.fk_nutType_sampling" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.Remission" Width="1.5" PointX="19.25" PointY="9.25" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_remission_batch" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_remission_box" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_remission_field" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_remission_reception" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

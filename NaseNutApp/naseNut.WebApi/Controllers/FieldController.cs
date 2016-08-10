@@ -26,6 +26,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var fieldService = new FieldService();
+                if (fieldService.GetByFieldName(model.FieldName) != null) return Conflict(); 
                 var field = new Field
                 {
                     FieldName = model.FieldName

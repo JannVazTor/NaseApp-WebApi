@@ -43,8 +43,8 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<Field> Fields { get; set; }
         public virtual DbSet<Box> Boxes { get; set; }
-        public virtual DbSet<Remission> Remissions { get; set; }
         public virtual DbSet<Reception> Receptions { get; set; }
         public virtual DbSet<NutType> NutTypes { get; set; }
+        public virtual DbSet<Remission> Remissions { get; set; }
     }
 }

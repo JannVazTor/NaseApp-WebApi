@@ -61,6 +61,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public Field GetByFieldName(string fieldName)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var fieldRepository = new FieldRepository(db);
+                    return fieldRepository.SearchOne(p => p.FieldName == fieldName);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public List<Field> GetAll()
         {
             try

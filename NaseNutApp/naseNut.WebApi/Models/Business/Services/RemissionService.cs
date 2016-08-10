@@ -59,6 +59,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public Remission GetByFolio(int folio)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var remissionRepository = new RemissionRepository(db);
+                    var remission = remissionRepository.SearchOne(r => r.Folio == folio);
+                    return remission;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public List<Remission> GetAll()
         {
             try

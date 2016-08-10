@@ -66,6 +66,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public Box GetByBox(string boxName)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var boxRepository = new BoxRepository(db);
+                    return boxRepository.SearchOne(p => p.Box1 == boxName);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public List<Box> GetAll()
         {
             try

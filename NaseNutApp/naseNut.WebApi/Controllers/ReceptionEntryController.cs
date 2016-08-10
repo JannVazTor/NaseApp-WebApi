@@ -27,6 +27,8 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var receptionEntryService = new ReceptionEntryService();
+                var receptionService = new ReceptionService();
+                if (model.Receptions.Select(r => receptionService.GetByFolio(r.Folio) != null).Any()) return Conflict();
                 var receptions = model.Receptions.Select(m => new Reception
                 {
                     CarRegistration = m.CarRegistration,

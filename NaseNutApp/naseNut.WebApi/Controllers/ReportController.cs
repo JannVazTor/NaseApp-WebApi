@@ -80,8 +80,8 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetGrillIssuesReport() {
             try
             {
-                var grills = _db.Grills.Where(s => s.GrillIssue != null).ToList();
-                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(grills)) : Ok();
+                var grillsIssues = _db.GrillIssues.ToList();
+                return grillsIssues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(grillsIssues)) : Ok();
             }
             catch (Exception ex)
             {

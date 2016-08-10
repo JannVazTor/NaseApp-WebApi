@@ -25,6 +25,7 @@ namespace naseNut.WebApi.Models.Entities
         public int BatchId { get; set; }
         public int BoxId { get; set; }
         public int FieldId { get; set; }
+        public int Folio { get; set; }
     
         public virtual Batch Batch { get; set; }
         public virtual Box Box { get; set; }

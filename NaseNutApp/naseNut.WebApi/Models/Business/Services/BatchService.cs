@@ -61,6 +61,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public Batch GetByBatchName(string batchName)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var batchRepository = new BatchRepository(db);
+                    return batchRepository.SearchOne(p => p.Batch1 == batchName);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public List<Batch> GetAll()
         {
             try
