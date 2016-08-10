@@ -123,6 +123,7 @@ namespace naseNut.WebApi.Models
             var reportService = new ReportService();
             return (from s in receptionEntries
                     let grill = s.Variety.Grills.ToList()
+                    let sacksFirstLarge = reportService.GetSacks(grill, NutSizes.Large, (int)GrillQuality.First)
                     let sacksFirstMedium = reportService.GetSacks(grill, NutSizes.Medium, (int)GrillQuality.First)
                     let sacksFirstSmall =  reportService.GetSacks(grill, NutSizes.Small, (int)GrillQuality.First)
                     select new DailyProcessModel
@@ -132,11 +133,12 @@ namespace naseNut.WebApi.Models
                         Folio = s.Receptions.ToList().Count != 0 ? string.Join(", ", s.Receptions.Select(c => c.Folio)) : "",
                         Cylinder = s.Cylinder.CylinderName,
                         Variety = s.Variety.Variety1,
+                        SacksFirstLarge = sacksFirstLarge,
                         SacksFirstSmall = sacksFirstSmall,
                         SacksFirstMedium = sacksFirstMedium,
-                        Total = sacksFirstSmall + sacksFirstMedium,
+                        Total = sacksFirstSmall + sacksFirstMedium + sacksFirstLarge,
                         QualityPercent = s.Samplings.Count != 0 ? s.Samplings.OrderBy(x=> x.DateCapture).FirstOrDefault().Performance.ToString(CultureInfo.InvariantCulture) + "%" : "",
-                        Germinated = s.Samplings.SelectMany(s => s.NutTypes).Any() ? s.Receptions.SelectMany(x=> x.ReceptionEntry.Samplings.SelectMany(n => n.NutTypes).Where(n=> n.NutType1 == 2).Select(y=> y.Sacks)).Sum() : 0,
+                        Germinated = s.Samplings.SelectMany(x => x.NutTypes).Any() ? s.Receptions.SelectMany(x=> x.ReceptionEntry.Samplings.SelectMany(n => n.NutTypes).Where(n=> n.NutType1 == 2).Select(y=> y.Sacks)).Sum() : 0,
                     }).ToList();
         }
 
@@ -700,8 +702,9 @@ namespace naseNut.WebApi.Models
             public string Folio { get; set; }
             public string Cylinder { get; set; }
             public string Variety { get; set; }
-            public int SacksFirstSmall { get; set; }
+            public int SacksFirstLarge { get; set; }
             public int SacksFirstMedium { get; set; }
+            public int SacksFirstSmall { get; set; }
             public int Total { get; set; }
             public string QualityPercent { get; set; }
             public int? Germinated { get; set; }

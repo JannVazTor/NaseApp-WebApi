@@ -361,9 +361,6 @@
     <Compile Include="Models\Entities\Sampling.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\sysdiagram.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Variety.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -387,7 +384,6 @@
       <DependentUpon>Model.edmx</DependentUpon>
       <LastGenOutput>Model.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Entities\Model.edmx.sql" />
     <Content Include="Models\Entities\Model.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model.edmx</DependentUpon>
