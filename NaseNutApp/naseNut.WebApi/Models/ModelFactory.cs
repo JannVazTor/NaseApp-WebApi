@@ -220,6 +220,7 @@ namespace naseNut.WebApi.Models
                 SampleWeight = s.SampleWeight,
                 HumidityPercent = s.HumidityPercent,
                 WalnutNumber = s.WalnutNumber,
+                Variety = s.ReceptionEntry.Variety.Variety1,
                 Performance = s.Performance.RoundTwoDigitsDouble(),
                 TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts,
                 SacksFirst = s.NutTypes.Any(n => n.NutType1 == 1) 
@@ -566,6 +567,7 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string Folio { get; set; }
+            public string Variety { get; set; }
             public DateTime DateCapture { get; set; }
             public double SampleWeight { get; set; }
             public double HumidityPercent { get; set; }
