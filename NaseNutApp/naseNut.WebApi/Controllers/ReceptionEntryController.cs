@@ -27,6 +27,8 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var receptionEntryService = new ReceptionEntryService();
+                var receptionService = new ReceptionService();
+                if (model.Receptions.Select(r => receptionService.GetByFolio(r.Folio) != null).Any()) return Conflict();
                 var receptions = model.Receptions.Select(m => new Reception
                 {
                     CarRegistration = m.CarRegistration,
@@ -48,7 +50,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetAllReceptionEntries() {
             try
             {
-                var receptionEntries = _db.ReceptionEntries.Where(r => !r.Cylinder.Active && !r.Samplings.Any()).ToList();
+                var receptionEntries = _db.ReceptionEntries.Where(r => !r.Samplings.Any() || !r.NutTypes.Any()).ToList();
                 return receptionEntries != null ? (IHttpActionResult)Ok(TheModelFactory.Create(receptionEntries)) : Ok();
             }
             catch (Exception ex)

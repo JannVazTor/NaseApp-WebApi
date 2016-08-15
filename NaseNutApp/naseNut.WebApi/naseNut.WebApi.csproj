@@ -226,6 +226,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeDashController.cs" />
     <Compile Include="Controllers\HumidityController.cs" />
+    <Compile Include="Controllers\ProcessResultController.cs" />
     <Compile Include="Controllers\ProducerController.cs" />
     <Compile Include="Controllers\ReceptionController.cs" />
     <Compile Include="Controllers\ReceptionEntryController.cs" />
@@ -279,6 +280,7 @@
     <Compile Include="Models\Business\Services\GrillService.cs" />
     <Compile Include="Models\Business\Services\HomeService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
+    <Compile Include="Models\Business\Services\NutTypeService.cs" />
     <Compile Include="Models\Business\Services\ProducerService.cs" />
     <Compile Include="Models\Business\Services\ReceptionEntryService.cs" />
     <Compile Include="Models\Business\Services\ReceptionService.cs" />
@@ -359,6 +361,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Sampling.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\sysdiagram.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Variety.cs">

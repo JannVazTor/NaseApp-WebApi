@@ -61,7 +61,23 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
-        
+        public Producer GetByProducerName(string producer)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var producerRepository = new ProducerRepository(db);
+                    return producerRepository.SearchOne(p => p.ProducerName.ToLower() == producer.ToLower());
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
         public List<Producer> GetAll()
         {

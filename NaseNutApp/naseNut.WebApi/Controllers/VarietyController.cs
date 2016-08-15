@@ -26,6 +26,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var varietyService = new VarietyService();
+                if (varietyService.GetByVarietyName(model.VarietyName) != null) return Conflict();
                 var variety = new Variety
                 {
                     Variety1 = model.VarietyName,

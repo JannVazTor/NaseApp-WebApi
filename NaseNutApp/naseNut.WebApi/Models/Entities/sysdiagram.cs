@@ -12,16 +12,12 @@ namespace naseNut.WebApi.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class NutType
+    public partial class sysdiagram
     {
-        public int Id { get; set; }
-        public byte NutType1 { get; set; }
-        public Nullable<int> Sacks { get; set; }
-        public Nullable<double> Kilos { get; set; }
-        public Nullable<int> ReceptionEntryId { get; set; }
-        public Nullable<int> SamplingId { get; set; }
-    
-        public virtual ReceptionEntry ReceptionEntry { get; set; }
-        public virtual Sampling Sampling { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

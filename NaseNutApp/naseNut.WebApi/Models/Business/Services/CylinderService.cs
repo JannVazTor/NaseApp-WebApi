@@ -59,6 +59,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public Cylinder GetByCylinderName(string cylinderName)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var cylinderRepository = new CylinderRepository(db);
+                    return cylinderRepository.SearchOne(p => p.CylinderName.ToLower() == cylinderName.ToLower());
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+       }
         public List<Cylinder> GetAll()
         {
             try

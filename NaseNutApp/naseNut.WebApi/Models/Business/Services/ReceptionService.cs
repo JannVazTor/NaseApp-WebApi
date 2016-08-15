@@ -18,8 +18,17 @@ namespace naseNut.WebApi.Models.Business.Services
             {
                 using (var db = new NaseNEntities())
                 {
-                    var receptionRepository = new ReceptionRepository(db);
-                    receptionRepository.Delete(reception);
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
+                    var receptionEntry = db.ReceptionEntries.First(r => r.Id == reception.ReceptionEntryId);
+                    if (receptionEntry.Receptions.Count == 1)
+                    {
+                        var receptionRepository = new ReceptionRepository(db);
+                        receptionEntryRepository.Delete(receptionEntry);
+                    }
+                    else {
+                        var receptionRepository = new ReceptionRepository(db);
+                        receptionRepository.Delete(reception);
+                    }
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -52,7 +61,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionRepository = new ReceptionRepository(db);
-                    
+
                     var reception = receptionRepository.GetById(id);
                     return reception;
                 }
@@ -63,6 +72,23 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
+        public Reception GetByFolio(int folio)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var receptionRepository = new ReceptionRepository(db);
+
+                    var reception = receptionRepository.SearchOne(r => r.Folio == folio);
+                    return reception;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public bool AddReceptionToGrill(int receptionId, int grillId)
         {
             try

@@ -62,6 +62,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
         public Variety GetById(int id)
         {
             try
@@ -70,6 +71,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var varietyRepository = new VarietyRepository(db);
                     return varietyRepository.SearchOne(p => p.Id == id);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public Variety GetByVarietyName(string varietyName)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var varietyRepository = new VarietyRepository(db);
+                    return varietyRepository.SearchOne(p => p.Variety1.ToLower() == varietyName.ToLower());
                 }
             }
             catch (Exception ex)

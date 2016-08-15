@@ -61,7 +61,8 @@ namespace naseNut.WebApi.Models
                 FieldName = r.Field.FieldName,
                 Batch = r.Batch.Batch1,
                 Box = r.Box.Box1,
-                Variety = r.Reception.ReceptionEntry.Variety.Variety1
+                Variety = r.Reception.ReceptionEntry.Variety.Variety1,
+                RemissionFolio = r.Folio
             }).ToList();
         }
 
@@ -204,7 +205,9 @@ namespace naseNut.WebApi.Models
                 DateEntry = r.DateEntry,
                 Variety = r.Variety.Variety1,
                 Producer = r.Producer.ProducerName,
-                Cylinder = r.Cylinder.CylinderName
+                Cylinder = r.Cylinder.CylinderName,
+                Sampling = r.Samplings.Any(),
+                ProcessResult = r.NutTypes.Any()
             }).ToList();
         }
 
@@ -218,6 +221,7 @@ namespace naseNut.WebApi.Models
                 SampleWeight = s.SampleWeight,
                 HumidityPercent = s.HumidityPercent,
                 WalnutNumber = s.WalnutNumber,
+                Variety = s.ReceptionEntry.Variety.Variety1,
                 Performance = s.Performance.RoundTwoDigitsDouble(),
                 TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts,
                 SacksFirst = s.NutTypes.Any(n => n.NutType1 == 1) 
@@ -322,29 +326,6 @@ namespace naseNut.WebApi.Models
                        PercentageThird = (totalkilogramsThird == 0 || totalKilos == 0) ? "0%" : ((totalkilogramsThird / totalKilos) * 100).RoundTwoDigitsDouble().ToString() + "%",
                        Variety = variety
                     }).ToList();
-        }
-        public List<GrillIssueReportModel> CreateReport(List<Grill> issues)
-        {
-            return issues.Select(i => new GrillIssueReportModel
-            {
-                Id = i.Id,
-                DateCapture = i.DateCapture,
-                Quality = i.Quality,
-                Variety = i.Variety.Variety1,
-                Size = i.Size,
-                Sacks = i.Sacks,
-                Kilos = i.Kilos,
-                Performance = i.Samplings.Any() ? i.Samplings.OrderBy(d => d.DateCapture).First().Performance.ToString() : "0",
-                WalnutNumber = i.Samplings.Any() ? i.Samplings.OrderBy(d => d.DateCapture).First().WalnutNumber.ToString() : "0",
-                HumidityPercent = i.Samplings.Any() ? i.Samplings.OrderBy(d => d.DateCapture).First().HumidityPercent.ToString() : "0",
-                Producer = i.Producer.ProducerName,
-                GrillIssueId = i.GrillIssue.Id,
-                IssueDateCapture = i.GrillIssue.DateCapture,
-                Truck = i.GrillIssue.Truck,
-                Driver = i.GrillIssue.Driver,
-                Box = i.GrillIssue.Box,
-                Remission = i.GrillIssue.Remission
-            }).ToList();
         }
 
         public List<OriginReportModel> CreateReport(List<Batch> batches, List<Variety> varietiesL, List<Remission> remissions, List<NutType> nutTypes)
@@ -510,6 +491,20 @@ namespace naseNut.WebApi.Models
                 BoxId = remission.BoxId        
             };
         }
+        public List<GrillIssueModel> CreateReport(List<GrillIssue> issues)
+        {
+            return issues.Select(i => new GrillIssueModel
+            {
+                Id = i.Id,
+                DateCapture = i.DateCapture,
+                Truck = i.Truck,
+                Driver = i.Driver,
+                Box = i.Box,
+                Remission = i.Remission,
+                Grills = Create(i.Grills.Where(g => g.GrillIssuesId == i.Id).ToList())
+            }).ToList();
+        }
+
         public class UpdateRemissionModel {
             public int Id { get; set; }
             public double Quantity { get; set; }
@@ -538,23 +533,12 @@ namespace naseNut.WebApi.Models
         }
         public class GrillIssueReportModel
         {
-            public int Id { get; set; }
-            public DateTime DateCapture { get; set; }
             public string Truck { get; set; }
             public string Driver { get; set; }
             public string Box { get; set; }
             public int Remission { get; set; }
-            public int Quality { get; internal set; }
-            public string Variety { get; internal set; }
-            public int Sacks { get; internal set; }
-            public int Size { get; internal set; }
-            public double Kilos { get; internal set; }
-            public string Performance { get; internal set; }
-            public string WalnutNumber { get; internal set; }
-            public string HumidityPercent { get; internal set; }
-            public string Producer { get; internal set; }
-            public int GrillIssueId { get; internal set; }
-            public DateTime IssueDateCapture { get; internal set; }
+            public int Id { get; internal set; }
+            public DateTime DateCapture { get; internal set; }
         }
         public class ReportingProcessModel
         {
@@ -584,6 +568,7 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string Folio { get; set; }
+            public string Variety { get; set; }
             public DateTime DateCapture { get; set; }
             public double SampleWeight { get; set; }
             public double HumidityPercent { get; set; }
@@ -605,6 +590,8 @@ namespace naseNut.WebApi.Models
             public string Variety { get; set; }
             public string Producer { get; set; }
             public string Cylinder { get; set; }
+            public bool Sampling { get; set; }
+            public bool ProcessResult { get; set; }
             public List<ReceptionModel> ReceptionList { get; set; }
         }
         public class SelectionModel
@@ -662,12 +649,11 @@ namespace naseNut.WebApi.Models
             public string Producer { get; set; }
             public string FieldName { get; set; }
             public bool Status { get; set; }
-            public int MyProperty { get; set; }
-            public string SampleWeight { get; internal set; }
-            public string HumidityPercent { get; internal set; }
-            public string WalnutNumber { get; internal set; }
-            public string Performance { get; internal set; }
-            public string TotalWeightOfEdibleNuts { get; internal set; }
+            public string SampleWeight { get; set; }
+            public string HumidityPercent { get; set; }
+            public string WalnutNumber { get; set; }
+            public string Performance { get; set; }
+            public string TotalWeightOfEdibleNuts { get; set; }
         }
 
         public class CylinderModel
@@ -779,6 +765,7 @@ namespace naseNut.WebApi.Models
             public class RemissionModel
             {
                 public int Id { get; set; }
+                public int RemissionFolio { get; set; }
                 public string Cultivation { get; set; }
                 public string Batch { get; set; }
                 public double Quantity { get; set; }

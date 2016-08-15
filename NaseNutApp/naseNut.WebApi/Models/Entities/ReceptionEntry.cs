@@ -20,6 +20,7 @@ namespace naseNut.WebApi.Models.Entities
             this.Humidities = new HashSet<Humidity>();
             this.Samplings = new HashSet<Sampling>();
             this.Receptions = new HashSet<Reception>();
+            this.NutTypes = new HashSet<NutType>();
         }
     
         public int Id { get; set; }
@@ -38,5 +39,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual Variety Variety { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NutType> NutTypes { get; set; }
     }
 }
