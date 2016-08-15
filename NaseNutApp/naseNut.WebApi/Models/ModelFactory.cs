@@ -121,10 +121,9 @@ namespace naseNut.WebApi.Models
         {
             var reportService = new ReportService();
             return (from s in receptionEntries
-                    let grill = s.Variety.Grills.ToList()
-                    let sacksFirstLarge = reportService.GetSacks(grill, NutSizes.Large, (int)GrillQuality.First)
-                    let sacksFirstMedium = reportService.GetSacks(grill, NutSizes.Medium, (int)GrillQuality.First)
-                    let sacksFirstSmall =  reportService.GetSacks(grill, NutSizes.Small, (int)GrillQuality.First)
+                    let sacksFirstLarge = reportService.GetSacks(receptionEntries, NutSizes.Large, (int)GrillQuality.First)
+                    let sacksFirstMedium = reportService.GetSacks(receptionEntries, NutSizes.Medium, (int)GrillQuality.First)
+                    let sacksFirstSmall =  reportService.GetSacks(receptionEntries, NutSizes.Small, (int)GrillQuality.First)
                     select new DailyProcessModel
                     {
                         Date = date,
