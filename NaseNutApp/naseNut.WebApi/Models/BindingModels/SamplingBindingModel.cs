@@ -6,10 +6,10 @@ using System.Web;
 
 namespace naseNut.WebApi.Models.BindingModels
 {
-    public class AddGrillSamplingBindingModel
+    public class AddSamplingBindingModel
     {
-        [Required]
-        public int GrillId { get; set; }
+        public int? ReceptionEntryId { get; set; }
+        public int? GrillId { get; set; }
         [Required]
         public DateTime DateCapture { get; set; }
         [Required]
@@ -22,21 +22,11 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public double TotalWeightOfEdibleNuts { get; set; }
     }
-    public class AddReceptionEntrySamplingBindingModel
+    public class AddNutTypeBindingModel
     {
         [Required]
         public int ReceptionEntryId { get; set; }
         [Required]
-        public DateTime DateCapture { get; set; } 
-        [Required]
-        public double SampleWeight { get; set; }
-        [Required]
-        public double HumidityPercent { get; set; }
-        [Required]
-        public int WalnutNumber { get; set; }
-        public double Performance { get; set; }
-        [Required]
-        public double TotalWeightOfEdibleNuts { get; set; }
         public List<NutTypeBindingModel> NutTypes { get; set; }
     }
     public class NutTypeBindingModel

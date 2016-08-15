@@ -29,6 +29,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<GrillIssue> GrillIssues { get; set; }
         public virtual DbSet<Humidity> Humidities { get; set; }
@@ -43,7 +44,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<Field> Fields { get; set; }
         public virtual DbSet<Box> Boxes { get; set; }
         public virtual DbSet<Reception> Receptions { get; set; }
-        public virtual DbSet<NutType> NutTypes { get; set; }
         public virtual DbSet<Remission> Remissions { get; set; }
+        public virtual DbSet<NutType> NutTypes { get; set; }
     }
 }

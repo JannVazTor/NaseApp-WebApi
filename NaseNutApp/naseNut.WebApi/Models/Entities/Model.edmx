@@ -153,7 +153,8 @@
           <Property Name="NutType" Type="tinyint" Nullable="false" />
           <Property Name="Sacks" Type="int" />
           <Property Name="Kilos" Type="float" />
-          <Property Name="SamplingId" Type="int" Nullable="false" />
+          <Property Name="ReceptionEntryId" Type="int" />
+          <Property Name="SamplingId" Type="int" />
         </EntityType>
         <EntityType Name="Producer">
           <Key>
@@ -413,10 +414,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_nutType_receptionEntry">
+          <End Role="ReceptionEntry" Type="Self.ReceptionEntry" Multiplicity="0..1" />
+          <End Role="NutType" Type="Self.NutType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutType">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_nutType_sampling">
-          <End Role="Sampling" Type="Self.Sampling" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="Sampling" Type="Self.Sampling" Multiplicity="0..1" />
           <End Role="NutType" Type="Self.NutType" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sampling">
@@ -648,6 +659,10 @@
           <AssociationSet Name="fk_nutSize_variety" Association="Self.fk_nutSize_variety">
             <End Role="Variety" EntitySet="Variety" />
             <End Role="NutSize" EntitySet="NutSize" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutType_receptionEntry" Association="Self.fk_nutType_receptionEntry">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntry" />
+            <End Role="NutType" EntitySet="NutType" />
           </AssociationSet>
           <AssociationSet Name="fk_nutType_sampling" Association="Self.fk_nutType_sampling">
             <End Role="Sampling" EntitySet="Sampling" />
@@ -885,11 +900,6 @@
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Reception" EntitySet="Receptions" />
           </AssociationSet>
-          <EntitySet Name="NutTypes" EntityType="NASE_DB_WModel.NutType" />
-          <AssociationSet Name="fk_nutType_sampling" Association="NASE_DB_WModel.fk_nutType_sampling">
-            <End Role="Sampling" EntitySet="Samplings" />
-            <End Role="NutType" EntitySet="NutTypes" />
-          </AssociationSet>
           <EntitySet Name="Remissions" EntityType="NASE_DB_WModel.Remission" />
           <AssociationSet Name="fk_remission_batch" Association="NASE_DB_WModel.fk_remission_batch">
             <End Role="Batch" EntitySet="Batches" />
@@ -906,6 +916,15 @@
           <AssociationSet Name="fk_remission_reception" Association="NASE_DB_WModel.fk_remission_reception">
             <End Role="Reception" EntitySet="Receptions" />
             <End Role="Remission" EntitySet="Remissions" />
+          </AssociationSet>
+          <EntitySet Name="NutTypes" EntityType="NASE_DB_WModel.NutType" />
+          <AssociationSet Name="fk_nutType_receptionEntry" Association="NASE_DB_WModel.fk_nutType_receptionEntry">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="NutType" EntitySet="NutTypes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutType_sampling" Association="NASE_DB_WModel.fk_nutType_sampling">
+            <End Role="Sampling" EntitySet="Samplings" />
+            <End Role="NutType" EntitySet="NutTypes" />
           </AssociationSet>
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
@@ -977,6 +996,7 @@
           <NavigationProperty Name="Producer" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="ReceptionEntry" ToRole="Producer" />
           <NavigationProperty Name="Variety" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="ReceptionEntry" ToRole="Variety" />
           <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="ReceptionEntry" ToRole="Reception" />
+          <NavigationProperty Name="NutTypes" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="ReceptionEntry" ToRole="NutType" />
         </EntityType>
         <Association Name="fk_humidity_producer">
           <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
@@ -1282,31 +1302,6 @@
           <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
           <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
         </Association>
-        <EntityType Name="NutType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NutType1" Type="Byte" Nullable="false" />
-          <Property Name="Sacks" Type="Int32" />
-          <Property Name="Kilos" Type="Double" />
-          <Property Name="SamplingId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Sampling" Relationship="NASE_DB_WModel.fk_nutType_sampling" FromRole="NutType" ToRole="Sampling" />
-        </EntityType>
-        <Association Name="fk_nutType_sampling">
-          <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sampling">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="NutType">
-              <PropertyRef Name="SamplingId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Remission">
           <Key>
             <PropertyRef Name="Id" />
@@ -1375,6 +1370,43 @@
             </Principal>
             <Dependent Role="Remission">
               <PropertyRef Name="ReceptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="NutType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NutType1" Type="Byte" Nullable="false" />
+          <Property Name="Sacks" Type="Int32" />
+          <Property Name="Kilos" Type="Double" />
+          <Property Name="ReceptionEntryId" Type="Int32" />
+          <Property Name="SamplingId" Type="Int32" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="NutType" ToRole="ReceptionEntry" />
+          <NavigationProperty Name="Sampling" Relationship="NASE_DB_WModel.fk_nutType_sampling" FromRole="NutType" ToRole="Sampling" />
+        </EntityType>
+        <Association Name="fk_nutType_receptionEntry">
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="0..1" />
+          <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutType">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_nutType_sampling">
+          <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="0..1" />
+          <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sampling">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutType">
+              <PropertyRef Name="SamplingId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1609,17 +1641,6 @@
               <ScalarProperty Name="Id" ColumnName="grillId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="NutTypes">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.NutType">
-              <MappingFragment StoreEntitySet="NutType">
-                <ScalarProperty Name="SamplingId" ColumnName="SamplingId" />
-                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
-                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
-                <ScalarProperty Name="NutType1" ColumnName="NutType" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Remissions">
             <EntityTypeMapping TypeName="NASE_DB_WModel.Remission">
               <MappingFragment StoreEntitySet="Remission">
@@ -1634,6 +1655,18 @@
                 <ScalarProperty Name="TransportNumber" ColumnName="TransportNumber" />
                 <ScalarProperty Name="Butler" ColumnName="Butler" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NutTypes">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.NutType">
+              <MappingFragment StoreEntitySet="NutType">
+                <ScalarProperty Name="SamplingId" ColumnName="SamplingId" />
+                <ScalarProperty Name="ReceptionEntryId" ColumnName="ReceptionEntryId" />
+                <ScalarProperty Name="Kilos" ColumnName="Kilos" />
+                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
+                <ScalarProperty Name="NutType1" ColumnName="NutType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

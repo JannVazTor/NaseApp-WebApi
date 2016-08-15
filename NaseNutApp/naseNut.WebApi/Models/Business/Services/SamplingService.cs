@@ -10,39 +10,6 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class SamplingService
     {
-        //Save sampling for ReceptionEntry
-        public bool Save(Sampling sampling, List<NutType> nutTypes, int receptionEntryId)
-        {
-            try
-            {
-                using (var db = new NaseNEntities())
-                {
-                    var samplingRepository = new SamplingRepository(db);
-                    var nutTypeRepository = new NutTypeRepository(db);
-                    var cylinderRepository = new CylinderRepository(db);
-                    var receptionEntryRepository = new ReceptionEntryRepository(db);
-
-                    var receptionEntry = receptionEntryRepository.GetById(receptionEntryId);
-                    var cylinder = cylinderRepository.GetById(receptionEntry.Cylinder.Id);
-
-                    receptionEntry.DateIssue = DateTime.Now;
-                    db.ReceptionEntries.Attach(receptionEntry);
-                    db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
-
-                    foreach (var item in nutTypes)
-                    {
-                        nutTypeRepository.Insert(item);
-                    }
-                    samplingRepository.Insert(sampling);
-                    return db.SaveChanges() >= 1;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        //Save sampling for Grill
         public bool Save(Sampling sampling)
         {
             try
@@ -50,6 +17,17 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var samplingRepository = new SamplingRepository(db);
+                    if (sampling.ReceptionEntryId != null)
+                    {
+                        var receptionEntry = db.ReceptionEntries.Where(r => r.Id == sampling.ReceptionEntryId).First();
+                        var nutTypes = receptionEntry.NutTypes.ToList();
+                        foreach (var item in nutTypes)
+                        {
+                            item.SamplingId = sampling.Id;
+                            db.NutTypes.Attach(item);
+                            db.Entry(item).Property(p => p.SamplingId).IsModified = true;
+                        }
+                    }
                     samplingRepository.Insert(sampling);
                     return db.SaveChanges() >= 1;
                 }
@@ -67,16 +45,19 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var samplingRepository = new SamplingRepository(db);
-                    var cylinderRepository = new CylinderRepository(db);
-                    var receptionEntryRepository = new ReceptionEntryRepository(db);
                     var sampling = samplingRepository.GetById(id);
-                    var cylinder = cylinderRepository.GetById(sampling.ReceptionEntry.Cylinder.Id);
-                    var receptionEntry = receptionEntryRepository.GetById(sampling.ReceptionEntry.Id);
 
-                    receptionEntry.DateIssue = null;
-                    db.ReceptionEntries.Attach(receptionEntry);
-                    db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
+                    if (sampling.ReceptionEntryId != null)
+                    {
+                        var receptionEntryRepository = new ReceptionEntryRepository(db);
+                        var receptionEntry = receptionEntryRepository.GetById(sampling.ReceptionEntry.Id);
 
+                        receptionEntry.DateIssue = null;
+                        db.ReceptionEntries.Attach(receptionEntry);
+                        db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
+
+                        receptionEntry.NutTypes.ToList().ForEach(n => db.NutTypes.Remove(n));
+                    }
                     samplingRepository.Delete(sampling);
                     return db.SaveChanges() >= 1;
                 }

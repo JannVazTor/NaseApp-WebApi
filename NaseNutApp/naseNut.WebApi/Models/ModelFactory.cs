@@ -206,7 +206,9 @@ namespace naseNut.WebApi.Models
                 DateEntry = r.DateEntry,
                 Variety = r.Variety.Variety1,
                 Producer = r.Producer.ProducerName,
-                Cylinder = r.Cylinder.CylinderName
+                Cylinder = r.Cylinder.CylinderName,
+                Sampling = r.Samplings.Any(),
+                ProcessResult = r.NutTypes.Any()
             }).ToList();
         }
 
@@ -589,6 +591,8 @@ namespace naseNut.WebApi.Models
             public string Variety { get; set; }
             public string Producer { get; set; }
             public string Cylinder { get; set; }
+            public bool Sampling { get; set; }
+            public bool ProcessResult { get; set; }
             public List<ReceptionModel> ReceptionList { get; set; }
         }
         public class SelectionModel
