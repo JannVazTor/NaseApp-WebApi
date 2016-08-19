@@ -24,5 +24,47 @@ namespace naseNut.WebApi.Controllers
                 throw ex;
             }
         }
+        [HttpGet]
+        [Route("accumulatedNutProducer")]
+        public IHttpActionResult AccumulatedNutProducer()
+        {
+            try
+            {
+                var producers = _db.Producers.ToList();
+                return producers.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(producers)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("grillIssuesAndInventory")]
+        public IHttpActionResult GrillIssuesAndInventory()
+        {
+            try
+            {
+                var grills = _db.Grills.ToList();
+                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(grills)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("cylinderOccupiedHours")]
+        public IHttpActionResult CylinderOccupiedHours()
+        {
+            try
+            {
+                var cylinders = _db.Cylinders.Where(c => !c.Active && c.ReceptionEntries.Any(r => r.DateIssue == null)).ToList();
+                return cylinders.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(cylinders)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
