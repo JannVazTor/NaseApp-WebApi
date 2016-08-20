@@ -33,18 +33,21 @@ namespace naseNut.WebApi.Models
                 y = v.Grills.Where(g => g.Variety.Id == v.Id).Sum(g => g.Kilos)
             }).ToList().ToArray();
         }
+        
         public BarChartModel[] CreateDash(List<Producer> producers) {
             return producers.Select(p => new BarChartModel {
                 name = p.ProducerName,
                 data = new int[] { 0}
             }).ToList().ToArray();
         }
+
         public BarChartModel[] CreateDash(List<Cylinder> cylinders) {
             return cylinders.Select(c => new BarChartModel {
                 name = c.CylinderName,
                 data = new int[] { (int)(DateTime.Now - c.ReceptionEntries.First().DateEntry).TotalHours}
-        }).ToList().ToArray();
+            }).ToList().ToArray();
         }
+
         public BarChartModel[] CreateDash(List<Grill> grills) {
             return new List<BarChartModel>() {
                 new BarChartModel {
@@ -63,7 +66,22 @@ namespace naseNut.WebApi.Models
                 }
             }.ToArray();
         }
-
+        public BarCharWithNumbersModel[] CreateDashBarWithNumber(List<Variety> varieties) {
+            return (from v in varieties
+                    let name = v.Variety1
+                    let y = v.Grills.Where(s => s.Samplings.Any()).Any() ? v.Grills.Where(s => s.Samplings.Any())
+                        .Sum(g => g.Samplings.Sum(s => s.WalnutNumber) / g.Samplings.Count) / v.Grills.Where(s => s.Samplings.Any()).Count() : 0
+                    select new BarCharWithNumbersModel {
+                        name = name,
+                        y = y,
+                        drilldown = null
+                    }).ToList().ToArray();
+        }
+        public class BarCharWithNumbersModel {
+            public string name { get; set; }
+            public double y { get; set; }
+            public object drilldown { get; set; }
+        }
         public class BarChartModel {
             public string name { get; set; }
             public int[] data { get; set; }

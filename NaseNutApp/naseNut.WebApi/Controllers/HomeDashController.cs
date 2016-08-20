@@ -66,5 +66,19 @@ namespace naseNut.WebApi.Controllers
                 throw ex;
             }
         }
+        [HttpGet]
+        [Route("averageNumberOfNuts")]
+        public IHttpActionResult AverageNumberOfNuts()
+        {
+            try
+            {
+                var varieties = _db.Varieties.ToList();
+                return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDashBarWithNumber(varieties)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
