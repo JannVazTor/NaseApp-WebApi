@@ -505,6 +505,20 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
+        public List<GrillIssueModel> CreateReport(List<Grill> grill, List<GrillIssue> issues)
+        {
+            return issues.Select(i => new GrillIssueModel
+            {
+                Id = i.Id,
+                DateCapture = i.DateCapture,
+                Truck = i.Truck,
+                Driver = i.Driver,
+                Box = i.Box,
+                Remission = i.Remission,
+                Grills = Create(i.Grills.Where(g => g.GrillIssuesId == i.Id && g.Quality == 2).ToList())
+            }).ToList();
+        }
+
         public class UpdateRemissionModel {
             public int Id { get; set; }
             public double Quantity { get; set; }

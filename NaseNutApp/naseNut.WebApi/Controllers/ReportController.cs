@@ -61,6 +61,23 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el inventario actual de proceso." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("secondCurrentInventoryGrills")]
+        public IHttpActionResult GetSecondCurrentInventoryReport()
+        {
+            try
+            {
+                var grills = _db.Grills.Where(g => g.Status && g.Quality == 2).ToList();
+
+                return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener el inventario actual de proceso de segunda calidad." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
         [HttpGet]
         [Route("processInventory")]
         public IHttpActionResult GetProcessInventory() {
@@ -89,6 +106,24 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las salidas de parrillas." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [HttpGet]
+        [Route("secondGrillIssues")]
+        public IHttpActionResult GetSecondGrillIssuesReport()
+        {
+            try
+            {
+                var secondGrill = _db.GrillIssues.SelectMany(x => x.Grills).Where(y => y.Quality == 2).ToList();
+                var grillsIssues = _db.GrillIssues.ToList();
+                return grillsIssues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(secondGrill, grillsIssues)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener las salidas de parrillas." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [HttpGet]
         [Route("originReport")]
         public IHttpActionResult GetOriginReportt()

@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetUserClaim" Width="1.5" PointX="13.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetUserLogin" Width="1.5" PointX="13.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NASE_DB_WModel.AspNetUser" Width="1.5" PointX="11" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.sysdiagram" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
         <AssociationConnector Association="NASE_DB_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.AspNetUserRoles" ManuallyRouted="false" />
