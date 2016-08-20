@@ -33,6 +33,41 @@ namespace naseNut.WebApi.Models
                 y = v.Grills.Where(g => g.Variety.Id == v.Id).Sum(g => g.Kilos)
             }).ToList().ToArray();
         }
+        public BarChartModel[] CreateDash(List<Producer> producers) {
+            return producers.Select(p => new BarChartModel {
+                name = p.ProducerName,
+                data = new int[] { 0}
+            }).ToList().ToArray();
+        }
+        public BarChartModel[] CreateDash(List<Cylinder> cylinders) {
+            return cylinders.Select(c => new BarChartModel {
+                name = c.CylinderName,
+                data = new int[] { (int)(DateTime.Now - c.ReceptionEntries.First().DateEntry).TotalHours}
+        }).ToList().ToArray();
+        }
+        public BarChartModel[] CreateDash(List<Grill> grills) {
+            return new List<BarChartModel>() {
+                new BarChartModel {
+                    name = "Inventario",
+                    data = new int[] {
+                        grills.Where(g => g.Status && g.Quality == (int)GrillQuality.First).Count(),
+                        grills.Where(g => g.Status && g.Quality == (int)GrillQuality.Second).Count()
+                    }
+                },
+                new BarChartModel {
+                    name = "Salidas",
+                    data = new int[] {
+                        grills.Where(g => !g.Status && g.Quality == (int)GrillQuality.First).Count(),
+                        grills.Where(g => !g.Status && g.Quality == (int)GrillQuality.Second).Count()
+                    }
+                }
+            }.ToArray();
+        }
+
+        public class BarChartModel {
+            public string name { get; set; }
+            public int[] data { get; set; }
+        }
         public class PieChartModel
         {
             public string name { get; set; }
