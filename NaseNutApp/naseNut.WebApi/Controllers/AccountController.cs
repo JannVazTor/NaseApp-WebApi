@@ -27,6 +27,7 @@ using Newtonsoft.Json.Linq;
 
 namespace naseNut.WebApi.Controllers
 {
+    [Authorize(Roles = "admin")]
     [RoutePrefix("api/Account")]
     public class AccountController : BaseApiController
     {
@@ -154,8 +155,7 @@ namespace naseNut.WebApi.Controllers
         }
 
         // POST api/Account/Register
-        [Authorize(Roles = "admin")]
-        [AllowAnonymous]
+        [HttpPost]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
@@ -178,14 +178,13 @@ namespace naseNut.WebApi.Controllers
 
             return added.Succeeded ?(IHttpActionResult)Ok():InternalServerError();
         }
-        [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("getAll")]
         public IHttpActionResult GetAllAccounts()
         {
             try
             {
-                var accounts = _db.AspNetUsers.ToList();
+                var accounts = _db.AspNetUsers.Where(u => u.UserName != "jannadmin").ToList();
                 return accounts.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(accounts)) : Ok();
             }
             catch (Exception ex)
@@ -194,7 +193,6 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los usuarios." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin")]
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteUserAccount(string id)

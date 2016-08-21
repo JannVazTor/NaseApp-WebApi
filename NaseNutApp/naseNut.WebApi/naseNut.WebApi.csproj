@@ -234,6 +234,7 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SamplingController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\VarietyController.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
@@ -420,6 +421,7 @@
     <Content Include="Models\Entities\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FileDeplyment.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

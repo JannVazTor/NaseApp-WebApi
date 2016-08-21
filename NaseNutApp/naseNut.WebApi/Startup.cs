@@ -23,7 +23,9 @@ namespace naseNut.WebApi
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
             var roleService = new RoleService();
+            var userService = new UserService();
             roleService.CreateRoles();
+            userService.CreateAdminUser();
         }
 
         public void ConfigureOAuth(IAppBuilder app)
