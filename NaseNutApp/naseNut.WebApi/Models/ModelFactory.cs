@@ -66,18 +66,41 @@ namespace naseNut.WebApi.Models
                 }
             }.ToArray();
         }
-        public BarCharWithNumbersModel[] CreateDashBarWithNumber(List<Variety> varieties) {
+        public BarChartWithNumbersModel[] CreateDashBarWithNumber(List<Variety> varieties) {
             return (from v in varieties
                     let name = v.Variety1
                     let y = v.Grills.Where(s => s.Samplings.Any()).Any() ? v.Grills.Where(s => s.Samplings.Any())
                         .Sum(g => g.Samplings.Sum(s => s.WalnutNumber) / g.Samplings.Count) / v.Grills.Where(s => s.Samplings.Any()).Count() : 0
-                    select new BarCharWithNumbersModel {
+                    select new BarChartWithNumbersModel {
                         name = name,
                         y = y,
                         drilldown = null
                     }).ToList().ToArray();
         }
-        public class BarCharWithNumbersModel {
+        public BarChartWithCategories[] CreateDashBarWithNumberPercentage(List<Variety> varieties) {
+            return new List<BarChartWithCategories>()
+            {
+                new BarChartWithCategories {
+                    name = "Primeras",
+                    data = varieties.OrderByDescending(v => v.Variety1)
+                        .Select(v => v.Grills.Any(g => g.Quality == (int)NutQuality.First) 
+                        ? v.Grills.Where(g => g.Quality == (int)NutQuality.First).Sum(s => s.Kilos) : 0).ToList().ToArray(),
+                    categories = varieties.OrderByDescending(v => v.Variety1).Select(v => v.Variety1).ToList().ToArray()
+                },
+                new BarChartWithCategories {
+                    name = "Segundas",
+                    data = varieties.Select(v => v.Grills.Any(g => g.Quality == (int)NutQuality.Second) 
+                        ? v.Grills.Where(g => g.Quality == (int)NutQuality.Second).Sum(s => s.Kilos) : 0).ToList().ToArray(),
+                    categories = varieties.OrderByDescending(v => v.Variety1).Select(v => v.Variety1).ToList().ToArray()
+                }
+            }.ToArray();
+        }
+        public class BarChartWithCategories {
+            public string name { get; set; }
+            public double[] data { get; set; }
+            public string[] categories { get; set; }
+        }
+        public class BarChartWithNumbersModel {
             public string name { get; set; }
             public double y { get; set; }
             public object drilldown { get; set; }

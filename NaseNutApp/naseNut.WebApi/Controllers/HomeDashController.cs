@@ -80,5 +80,19 @@ namespace naseNut.WebApi.Controllers
                 throw ex;
             }
         }
+        [HttpGet]
+        [Route("percentageOfFirstAndSecond")]
+        public IHttpActionResult PercentageOfFirstAndSecond()
+        {
+            try
+            {
+                var varieties = _db.Varieties.ToList();
+                return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDashBarWithNumberPercentage(varieties)) : Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
