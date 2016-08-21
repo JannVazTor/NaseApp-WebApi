@@ -58,7 +58,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var cylinders = _db.Cylinders.Where(c => !c.Active && c.ReceptionEntries.Any(r => r.DateIssue == null)).ToList();
+                var cylinders = _db.Cylinders.Where(c=> !c.Active && c.ReceptionEntries.Any(r => r.DateIssue == null)).ToList();
                 return cylinders.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(cylinders)) : Ok();
             }
             catch (Exception ex)

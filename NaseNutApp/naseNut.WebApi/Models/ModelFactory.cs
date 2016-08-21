@@ -30,21 +30,21 @@ namespace naseNut.WebApi.Models
             return varieties.Select(v => new PieChartModel
             {
                 name = v.Variety1,
-                y = v.Grills.Where(g => g.Variety.Id == v.Id).Sum(g => g.Kilos)
+                y = v.Grills.Any(g => g.Variety.Id == v.Id) ? v.Grills.Where(g => g.Variety.Id == v.Id).Sum(g => g.Kilos) : 0
             }).ToList().ToArray();
         }
         
         public BarChartModel[] CreateDash(List<Producer> producers) {
             return producers.Select(p => new BarChartModel {
                 name = p.ProducerName,
-                data = new int[] { 0}
+                data = new double[] {p.Grills.Any() ? p.Grills.Sum(g => g.Kilos) : 0}
             }).ToList().ToArray();
         }
 
         public BarChartModel[] CreateDash(List<Cylinder> cylinders) {
             return cylinders.Select(c => new BarChartModel {
                 name = c.CylinderName,
-                data = new int[] { (int)(DateTime.Now - c.ReceptionEntries.First().DateEntry).TotalHours}
+                data = new double[] { (DateTime.Now - c.ReceptionEntries.First().DateEntry).TotalHours }
             }).ToList().ToArray();
         }
 
@@ -52,14 +52,14 @@ namespace naseNut.WebApi.Models
             return new List<BarChartModel>() {
                 new BarChartModel {
                     name = "Inventario",
-                    data = new int[] {
+                    data = new double[] {
                         grills.Where(g => g.Status && g.Quality == (int)GrillQuality.First).Count(),
                         grills.Where(g => g.Status && g.Quality == (int)GrillQuality.Second).Count()
                     }
                 },
                 new BarChartModel {
                     name = "Salidas",
-                    data = new int[] {
+                    data = new double[] {
                         grills.Where(g => !g.Status && g.Quality == (int)GrillQuality.First).Count(),
                         grills.Where(g => !g.Status && g.Quality == (int)GrillQuality.Second).Count()
                     }
@@ -84,7 +84,7 @@ namespace naseNut.WebApi.Models
         }
         public class BarChartModel {
             public string name { get; set; }
-            public int[] data { get; set; }
+            public double[] data { get; set; }
         }
         public class PieChartModel
         {
