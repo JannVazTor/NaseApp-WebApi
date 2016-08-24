@@ -11,11 +11,11 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize(Roles = "admin")]
     [RoutePrefix("api/variety")]
     public class VarietyController : BaseApiController
     {
         private NaseNEntities _db = new NaseNEntities();
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IHttpActionResult SaveVariety(AddVarietyBindingModel model)
         {
@@ -47,7 +47,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar la variedad." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,grillUser")]
         [HttpGet]
         public IHttpActionResult GetAllVarieties()
         {
@@ -62,7 +62,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las variedades." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteVariety(int id)
