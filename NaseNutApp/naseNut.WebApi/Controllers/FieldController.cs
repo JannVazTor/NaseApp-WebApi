@@ -93,7 +93,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar el lote." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser")]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("GetAll")]
         public IHttpActionResult GetAll()
@@ -110,7 +110,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los campos." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,grillUser")]
         [HttpGet]
         [Route("fields")]
         public IHttpActionResult GetFields()
@@ -127,7 +127,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los campos." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,grillUser")]
         [HttpGet]
         [Route("batches")]
         public IHttpActionResult GetBatches()

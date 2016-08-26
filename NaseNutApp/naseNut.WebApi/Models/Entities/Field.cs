@@ -18,7 +18,6 @@ namespace naseNut.WebApi.Models.Entities
         public Field()
         {
             this.Batches = new HashSet<Batch>();
-            this.Grills = new HashSet<Grill>();
             this.Remissions = new HashSet<Remission>();
         }
     
@@ -27,8 +26,6 @@ namespace naseNut.WebApi.Models.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Batch> Batches { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Grill> Grills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
     }

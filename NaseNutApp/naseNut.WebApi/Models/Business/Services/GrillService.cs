@@ -19,7 +19,30 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var grillRepository = new GrillRepository(db);
                     grillRepository.Insert(grill);
+                    var saved = db.SaveChanges()>=1;
+                    if (!saved) return false;
+                    if (grill.Folio != -1) return true;
+                    grill.Folio = grill.Id;
+                    db.Grills.Attach(grill);
+                    db.Entry(grill).Property(p => p.Folio).IsModified = true;
                     return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        internal Grill GetByFolio(int folio)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var grillRepository = new GrillRepository(db);
+                    var grill = grillRepository.SearchOne(g => g.Folio == folio);
+                    return grill;
                 }
             }
             catch (Exception ex)
@@ -161,8 +184,9 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var grill = db.Grills.Find(id);
                     if (grill == null) return false;
+                    grill.Folio = model.Folio;
                     grill.DateCapture = model.DateCapture; 
-                    grill.FieldId = model.FieldId;
+                    grill.BatchId = model.BatchId;
                     grill.Kilos = model.Kilos;
                     grill.ProducerId = model.ProducerId;
                     grill.Quality = model.Quality;

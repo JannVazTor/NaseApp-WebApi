@@ -70,7 +70,7 @@ namespace naseNut.WebApi.Models
             return (from v in varieties
                     let name = v.Variety1
                     let y = v.Grills.Where(s => s.Samplings.Any()).Any() ? v.Grills.Where(s => s.Samplings.Any())
-                        .Sum(g => g.Samplings.Sum(s => s.WalnutNumber) / g.Samplings.Count) / v.Grills.Where(s => s.Samplings.Any()).Count() : 0
+                        .Sum(g => g.Samplings.Sum(s => ((s.WalnutNumber * 1000)/s.SampleWeight)) / g.Samplings.Count) / v.Grills.Where(s => s.Samplings.Any()).Count() : 0
                     select new BarChartWithNumbersModel {
                         name = name,
                         y = y,
@@ -177,6 +177,7 @@ namespace naseNut.WebApi.Models
             {
                 Id = g.Id,
                 DateCapture = g.DateCapture,
+                Folio = g.Folio,
                 Receptions = g.Receptions != null && g.Receptions.Count != 0 ? string.Join(", ", g.Receptions.Select(r => r.Folio)) : "",
                 Size = g.Size == 1 ? "Grande" : (g.Size == 2 ? "Mediana" : "Chica"),
                 Sacks = g.Sacks,
@@ -184,7 +185,7 @@ namespace naseNut.WebApi.Models
                 Quality = g.Quality == 1 ? "Primera" : (g.Quality == 2 ? "Segunda" : "Tercera") ,
                 Variety = g.Variety.Variety1,
                 Producer = g.Producer.ProducerName,
-                FieldName = g.Field.FieldName,
+                Batch = g.Batch.Batch1,
                 Status = g.Status,
                 SampleWeight = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
                 HumidityPercent = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString(): "",
@@ -729,6 +730,7 @@ namespace naseNut.WebApi.Models
         public class GrillModel
         {
             public int Id { get; set; }
+            public int Folio { get; set; }
             public DateTime DateCapture { get; set; }
             public string Receptions { get; set; }
             public string Size { get; set; }
@@ -737,7 +739,7 @@ namespace naseNut.WebApi.Models
             public string Quality { get; set; }
             public string Variety { get; set; }
             public string Producer { get; set; }
-            public string FieldName { get; set; }
+            public string Batch { get; set; }
             public bool Status { get; set; }
             public string SampleWeight { get; set; }
             public string HumidityPercent { get; set; }

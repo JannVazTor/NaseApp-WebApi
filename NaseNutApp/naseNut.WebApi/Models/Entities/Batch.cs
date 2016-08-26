@@ -18,6 +18,7 @@ namespace naseNut.WebApi.Models.Entities
         public Batch()
         {
             this.Remissions = new HashSet<Remission>();
+            this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
@@ -29,5 +30,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual Box Box { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grill> Grills { get; set; }
     }
 }

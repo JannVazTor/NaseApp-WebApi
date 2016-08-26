@@ -31,8 +31,8 @@ namespace naseNut.WebApi.Models.Entities
         public Nullable<int> ReceptionEntryId { get; set; }
     
         public virtual ReceptionEntry ReceptionEntry { get; set; }
-        public virtual Grill Grill { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NutType> NutTypes { get; set; }
+        public virtual Grill Grill { get; set; }
     }
 }
