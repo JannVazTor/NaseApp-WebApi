@@ -135,6 +135,15 @@
           <Property Name="HumidityPercent" Type="float" Nullable="false" />
           <Property Name="ReceptionEntryId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="NutInBatch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NutPercentage" Type="float" Nullable="false" />
+          <Property Name="BatchId" Type="int" Nullable="false" />
+          <Property Name="VarietyId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="NutSize">
           <Key>
             <PropertyRef Name="Id" />
@@ -381,6 +390,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_nutInBatch_batch">
+          <End Role="Batch" Type="Self.Batch" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NutInBatch" Type="Self.NutInBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutInBatch">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_nutInBatch_variety">
+          <End Role="Variety" Type="Self.Variety" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NutInBatch" Type="Self.NutInBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variety">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutInBatch">
+              <PropertyRef Name="VarietyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_nutSize_variety">
           <End Role="Variety" Type="Self.Variety" Multiplicity="1" />
           <End Role="NutSize" Type="Self.NutSize" Multiplicity="0..1" />
@@ -591,6 +628,7 @@
           <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GrillIssues" EntityType="Self.GrillIssues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NutInBatch" EntityType="Self.NutInBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutSize" EntityType="Self.NutSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutType" EntityType="Self.NutType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
@@ -643,6 +681,14 @@
           <AssociationSet Name="fk_humidity_producer" Association="Self.fk_humidity_producer">
             <End Role="ReceptionEntry" EntitySet="ReceptionEntry" />
             <End Role="Humidity" EntitySet="Humidity" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutInBatch_batch" Association="Self.fk_nutInBatch_batch">
+            <End Role="Batch" EntitySet="Batch" />
+            <End Role="NutInBatch" EntitySet="NutInBatch" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutInBatch_variety" Association="Self.fk_nutInBatch_variety">
+            <End Role="Variety" EntitySet="Variety" />
+            <End Role="NutInBatch" EntitySet="NutInBatch" />
           </AssociationSet>
           <AssociationSet Name="fk_nutSize_variety" Association="Self.fk_nutSize_variety">
             <End Role="Variety" EntitySet="Variety" />
@@ -907,6 +953,15 @@
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Reception" EntitySet="Receptions" />
           </AssociationSet>
+          <EntitySet Name="NutInBatches" EntityType="NASE_DB_WModel.NutInBatch" />
+          <AssociationSet Name="fk_nutInBatch_batch" Association="NASE_DB_WModel.fk_nutInBatch_batch">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="NutInBatch" EntitySet="NutInBatches" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutInBatch_variety" Association="NASE_DB_WModel.fk_nutInBatch_variety">
+            <End Role="Variety" EntitySet="Varieties" />
+            <End Role="NutInBatch" EntitySet="NutInBatches" />
+          </AssociationSet>
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Member Name="Entry" Value="1" />
@@ -1051,6 +1106,7 @@
           <NavigationProperty Name="NutSize" Relationship="NASE_DB_WModel.fk_nutSize_variety" FromRole="Variety" ToRole="NutSize" />
           <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="Variety" ToRole="ReceptionEntry" />
           <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.fk_grill_variety" FromRole="Variety" ToRole="Grill" />
+          <NavigationProperty Name="NutInBatches" Relationship="NASE_DB_WModel.fk_nutInBatch_variety" FromRole="Variety" ToRole="NutInBatch" />
         </EntityType>
         <Association Name="fk_receptionEntry_cylinder">
           <End Type="NASE_DB_WModel.Cylinder" Role="Cylinder" Multiplicity="1">
@@ -1118,6 +1174,7 @@
           <NavigationProperty Name="Box" Relationship="NASE_DB_WModel.fk_batch_box" FromRole="Batch" ToRole="Box" />
           <NavigationProperty Name="Remissions" Relationship="NASE_DB_WModel.fk_remission_batch" FromRole="Batch" ToRole="Remission" />
           <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.kf_grill_batch" FromRole="Batch" ToRole="Grill" />
+          <NavigationProperty Name="NutInBatches" Relationship="NASE_DB_WModel.fk_nutInBatch_batch" FromRole="Batch" ToRole="NutInBatch" />
         </EntityType>
         <EntityType Name="Field">
           <Key>
@@ -1392,6 +1449,45 @@
           <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
           <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
         </Association>
+        <EntityType Name="NutInBatch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NutPercentage" Type="Double" Nullable="false" />
+          <Property Name="BatchId" Type="Int32" Nullable="false" />
+          <Property Name="VarietyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Batch" Relationship="NASE_DB_WModel.fk_nutInBatch_batch" FromRole="NutInBatch" ToRole="Batch" />
+          <NavigationProperty Name="Variety" Relationship="NASE_DB_WModel.fk_nutInBatch_variety" FromRole="NutInBatch" ToRole="Variety" />
+        </EntityType>
+        <Association Name="fk_nutInBatch_batch">
+          <End Type="NASE_DB_WModel.Batch" Role="Batch" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.NutInBatch" Role="NutInBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Batch">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutInBatch">
+              <PropertyRef Name="BatchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_nutInBatch_variety">
+          <End Type="NASE_DB_WModel.Variety" Role="Variety" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.NutInBatch" Role="NutInBatch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variety">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutInBatch">
+              <PropertyRef Name="VarietyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1643,6 +1739,16 @@
               <ScalarProperty Name="Id" ColumnName="grillId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="NutInBatches">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.NutInBatch">
+              <MappingFragment StoreEntitySet="NutInBatch">
+                <ScalarProperty Name="VarietyId" ColumnName="VarietyId" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="NutPercentage" ColumnName="NutPercentage" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

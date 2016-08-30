@@ -116,6 +116,10 @@ namespace naseNut.WebApi.Models.Business.Services
                         new AspNetRole {
                             Id = "4f76500a-ba89-47d5-8a48-ed4b880ada40",
                             Name = "remRecepUser"
+                        },
+                        new AspNetRole {
+                            Id = "b64a6b00-4480-42b8-9b10-40435164494a",
+                            Name = "producerUser"
                         }
                     };
                     var roleRepository = new RoleRepository(db);

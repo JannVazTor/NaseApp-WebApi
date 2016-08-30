@@ -1,4 +1,5 @@
-﻿using naseNut.WebApi.Models.Business.Repositories;
+﻿using naseNut.WebApi.Models.BindingModels;
+using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,23 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class BatchService
     {
-        public bool Save(Batch batch)
+        public bool Save(Batch batch, List<NutInBatchBindingModel> nutInBatchModel)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
                     var batchRepository = new BatchRepository(db);
+                    var nutInBatchRepository = new NutInBatchRepository(db);
                     batchRepository.Insert(batch);
+                    var saved = db.SaveChanges()>=1;
+                    if (!saved) return false;
+                    var nutInBatch = nutInBatchModel.Select(n => new NutInBatch {
+                        BatchId = batch.Id,
+                        NutPercentage = n.NutPercentage,
+                        VarietyId = n.VarietyId
+                    }).ToList();
+                    nutInBatch.ForEach(n => nutInBatchRepository.Insert(n));
                     return db.SaveChanges() >= 1;
                 }
             }

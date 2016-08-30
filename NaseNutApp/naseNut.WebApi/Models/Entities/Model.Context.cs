@@ -45,5 +45,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<Remission> Remissions { get; set; }
         public virtual DbSet<NutType> NutTypes { get; set; }
         public virtual DbSet<Grill> Grills { get; set; }
+        public virtual DbSet<NutInBatch> NutInBatches { get; set; }
     }
 }

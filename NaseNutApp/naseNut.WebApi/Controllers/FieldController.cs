@@ -45,7 +45,7 @@ namespace naseNut.WebApi.Controllers
         [Route("batch")]
         public IHttpActionResult SaveBatch(AddBatchBindingModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !model.NutInBatch.Any() || model == null)
             {
                 return BadRequest();
             }
@@ -58,7 +58,7 @@ namespace naseNut.WebApi.Controllers
                     Hectares = model.Hectares,
                     FieldId = model.FieldId
                 };
-                var saved = batchService.Save(batch);
+                var saved = batchService.Save(batch, model.NutInBatch);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
