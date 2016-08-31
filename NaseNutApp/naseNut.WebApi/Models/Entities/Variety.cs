@@ -17,17 +17,20 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Variety()
         {
-            this.Grills = new HashSet<Grill>();
             this.ReceptionEntries = new HashSet<ReceptionEntry>();
+            this.Grills = new HashSet<Grill>();
+            this.NutInBatches = new HashSet<NutInBatch>();
         }
     
         public int Id { get; set; }
         public string Variety1 { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Grill> Grills { get; set; }
         public virtual NutSize NutSize { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grill> Grills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NutInBatch> NutInBatches { get; set; }
     }
 }

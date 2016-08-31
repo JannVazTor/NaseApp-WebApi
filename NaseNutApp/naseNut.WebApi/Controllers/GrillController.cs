@@ -27,6 +27,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var grillService = new GrillService();
+                if (model.Folio != -1 && grillService.GetByFolio(model.Folio) != null) return Conflict();
                 var grill = new Grill
                 {
                     DateCapture = model.DateCapture, 
@@ -36,9 +37,10 @@ namespace naseNut.WebApi.Controllers
                     Quality = model.Quality,
                     VarietyId = model.VarietyId,
                     ProducerId = model.ProducerId,
-                    FieldId = model.FieldId,
-                    Status = true
-                };
+                    BatchId = model.BatchId,
+                    Status = true,
+                    Folio = model.Folio
+                };  
                 var saved = grillService.Save(grill);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }

@@ -10,11 +10,11 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize(Roles = "admin")]
     [RoutePrefix("api/producer")]
     public class ProducerController : BaseApiController
     {
         NaseNEntities _db = new NaseNEntities();
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IHttpActionResult SaveProducer(AddProducerBindingModel model)
         {
@@ -39,7 +39,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar al Productor." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,grillUser")]
         [HttpGet]
         [Route("getAll")]
         public IHttpActionResult GetAllProducers()
@@ -56,7 +56,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los productores." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteProducer(int id)

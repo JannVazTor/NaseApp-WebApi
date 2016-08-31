@@ -12,16 +12,16 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class ReceptionService 
     {
-        public bool Delete(Reception reception)
+        public bool Delete(Reception reception, bool onlyHasOne)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var receptionEntryRepository = new ReceptionEntryRepository(db);
-                    var receptionEntry = db.ReceptionEntries.First(r => r.Id == reception.ReceptionEntryId);
-                    if (receptionEntry.Receptions.Count == 1)
+                    if (onlyHasOne)
                     {
+                        var receptionEntryRepository = new ReceptionEntryRepository(db);
+                        var receptionEntry = receptionEntryRepository.GetById(reception.ReceptionEntryId);
                         var receptionRepository = new ReceptionRepository(db);
                         receptionEntryRepository.Delete(receptionEntry);
                     }

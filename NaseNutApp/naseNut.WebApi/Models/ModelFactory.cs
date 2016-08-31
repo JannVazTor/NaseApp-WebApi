@@ -70,7 +70,7 @@ namespace naseNut.WebApi.Models
             return (from v in varieties
                     let name = v.Variety1
                     let y = v.Grills.Where(s => s.Samplings.Any()).Any() ? v.Grills.Where(s => s.Samplings.Any())
-                        .Sum(g => g.Samplings.Sum(s => s.WalnutNumber) / g.Samplings.Count) / v.Grills.Where(s => s.Samplings.Any()).Count() : 0
+                        .Sum(g => g.Samplings.Sum(s => ((s.WalnutNumber * 1000)/s.SampleWeight)) / g.Samplings.Count) / v.Grills.Where(s => s.Samplings.Any()).Count() : 0
                     select new BarChartWithNumbersModel {
                         name = name,
                         y = y,
@@ -167,7 +167,10 @@ namespace naseNut.WebApi.Models
             {
                 Id = c.Id,
                 CylinderName = c.CylinderName,
-                State = c.Active
+                State = c.Active,
+                LastHumidity = c.ReceptionEntries.Any(r => r.CylinderId == c.Id && r.Humidities.Any()) ? 
+                        c.ReceptionEntries.Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).FirstOrDefault().HumidityPercent.ToString() : "",
+                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.First(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
             }).ToList();
         }
 
@@ -177,20 +180,21 @@ namespace naseNut.WebApi.Models
             {
                 Id = g.Id,
                 DateCapture = g.DateCapture,
-                Receptions = g.Receptions != null && g.Receptions.Count != 0 ? string.Join(", ", g.Receptions.Select(r => r.Folio)) : "",
+                Folio = g.Folio,
+                Receptions = g.Receptions.Any() ? string.Join(", ", g.Receptions.Select(r => r.Folio)) : "",
                 Size = g.Size == 1 ? "Grande" : (g.Size == 2 ? "Mediana" : "Chica"),
                 Sacks = g.Sacks,
                 Kilos = g.Kilos,
                 Quality = g.Quality == 1 ? "Primera" : (g.Quality == 2 ? "Segunda" : "Tercera") ,
                 Variety = g.Variety.Variety1,
                 Producer = g.Producer.ProducerName,
-                FieldName = g.Field.FieldName,
+                Batch = g.Batch.Batch1,
                 Status = g.Status,
-                SampleWeight = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
-                HumidityPercent = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString(): "",
-                WalnutNumber = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().WalnutNumber.ToString():"",
-                Performance = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.ToString() : "",
-                TotalWeightOfEdibleNuts = g.Samplings.ToList().Count != 0 ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
+                SampleWeight = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
+                HumidityPercent = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString(): "",
+                WalnutNumber = g.Samplings.Any() ? ((g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().WalnutNumber * 1000)/ g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight).ToString() : "",
+                Performance = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.ToString() : "",
+                TotalWeightOfEdibleNuts = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
             }).ToList();
         }
 
@@ -441,9 +445,10 @@ namespace naseNut.WebApi.Models
             {
                 Id = r.Id,
                 Folio = r.Folio,
+                Remissions = r.Remissions.Any() ? string.Join(", ", r.Remissions.Select(re => re.Folio)) : "",
                 Variety = r.ReceptionEntry.Variety.Variety1,
                 ReceivedFromField = r.Remissions.Select(re => re.Quantity).Sum(),
-                FieldName = r.Remissions != null && r.Remissions.Count != 0 ? string.Join(", ", r.Remissions.Select(re => re.Batch.Batch1)) : "",
+                FieldName = r.Remissions.Any() ? string.Join(", ", r.Remissions.Select(re => re.Batch.Batch1)) : "",
                 CarRegistration = r.CarRegistration,
                 EntryDate = r.ReceptionEntry.DateEntry,
                 IssueDate = r.ReceptionEntry.DateIssue,
@@ -729,6 +734,7 @@ namespace naseNut.WebApi.Models
         public class GrillModel
         {
             public int Id { get; set; }
+            public int Folio { get; set; }
             public DateTime DateCapture { get; set; }
             public string Receptions { get; set; }
             public string Size { get; set; }
@@ -737,7 +743,7 @@ namespace naseNut.WebApi.Models
             public string Quality { get; set; }
             public string Variety { get; set; }
             public string Producer { get; set; }
-            public string FieldName { get; set; }
+            public string Batch { get; set; }
             public bool Status { get; set; }
             public string SampleWeight { get; set; }
             public string HumidityPercent { get; set; }
@@ -751,6 +757,8 @@ namespace naseNut.WebApi.Models
             public int Id { get; set; }
             public string CylinderName { get; set; }
             public bool State { get; set; }
+            public string LastHumidity { get; set; }
+            public string Folios { get; set; }
         }
 
         public class VarietyModel
@@ -809,6 +817,8 @@ namespace naseNut.WebApi.Models
             {
                 public int Id { get; set; }
                 public int Folio { get; set; }
+            public string CylinderStatus { get; set; }
+            public string Remissions { get; set; }
                 public string Variety { get; set; }
                 public double ReceivedFromField { get; set; }
                 public string FieldName { get; set; }

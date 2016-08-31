@@ -85,7 +85,8 @@ namespace naseNut.WebApi.Controllers
                 var receptionService = new ReceptionService();
                 var producer = receptionService.GetById(id);
                 if (producer == null) return NotFound();
-                var deleted = receptionService.Delete(producer);
+                var reception = receptionService.GetById(id);
+                var deleted = receptionService.Delete(producer, _db.ReceptionEntries.First(r => r.Id == reception.ReceptionEntryId).Receptions.Count == 1);
                 return deleted ? (IHttpActionResult)Ok() : InternalServerError();
             }
             catch (Exception ex)
