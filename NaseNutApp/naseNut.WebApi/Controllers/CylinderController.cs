@@ -15,6 +15,7 @@ namespace naseNut.WebApi.Controllers
     [RoutePrefix("api/cylinder")]
     public class CylinderController:BaseApiController
     {
+        private NaseNEntities _db = new NaseNEntities();
         [HttpPost]
         public IHttpActionResult Save(AddCylinderBindingModel model)
         {
@@ -46,9 +47,8 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var cylinderService = new CylinderService();
-                var cylinder = cylinderService.GetAll();
-                return cylinder != null ? (IHttpActionResult)Ok(TheModelFactory.Create(cylinder)) : Ok();
+                var cylinder = _db.Cylinders.ToList();
+                return cylinder.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(cylinder)) : Ok();
             }
             catch (Exception ex)
             {
@@ -62,8 +62,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var cylinderService = new CylinderService();
-                var cylinder = cylinderService.GetAllActive();
+                var cylinder = _db.Cylinders.Where(c => c.Active).ToList();
                 return cylinder != null ? (IHttpActionResult)Ok(TheModelFactory.Create(cylinder)) : Ok();
             }
             catch (Exception ex)

@@ -58,8 +58,6 @@
         <EntityTypeShape EntityType="NASE_DB_WModel.NutInBatch" Width="1.5" PointX="18" PointY="5.875" />
         <AssociationConnector Association="NASE_DB_WModel.fk_nutInBatch_batch" />
         <AssociationConnector Association="NASE_DB_WModel.fk_nutInBatch_variety" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_nutInBatch_batch" />
-        <AssociationConnector Association="NASE_DB_WModel.fk_nutInBatch_variety" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
