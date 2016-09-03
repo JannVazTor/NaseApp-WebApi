@@ -337,7 +337,7 @@ namespace naseNut.WebApi.Models
             return (from r in receptionEntries
                     let dateReceptionCapture = r.DateEntry
                     let variety = r.Variety.Variety1
-                    let batch = r.Receptions.Select(r => r.Remissions).Any() ? string.Join(", ", r.Receptions.SelectMany(r => r.Remissions.Select(re => re.Batch.Batch1))) : ""
+                    let batch = r.Receptions.Select(x => x.Remissions).Any() ? string.Join(", ", r.Receptions.SelectMany(y => y.Remissions.Select(re => re.Batch.Batch1))) : ""
                     let remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString()
                     let cylinder = r.Cylinder.CylinderName
                     let folio = r.Receptions.Any() ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : ""

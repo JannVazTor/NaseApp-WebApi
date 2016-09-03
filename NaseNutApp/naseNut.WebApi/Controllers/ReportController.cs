@@ -150,11 +150,12 @@ namespace naseNut.WebApi.Controllers
         {
             //var date2 = DateTime.Now.ToString("d");
             List<ReceptionEntry> datedReceptionEntries = new List<ReceptionEntry>();
+            var date1 = date.ReportDate.ToShortDateString();
             try
             {
                 var receptionEntries = _db.ReceptionEntries.ToList();
                 var datedReception = from rec in receptionEntries
-                    where rec.DateIssue != null && rec.DateIssue.Value.ToString("d").Equals(date.ReportDate.ToString("d")) select rec;
+                    where rec.DateIssue != null && rec.DateIssue.Value.ToShortDateString().Equals(date1) select rec;
 
                 datedReceptionEntries.AddRange(datedReception);
                 return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(datedReceptionEntries, date.ReportDate.ToString(CultureInfo.InvariantCulture))) : Ok();
