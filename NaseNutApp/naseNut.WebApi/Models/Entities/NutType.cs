@@ -21,7 +21,7 @@ namespace naseNut.WebApi.Models.Entities
         public Nullable<int> ReceptionEntryId { get; set; }
         public Nullable<int> SamplingId { get; set; }
     
-        public virtual ReceptionEntry ReceptionEntry { get; set; }
         public virtual Sampling Sampling { get; set; }
+        public virtual ReceptionEntry ReceptionEntry { get; set; }
     }
 }

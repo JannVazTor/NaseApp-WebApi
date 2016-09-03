@@ -11,7 +11,7 @@ namespace naseNut.WebApi.Models.BindingModels
     {
         [Required]
         public DateTime DateCapture { get; set; }
-        public int Folio { get; set; } = -1;
+        public int Folio { get; set; }
         [Required]
         public int Size { get; set; }
         [Required]

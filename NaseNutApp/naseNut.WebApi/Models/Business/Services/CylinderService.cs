@@ -101,7 +101,17 @@ namespace naseNut.WebApi.Models.Business.Services
                     cylinder.Active = state;
                     db.Cylinders.Attach(cylinder);
                     db.Entry(cylinder).Property(p => p.Active).IsModified = true;
-                    return db.SaveChanges() >= 1;
+                    var modified = db.SaveChanges()>=1;
+
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
+                    if (receptionEntryRepository.Search(r => r.CylinderId == id).Any()) {
+                        var receptionEntry = receptionEntryRepository.Search(r => r.CylinderId == id).OrderByDescending(d => d.DateEntry).First();
+                        receptionEntry.Active = !state;
+                        db.ReceptionEntries.Attach(receptionEntry);
+                        db.Entry(receptionEntry).Property(p => p.Active).IsModified = true;
+                        return db.SaveChanges() >= 1 && modified;
+                    }
+                    return modified;
                 }
             }
             catch (Exception ex)

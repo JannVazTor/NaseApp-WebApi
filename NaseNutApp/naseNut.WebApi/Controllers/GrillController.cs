@@ -27,7 +27,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var grillService = new GrillService();
-                if (model.Folio != -1 && grillService.GetByFolio(model.Folio) != null) return Conflict();
+                if (model.Folio != 0 && grillService.GetByFolio(model.Folio) != null) return Conflict();
                 var grill = new Grill
                 {
                     DateCapture = model.DateCapture, 

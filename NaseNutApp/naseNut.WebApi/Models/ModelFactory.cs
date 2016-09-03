@@ -170,7 +170,7 @@ namespace naseNut.WebApi.Models
                 State = c.Active,
                 LastHumidity = c.ReceptionEntries.Any(r => r.CylinderId == c.Id && r.Humidities.Any()) ? 
                         c.ReceptionEntries.Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).FirstOrDefault().HumidityPercent.ToString() : "",
-                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.First(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
+                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.DateEntry).First(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
             }).ToList();
         }
 
@@ -245,7 +245,7 @@ namespace naseNut.WebApi.Models
                 SampleWeight = s.SampleWeight,
                 HumidityPercent = s.HumidityPercent,
                 WalnutNumber = s.WalnutNumber,
-                Performance = s.Performance,
+                Performance = s.Performance.RoundTwoDigitsDouble(),
                 TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts
             }).ToList();
         }
@@ -461,7 +461,8 @@ namespace naseNut.WebApi.Models
                 Observations = r.Observations,
                 ProducerName = r.ReceptionEntry.Producer.ProducerName,
                 Grills = r.Grills != null && r.Grills.Count != 0 ? string.Join(", ", r.Grills.Select(g => g.Id)) : "",
-                Cylinder = r.ReceptionEntry.Cylinder.CylinderName
+                Cylinder = r.ReceptionEntry.Cylinder.CylinderName,
+                Active = r.ReceptionEntry.Active ? "ACTIVO" : "SALIO"
             }).ToList();
         }
 
@@ -837,7 +838,8 @@ namespace naseNut.WebApi.Models
                 public string ProducerName { get; set; }
                 public string Grills { get; set; }
                 public string Cylinder { get; set; }
-            }
+            public string Active { get; set; }
+        }
 
             public class CompleteHumidityModel
             {

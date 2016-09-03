@@ -15,7 +15,13 @@ namespace naseNut.WebApi.Models.Business.Services
             {
                 using (var db = new NaseNEntities())
                 {
-                    var receptionEntry = new ReceptionEntry {  DateEntry = DateTime.Now, VarietyId = VarietyId, ProducerId = ProducerId, CylinderId = CylinderId };
+                    var receptionEntry = new ReceptionEntry {
+                        DateEntry = DateTime.Now,
+                        VarietyId = VarietyId,
+                        ProducerId = ProducerId,
+                        CylinderId = CylinderId,
+                        Active = true 
+                    };
                     foreach (var reception in receptions)
                     {
                         receptionEntry.Receptions.Add(reception);

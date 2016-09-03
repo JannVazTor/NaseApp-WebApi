@@ -33,7 +33,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<GrillIssue> GrillIssues { get; set; }
         public virtual DbSet<Humidity> Humidities { get; set; }
         public virtual DbSet<Sampling> Samplings { get; set; }
-        public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
         public virtual DbSet<NutSize> NutSizes { get; set; }
         public virtual DbSet<Cylinder> Cylinders { get; set; }
         public virtual DbSet<Producer> Producers { get; set; }
@@ -46,5 +45,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<NutType> NutTypes { get; set; }
         public virtual DbSet<Grill> Grills { get; set; }
         public virtual DbSet<NutInBatch> NutInBatches { get; set; }
+        public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
     }
 }

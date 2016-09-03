@@ -203,6 +203,7 @@
           <Property Name="ProducerId" Type="int" Nullable="false" />
           <Property Name="CylinderId" Type="int" Nullable="false" />
           <Property Name="DateIssue" Type="datetime" />
+          <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Remission">
           <Key>
@@ -857,34 +858,13 @@
           <EntitySet Name="GrillIssues" EntityType="NASE_DB_WModel.GrillIssue" />
           <EntitySet Name="Humidities" EntityType="NASE_DB_WModel.Humidity" />
           <EntitySet Name="Samplings" EntityType="NASE_DB_WModel.Sampling" />
-          <EntitySet Name="ReceptionEntries" EntityType="NASE_DB_WModel.ReceptionEntry" />
-          <AssociationSet Name="fk_humidity_producer" Association="NASE_DB_WModel.fk_humidity_producer">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="Humidity" EntitySet="Humidities" />
-          </AssociationSet>
-          <AssociationSet Name="fk_sampling_receptionEntry" Association="NASE_DB_WModel.fk_sampling_receptionEntry">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="Sampling" EntitySet="Samplings" />
-          </AssociationSet>
           <EntitySet Name="NutSizes" EntityType="NASE_DB_WModel.NutSize" />
           <EntitySet Name="Cylinders" EntityType="NASE_DB_WModel.Cylinder" />
           <EntitySet Name="Producers" EntityType="NASE_DB_WModel.Producer" />
           <EntitySet Name="Varieties" EntityType="NASE_DB_WModel.Variety" />
-          <AssociationSet Name="fk_receptionEntry_cylinder" Association="NASE_DB_WModel.fk_receptionEntry_cylinder">
-            <End Role="Cylinder" EntitySet="Cylinders" />
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-          </AssociationSet>
           <AssociationSet Name="fk_nutSize_variety" Association="NASE_DB_WModel.fk_nutSize_variety">
             <End Role="Variety" EntitySet="Varieties" />
             <End Role="NutSize" EntitySet="NutSizes" />
-          </AssociationSet>
-          <AssociationSet Name="fk_receptionEntry_producer" Association="NASE_DB_WModel.fk_receptionEntry_producer">
-            <End Role="Producer" EntitySet="Producers" />
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-          </AssociationSet>
-          <AssociationSet Name="fk_receptionEntry_variety" Association="NASE_DB_WModel.fk_receptionEntry_variety">
-            <End Role="Variety" EntitySet="Varieties" />
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
           </AssociationSet>
           <EntitySet Name="Batches" EntityType="NASE_DB_WModel.Batch" />
           <EntitySet Name="Fields" EntityType="NASE_DB_WModel.Field" />
@@ -898,10 +878,6 @@
             <End Role="Box" EntitySet="Boxes" />
           </AssociationSet>
           <EntitySet Name="Receptions" EntityType="NASE_DB_WModel.Reception" />
-          <AssociationSet Name="fk_reception_receptionEntry" Association="NASE_DB_WModel.fk_reception_receptionEntry">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="Reception" EntitySet="Receptions" />
-          </AssociationSet>
           <EntitySet Name="Remissions" EntityType="NASE_DB_WModel.Remission" />
           <AssociationSet Name="fk_remission_batch" Association="NASE_DB_WModel.fk_remission_batch">
             <End Role="Batch" EntitySet="Batches" />
@@ -920,10 +896,6 @@
             <End Role="Remission" EntitySet="Remissions" />
           </AssociationSet>
           <EntitySet Name="NutTypes" EntityType="NASE_DB_WModel.NutType" />
-          <AssociationSet Name="fk_nutType_receptionEntry" Association="NASE_DB_WModel.fk_nutType_receptionEntry">
-            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
-            <End Role="NutType" EntitySet="NutTypes" />
-          </AssociationSet>
           <AssociationSet Name="fk_nutType_sampling" Association="NASE_DB_WModel.fk_nutType_sampling">
             <End Role="Sampling" EntitySet="Samplings" />
             <End Role="NutType" EntitySet="NutTypes" />
@@ -961,6 +933,35 @@
           <AssociationSet Name="fk_nutInBatch_variety" Association="NASE_DB_WModel.fk_nutInBatch_variety">
             <End Role="Variety" EntitySet="Varieties" />
             <End Role="NutInBatch" EntitySet="NutInBatches" />
+          </AssociationSet>
+          <EntitySet Name="ReceptionEntries" EntityType="NASE_DB_WModel.ReceptionEntry" />
+          <AssociationSet Name="fk_receptionEntry_cylinder" Association="NASE_DB_WModel.fk_receptionEntry_cylinder">
+            <End Role="Cylinder" EntitySet="Cylinders" />
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="fk_humidity_producer" Association="NASE_DB_WModel.fk_humidity_producer">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="Humidity" EntitySet="Humidities" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutType_receptionEntry" Association="NASE_DB_WModel.fk_nutType_receptionEntry">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="NutType" EntitySet="NutTypes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_receptionEntry_producer" Association="NASE_DB_WModel.fk_receptionEntry_producer">
+            <End Role="Producer" EntitySet="Producers" />
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="fk_reception_receptionEntry" Association="NASE_DB_WModel.fk_reception_receptionEntry">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="Reception" EntitySet="Receptions" />
+          </AssociationSet>
+          <AssociationSet Name="fk_receptionEntry_variety" Association="NASE_DB_WModel.fk_receptionEntry_variety">
+            <End Role="Variety" EntitySet="Varieties" />
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="fk_sampling_receptionEntry" Association="NASE_DB_WModel.fk_sampling_receptionEntry">
+            <End Role="ReceptionEntry" EntitySet="ReceptionEntries" />
+            <End Role="Sampling" EntitySet="Samplings" />
           </AssociationSet>
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
@@ -1012,56 +1013,10 @@
           <Property Name="TotalWeightOfEdibleNuts" Type="Double" Nullable="false" />
           <Property Name="GrillId" Type="Int32" />
           <Property Name="ReceptionEntryId" Type="Int32" />
-          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_sampling_receptionEntry" FromRole="Sampling" ToRole="ReceptionEntry" />
           <NavigationProperty Name="NutTypes" Relationship="NASE_DB_WModel.fk_nutType_sampling" FromRole="Sampling" ToRole="NutType" />
           <NavigationProperty Name="Grill" Relationship="NASE_DB_WModel.fk_sampling_grill" FromRole="Sampling" ToRole="Grill" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_sampling_receptionEntry" FromRole="Sampling" ToRole="ReceptionEntry" />
         </EntityType>
-        <EntityType Name="ReceptionEntry">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DateEntry" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="VarietyId" Type="Int32" Nullable="false" />
-          <Property Name="ProducerId" Type="Int32" Nullable="false" />
-          <Property Name="CylinderId" Type="Int32" Nullable="false" />
-          <Property Name="DateIssue" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Humidities" Relationship="NASE_DB_WModel.fk_humidity_producer" FromRole="ReceptionEntry" ToRole="Humidity" />
-          <NavigationProperty Name="Samplings" Relationship="NASE_DB_WModel.fk_sampling_receptionEntry" FromRole="ReceptionEntry" ToRole="Sampling" />
-          <NavigationProperty Name="Cylinder" Relationship="NASE_DB_WModel.fk_receptionEntry_cylinder" FromRole="ReceptionEntry" ToRole="Cylinder" />
-          <NavigationProperty Name="Producer" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="ReceptionEntry" ToRole="Producer" />
-          <NavigationProperty Name="Variety" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="ReceptionEntry" ToRole="Variety" />
-          <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="ReceptionEntry" ToRole="Reception" />
-          <NavigationProperty Name="NutTypes" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="ReceptionEntry" ToRole="NutType" />
-        </EntityType>
-        <Association Name="fk_humidity_producer">
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.Humidity" Role="Humidity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReceptionEntry">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Humidity">
-              <PropertyRef Name="ReceptionEntryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_sampling_receptionEntry">
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReceptionEntry">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Sampling">
-              <PropertyRef Name="ReceptionEntryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EnumType Name="GrillQuality" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Member Name="First" Value="1" />
           <Member Name="Second" Value="2" />
@@ -1094,8 +1049,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProducerName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="Producer" ToRole="ReceptionEntry" />
           <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.fk_grill_producer" FromRole="Producer" ToRole="Grill" />
+          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="Producer" ToRole="ReceptionEntry" />
         </EntityType>
         <EntityType Name="Variety">
           <Key>
@@ -1104,24 +1059,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Variety1" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="NutSize" Relationship="NASE_DB_WModel.fk_nutSize_variety" FromRole="Variety" ToRole="NutSize" />
-          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="Variety" ToRole="ReceptionEntry" />
           <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.fk_grill_variety" FromRole="Variety" ToRole="Grill" />
           <NavigationProperty Name="NutInBatches" Relationship="NASE_DB_WModel.fk_nutInBatch_variety" FromRole="Variety" ToRole="NutInBatch" />
+          <NavigationProperty Name="ReceptionEntries" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="Variety" ToRole="ReceptionEntry" />
         </EntityType>
-        <Association Name="fk_receptionEntry_cylinder">
-          <End Type="NASE_DB_WModel.Cylinder" Role="Cylinder" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cylinder">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ReceptionEntry">
-              <PropertyRef Name="CylinderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_nutSize_variety">
           <End Type="NASE_DB_WModel.Variety" Role="Variety" Multiplicity="1" />
           <End Type="NASE_DB_WModel.NutSize" Role="NutSize" Multiplicity="0..1" />
@@ -1131,34 +1072,6 @@
             </Principal>
             <Dependent Role="NutSize">
               <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_receptionEntry_producer">
-          <End Type="NASE_DB_WModel.Producer" Role="Producer" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Producer">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ReceptionEntry">
-              <PropertyRef Name="ProducerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_receptionEntry_variety">
-          <End Type="NASE_DB_WModel.Variety" Role="Variety" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Variety">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ReceptionEntry">
-              <PropertyRef Name="VarietyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1233,24 +1146,10 @@
           <Property Name="GrillId" Type="Int32" Nullable="false" />
           <Property Name="Folio" Type="Int32" Nullable="false" />
           <Property Name="ReceptionEntryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="Reception" ToRole="ReceptionEntry" />
           <NavigationProperty Name="Remissions" Relationship="NASE_DB_WModel.fk_remission_reception" FromRole="Reception" ToRole="Remission" />
           <NavigationProperty Name="Grills" Relationship="NASE_DB_WModel.Reception_Grill" FromRole="Reception" ToRole="Grill" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="Reception" ToRole="ReceptionEntry" />
         </EntityType>
-        <Association Name="fk_reception_receptionEntry">
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReceptionEntry">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Reception">
-              <PropertyRef Name="ReceptionEntryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Remission">
           <Key>
             <PropertyRef Name="Id" />
@@ -1332,21 +1231,9 @@
           <Property Name="Kilos" Type="Double" />
           <Property Name="ReceptionEntryId" Type="Int32" />
           <Property Name="SamplingId" Type="Int32" />
-          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="NutType" ToRole="ReceptionEntry" />
           <NavigationProperty Name="Sampling" Relationship="NASE_DB_WModel.fk_nutType_sampling" FromRole="NutType" ToRole="Sampling" />
+          <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="NutType" ToRole="ReceptionEntry" />
         </EntityType>
-        <Association Name="fk_nutType_receptionEntry">
-          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="0..1" />
-          <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReceptionEntry">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="NutType">
-              <PropertyRef Name="ReceptionEntryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_nutType_sampling">
           <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="0..1" />
           <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="*" />
@@ -1488,6 +1375,121 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ReceptionEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateEntry" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VarietyId" Type="Int32" Nullable="false" />
+          <Property Name="ProducerId" Type="Int32" Nullable="false" />
+          <Property Name="CylinderId" Type="Int32" Nullable="false" />
+          <Property Name="DateIssue" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Cylinder" Relationship="NASE_DB_WModel.fk_receptionEntry_cylinder" FromRole="ReceptionEntry" ToRole="Cylinder" />
+          <NavigationProperty Name="Humidities" Relationship="NASE_DB_WModel.fk_humidity_producer" FromRole="ReceptionEntry" ToRole="Humidity" />
+          <NavigationProperty Name="NutTypes" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="ReceptionEntry" ToRole="NutType" />
+          <NavigationProperty Name="Producer" Relationship="NASE_DB_WModel.fk_receptionEntry_producer" FromRole="ReceptionEntry" ToRole="Producer" />
+          <NavigationProperty Name="Receptions" Relationship="NASE_DB_WModel.fk_reception_receptionEntry" FromRole="ReceptionEntry" ToRole="Reception" />
+          <NavigationProperty Name="Variety" Relationship="NASE_DB_WModel.fk_receptionEntry_variety" FromRole="ReceptionEntry" ToRole="Variety" />
+          <NavigationProperty Name="Samplings" Relationship="NASE_DB_WModel.fk_sampling_receptionEntry" FromRole="ReceptionEntry" ToRole="Sampling" />
+        </EntityType>
+        <Association Name="fk_receptionEntry_cylinder">
+          <End Type="NASE_DB_WModel.Cylinder" Role="Cylinder" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cylinder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceptionEntry">
+              <PropertyRef Name="CylinderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_humidity_producer">
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Humidity" Role="Humidity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Humidity">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_nutType_receptionEntry">
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="0..1" />
+          <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutType">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_receptionEntry_producer">
+          <End Type="NASE_DB_WModel.Producer" Role="Producer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceptionEntry">
+              <PropertyRef Name="ProducerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_reception_receptionEntry">
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reception">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_receptionEntry_variety">
+          <End Type="NASE_DB_WModel.Variety" Role="Variety" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Variety">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceptionEntry">
+              <PropertyRef Name="VarietyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_sampling_receptionEntry">
+          <End Type="NASE_DB_WModel.ReceptionEntry" Role="ReceptionEntry" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceptionEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sampling">
+              <PropertyRef Name="ReceptionEntryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1590,18 +1592,6 @@
                 <ScalarProperty Name="HumidityPercent" ColumnName="HumidityPercent" />
                 <ScalarProperty Name="SampleWeight" ColumnName="SampleWeight" />
                 <ScalarProperty Name="DateCapture" ColumnName="DateCapture" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReceptionEntries">
-            <EntityTypeMapping TypeName="NASE_DB_WModel.ReceptionEntry">
-              <MappingFragment StoreEntitySet="ReceptionEntry">
-                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
-                <ScalarProperty Name="CylinderId" ColumnName="CylinderId" />
-                <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
-                <ScalarProperty Name="VarietyId" ColumnName="VarietyId" />
-                <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1745,6 +1735,19 @@
                 <ScalarProperty Name="VarietyId" ColumnName="VarietyId" />
                 <ScalarProperty Name="BatchId" ColumnName="BatchId" />
                 <ScalarProperty Name="NutPercentage" ColumnName="NutPercentage" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReceptionEntries">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.ReceptionEntry">
+              <MappingFragment StoreEntitySet="ReceptionEntry">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="CylinderId" ColumnName="CylinderId" />
+                <ScalarProperty Name="ProducerId" ColumnName="ProducerId" />
+                <ScalarProperty Name="VarietyId" ColumnName="VarietyId" />
+                <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

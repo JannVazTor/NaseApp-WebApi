@@ -22,7 +22,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var receptions = _db.Receptions.Where(r => !r.ReceptionEntry.Cylinder.Active).ToList();
+                var receptions = _db.Receptions.ToList();
                 return receptions.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(receptions)) : Ok();
             }
             catch (Exception ex)
