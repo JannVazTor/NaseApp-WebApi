@@ -192,8 +192,8 @@ namespace naseNut.WebApi.Models
                 Status = g.Status,
                 SampleWeight = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
                 HumidityPercent = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString(): "",
-                WalnutNumber = g.Samplings.Any() ? ((g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().WalnutNumber * 1000)/ g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight).ToString() : "",
-                Performance = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.ToString() : "",
+                WalnutNumber = g.Samplings.Any() ? ((g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().WalnutNumber * 1000)/ g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight).RoundTwoDigitsDouble().ToString() : "",
+                Performance = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.RoundTwoDigitsDouble(): 0,
                 TotalWeightOfEdibleNuts = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
             }).ToList();
         }
@@ -420,7 +420,10 @@ namespace naseNut.WebApi.Models
                                      let cleanWalnutInBatch = rawWalnut != 0 ? ((cleanWalnut * rawWalnutInBatch)/rawWalnut).RoundTwoDigitsDouble() : 0 
                                      select new OriginDataModel {
                                          Variety = v.Variety1,
-                                         Total = cleanWalnutInBatch 
+                                         Total = cleanWalnutInBatch,
+                                         Performance = v.NutInBatches.Any(vn => vn.BatchId == b.Id && vn.VarietyId == v.Id) ? 
+                                            ((cleanWalnutInBatch / hectares) * v.NutInBatches.Where(vn => vn.BatchId == b.Id 
+                                                && vn.VarietyId == v.Id).First().NutPercentage).RoundTwoDigitsDouble() : 0 
                                      }).ToList()
                     let totalProduction = varieties.Sum(g => g.Total).RoundTwoDigitsDouble()
                     let performancePerHa = hectares != 0 ? (totalProduction / hectares).RoundTwoDigitsDouble() : 0
@@ -437,6 +440,7 @@ namespace naseNut.WebApi.Models
         public class OriginDataModel {
             public double Total { get; set; }
             public string Variety { get; set; }
+            public double Performance{ get; set; }
         }
 
         public List<ReceptionModel> Create(List<Reception> receptions)
@@ -539,7 +543,8 @@ namespace naseNut.WebApi.Models
                 FieldName = b.Field.FieldName,
                 Hectares = b.Hectares,
                 Batch = b.Batch1,
-                Box = b.Box != null ? b.Box.Box1 : ""
+                Box = b.Box != null ? b.Box.Box1 : "",
+                NutPercentages = b.NutInBatches.Any() ? string.Join("",b.NutInBatches.Select(n => n.Variety.Variety1 + " " + n.NutPercentage.ToString() + "%. ")) : ""
             }).ToList();
         }
         public List<BoxModel> Create(List<Box> boxes)
@@ -625,6 +630,7 @@ namespace naseNut.WebApi.Models
             public double Hectares { get; set; }
             public string Batch { get; set; }
             public string Box { get; set; }
+            public string NutPercentages { get; set; }
         }
         public class GrillIssueReportModel
         {
@@ -748,7 +754,7 @@ namespace naseNut.WebApi.Models
             public string SampleWeight { get; set; }
             public string HumidityPercent { get; set; }
             public string WalnutNumber { get; set; }
-            public string Performance { get; set; }
+            public double Performance { get; set; }
             public string TotalWeightOfEdibleNuts { get; set; }
         }
 

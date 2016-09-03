@@ -17,17 +17,40 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var batchRepository = new BatchRepository(db);
-                    var nutInBatchRepository = new NutInBatchRepository(db);
-                    batchRepository.Insert(batch);
-                    var saved = db.SaveChanges()>=1;
-                    if (!saved) return false;
-                    var nutInBatch = nutInBatchModel.Select(n => new NutInBatch {
-                        BatchId = batch.Id,
-                        NutPercentage = n.NutPercentage,
-                        VarietyId = n.VarietyId
-                    }).ToList();
-                    nutInBatch.ForEach(n => nutInBatchRepository.Insert(n));
-                    return db.SaveChanges() >= 1;
+                    if (batchRepository.Search(b => b.Batch1.ToLower() == batch.Batch1 && b.FieldId == batch.FieldId).Any())
+                    {
+                        var batchE = db.Batches.FirstOrDefault(b => b.Batch1.ToLower() == batch.Batch1 && b.FieldId == batch.FieldId);
+                        batchE.NutInBatches.ToList().ForEach(n => db.NutInBatches.Remove(n));
+                        db.SaveChanges();
+
+                        batchE.Hectares = batch.Hectares;
+                        db.Batches.Attach(batchE);
+                        db.Entry(batchE).Property(p => p.Hectares).IsModified = true;
+                        db.SaveChanges();
+
+                        var nutInBatchRepositoryU = new NutInBatchRepository(db);
+                        var nutInBatchU = nutInBatchModel.Select(n => new NutInBatch
+                        {
+                            BatchId = batchE.Id,
+                            NutPercentage = n.NutPercentage,
+                            VarietyId = n.VarietyId
+                        }).ToList();
+                        nutInBatchU.ForEach(n => nutInBatchRepositoryU.Insert(n));
+
+                        return db.SaveChanges() >= 1;
+                    }
+                        var nutInBatchRepositoryA = new NutInBatchRepository(db);
+                        batchRepository.Insert(batch);
+                        var saved = db.SaveChanges() >= 1;
+                        if (!saved) return false;
+                        var nutInBatchA = nutInBatchModel.Select(n => new NutInBatch
+                        {
+                            BatchId = batch.Id,
+                            NutPercentage = n.NutPercentage,
+                            VarietyId = n.VarietyId
+                        }).ToList();
+                        nutInBatchA.ForEach(n => nutInBatchRepositoryA.Insert(n));
+                        return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception ex)
@@ -95,6 +118,21 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var batchRepository = new BatchRepository(db);
                     return batchRepository.GetAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool IsBatchInField(string batch, int fieldId) {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var batchRepository = new BatchRepository(db);
+                    return batchRepository.Search(b => b.Batch1.ToLower() == batch && b.FieldId == fieldId).Any();
                 }
             }
             catch (Exception ex)
