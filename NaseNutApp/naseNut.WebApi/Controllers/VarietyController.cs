@@ -47,7 +47,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar la variedad." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser")]
+        [Authorize(Roles = "admin,grillUser,remRecepUser")]
         [HttpGet]
         public IHttpActionResult GetAllVarieties()
         {

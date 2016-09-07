@@ -93,7 +93,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar el lote." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpGet]
         [Route("GetAll")]
         public IHttpActionResult GetAll()
@@ -110,7 +110,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los campos." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser")]
+        [Authorize(Roles = "admin,grillUser,remRecepUser")]
         [HttpGet]
         [Route("fields")]
         public IHttpActionResult GetFields()
@@ -144,7 +144,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las Huertas/Lotes." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpGet]
         [Route("batchesInField/{fieldId}")]
         public IHttpActionResult GetBatchesInField(int fieldId)
@@ -179,7 +179,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener los cuadros." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpGet]
         [Route("boxesInBatch/{batchId}")]
         public IHttpActionResult GetBoxesInBatch(int batchId)
@@ -208,7 +208,7 @@ namespace naseNut.WebApi.Controllers
                 var field = fieldService.GetById(id);
                 if (field == null) return NotFound();
                 var deleted = fieldService.Delete(field);
-                return deleted ? (IHttpActionResult)Ok() : InternalServerError();
+                return deleted ? (IHttpActionResult)Ok() : Conflict();
             }
             catch (Exception ex)
             {

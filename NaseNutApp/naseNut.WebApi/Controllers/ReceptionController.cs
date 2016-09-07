@@ -11,11 +11,11 @@ using System.Collections.Generic;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize(Roles = "admin,remRecepUser")]
     [RoutePrefix("api/reception")]
     public class ReceptionController : BaseApiController
     {
         private NaseNEntities _db = new NaseNEntities();
+        [Authorize(Roles = "admin,remRecepUser,grillUser")]
         [HttpGet]
         [Route("getAll")]
         public IHttpActionResult GetAllReceptions()
@@ -31,7 +31,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las recepciones." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,remRecepUser,grillUser")]
         [HttpPut]
         [Route("addReceptionToGrill/{receptionId}/{grillId}")]
         public IHttpActionResult AddReceptionToGrill(int receptionId, int grillId )
@@ -53,7 +53,7 @@ namespace naseNut.WebApi.Controllers
                "Ocurrio un error al intentar relacionar los registros." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,remRecepUser,grillUser")]
         [HttpPut]
         [Route("removeReceptionToGrill/{receptionId}/{grillId}")]
         public IHttpActionResult RemoveReceptionToGrill(int receptionId, int grillId)
@@ -75,7 +75,7 @@ namespace naseNut.WebApi.Controllers
                "Ocurrio un error al intentar remover el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult DeleteReception(int id)
@@ -95,7 +95,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpPut]
         [Route("{Id}")]
         public IHttpActionResult UpdateReception(int Id, AddOrUpdateReceptionBindingModel model)
@@ -117,7 +117,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar actgualizar la recepcion." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpGet]
         [Route("getReceptionsByCylinder")]
         public IHttpActionResult GetReceptionsByCylinder(int cylinderId)

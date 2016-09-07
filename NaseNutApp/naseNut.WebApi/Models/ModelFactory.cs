@@ -188,6 +188,7 @@ namespace naseNut.WebApi.Models
                 Quality = g.Quality == 1 ? "Primera" : (g.Quality == 2 ? "Segunda" : "Tercera") ,
                 Variety = g.Variety.Variety1,
                 Producer = g.Producer.ProducerName,
+                Field = g.Batch.Field.FieldName,
                 Batch = g.Batch.Batch1,
                 Status = g.Status,
                 SampleWeight = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
@@ -429,7 +430,7 @@ namespace naseNut.WebApi.Models
                     let performancePerHa = hectares != 0 ? (totalProduction / hectares).RoundTwoDigitsDouble() : 0
                     select new OriginReportModel
                     {
-                        Field = batch,
+                        Batch = batch,
                         Hectares = hectares,
                         Varieties = varieties,
                         TotalProduction = totalProduction,
@@ -751,6 +752,7 @@ namespace naseNut.WebApi.Models
             public string Variety { get; set; }
             public string Producer { get; set; }
             public string Batch { get; set; }
+            public string Field { get; set; }
             public bool Status { get; set; }
             public string SampleWeight { get; set; }
             public string HumidityPercent { get; set; }
@@ -895,7 +897,7 @@ namespace naseNut.WebApi.Models
 
             public class OriginReportModel
             {
-                public string Field { get; set; }
+                public string Batch { get; set; }
                 public double Hectares { get; set; }
                 public List<OriginDataModel> Varieties { get; set; }
                 public double TotalProduction { get; set; }

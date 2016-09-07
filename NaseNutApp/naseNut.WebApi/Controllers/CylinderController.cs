@@ -11,11 +11,11 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize(Roles = "admin")]
     [RoutePrefix("api/cylinder")]
     public class CylinderController:BaseApiController
     {
         private NaseNEntities _db = new NaseNEntities();
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IHttpActionResult Save(AddCylinderBindingModel model)
         {
@@ -41,7 +41,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IHttpActionResult GetAll()
         {
@@ -56,6 +56,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+        [Authorize(Roles = "admin,remRecepUser")]
         [HttpGet]
         [Route("GetAllActive")]
         public IHttpActionResult GetAllActive()
@@ -71,7 +72,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpDelete]
         [Route("{id}")]
         public IHttpActionResult Delete(int id)

@@ -39,7 +39,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar al Productor." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser")]
+        [Authorize(Roles = "admin,grillUser,remRecepUser")]
         [HttpGet]
         [Route("getAll")]
         public IHttpActionResult GetAllProducers()
