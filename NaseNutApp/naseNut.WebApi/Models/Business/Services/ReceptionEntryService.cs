@@ -16,7 +16,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionEntry = new ReceptionEntry {
-                        DateEntry = DateTime.Now,
+                        EntryDate = DateTime.Now,
                         VarietyId = VarietyId,
                         ProducerId = ProducerId,
                         CylinderId = CylinderId,

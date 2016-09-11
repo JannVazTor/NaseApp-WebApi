@@ -8,6 +8,7 @@ using System.Web.Http;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
+using Microsoft.AspNet.Identity;
 
 namespace naseNut.WebApi.Controllers
 {
@@ -30,7 +31,8 @@ namespace naseNut.WebApi.Controllers
                 var cylinder = new Cylinder
                 {
                     CylinderName = model.CylinderName,
-                    Active = true
+                    Active = true,
+                    HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
                 };
                 var saved = cylinderService.Save(cylinder);
                 return saved ? (IHttpActionResult)Ok() : Conflict();
@@ -47,7 +49,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var cylinder = _db.Cylinders.ToList();
+                var cylinder = _db.Cylinders.Where(c => c.HarvestSeason.Active).ToList();
                 return cylinder.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(cylinder)) : Ok();
             }
             catch (Exception ex)
@@ -63,7 +65,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var cylinder = _db.Cylinders.Where(c => c.Active).ToList();
+                var cylinder = _db.Cylinders.Where(c => c.Active && c.HarvestSeason.Active).ToList();
                 return cylinder != null ? (IHttpActionResult)Ok(TheModelFactory.Create(cylinder)) : Ok();
             }
             catch (Exception ex)

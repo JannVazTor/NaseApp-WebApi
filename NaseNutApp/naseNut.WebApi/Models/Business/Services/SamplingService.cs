@@ -52,9 +52,9 @@ namespace naseNut.WebApi.Models.Business.Services
                         var receptionEntryRepository = new ReceptionEntryRepository(db);
                         var receptionEntry = receptionEntryRepository.GetById(sampling.ReceptionEntry.Id);
 
-                        receptionEntry.DateIssue = null;
+                        receptionEntry.IssueDate = null;
                         db.ReceptionEntries.Attach(receptionEntry);
-                        db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
+                        db.Entry(receptionEntry).Property(p => p.IssueDate).IsModified = true;
 
                         receptionEntry.NutTypes.ToList().ForEach(n => db.NutTypes.Remove(n));
                     }

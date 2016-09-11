@@ -23,10 +23,12 @@ namespace naseNut.WebApi.Models.Entities
     
         public int Id { get; set; }
         public string FieldName { get; set; }
+        public int HarvestSeasonId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Batch> Batches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Remission> Remissions { get; set; }
+        public virtual HarvestSeason HarvestSeason { get; set; }
     }
 }

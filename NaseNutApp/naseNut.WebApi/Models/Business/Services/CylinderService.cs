@@ -105,7 +105,7 @@ namespace naseNut.WebApi.Models.Business.Services
 
                     var receptionEntryRepository = new ReceptionEntryRepository(db);
                     if (receptionEntryRepository.Search(r => r.CylinderId == id).Any()) {
-                        var receptionEntry = receptionEntryRepository.Search(r => r.CylinderId == id).OrderByDescending(d => d.DateEntry).First();
+                        var receptionEntry = receptionEntryRepository.Search(r => r.CylinderId == id).OrderByDescending(d => d.EntryDate).First();
                         receptionEntry.Active = !state;
                         db.ReceptionEntries.Attach(receptionEntry);
                         db.Entry(receptionEntry).Property(p => p.Active).IsModified = true;

@@ -47,6 +47,22 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+        public AspNetUser GetByName(string userName)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var userRepository = new UserRepository(db);
+                    var user = userRepository.SearchOne(u => u.UserName == userName);
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public void CreateAdminUser()
         {

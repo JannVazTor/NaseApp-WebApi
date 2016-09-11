@@ -155,7 +155,7 @@ namespace naseNut.WebApi.Controllers
             {
                 var receptionEntries = _db.ReceptionEntries.ToList();
                 var datedReception = from rec in receptionEntries
-                    where rec.DateIssue != null && rec.DateIssue.Value.ToShortDateString().Equals(date1) select rec;
+                    where rec.IssueDate != null && rec.IssueDate.Value.ToShortDateString().Equals(date1) select rec;
 
                 datedReceptionEntries.AddRange(datedReception);
                 return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(datedReceptionEntries, date.ReportDate.ToString(CultureInfo.InvariantCulture))) : Ok();

@@ -23,9 +23,9 @@ namespace naseNut.WebApi.Models.Business.Services
                     {
                         nutTypes.ForEach(n => n.SamplingId = receptionEntry.Samplings.First().Id);
                     }
-                    receptionEntry.DateIssue = DateTime.Now;
+                    receptionEntry.IssueDate = DateTime.Now;
                     db.ReceptionEntries.Attach(receptionEntry);
-                    db.Entry(receptionEntry).Property(p => p.DateIssue).IsModified = true;
+                    db.Entry(receptionEntry).Property(p => p.IssueDate).IsModified = true;
 
                     nutTypes.ForEach(n => nutTypeRepository.Insert(n));
                     return db.SaveChanges() >= 1;

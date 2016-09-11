@@ -24,12 +24,14 @@ namespace naseNut.WebApi.Models.Entities
     
         public int Id { get; set; }
         public string Variety1 { get; set; }
+        public int HarvestSeasonId { get; set; }
     
-        public virtual NutSize NutSize { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NutInBatch> NutInBatches { get; set; }
+        public virtual NutSize NutSize { get; set; }
+        public virtual HarvestSeason HarvestSeason { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
     }

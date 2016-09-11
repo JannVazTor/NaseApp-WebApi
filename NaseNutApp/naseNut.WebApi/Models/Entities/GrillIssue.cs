@@ -26,8 +26,10 @@ namespace naseNut.WebApi.Models.Entities
         public string Driver { get; set; }
         public string Box { get; set; }
         public int Remission { get; set; }
+        public int HarvestSeasonId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Grill> Grills { get; set; }
+        public virtual HarvestSeason HarvestSeason { get; set; }
     }
 }

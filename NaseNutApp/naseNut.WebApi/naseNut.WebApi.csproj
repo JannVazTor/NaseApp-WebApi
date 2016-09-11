@@ -223,6 +223,7 @@
     <Compile Include="Controllers\CylinderController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\GrillController.cs" />
+    <Compile Include="Controllers\HarvestSeasonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeDashController.cs" />
     <Compile Include="Controllers\HumidityController.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Models\BindingModels\CylinderBindingModel.cs" />
     <Compile Include="Models\BindingModels\FieldBindingModel.cs" />
     <Compile Include="Models\BindingModels\GrillBindingModel.cs" />
+    <Compile Include="Models\BindingModels\HarvestSeasonBindingModel.cs" />
     <Compile Include="Models\BindingModels\HumidityBindingModel.cs" />
     <Compile Include="Models\BindingModels\IssuesBindingModel.cs" />
     <Compile Include="Models\BindingModels\ProducerBindingModel.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="Models\Business\Repositories\FieldRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillIssueRepository.cs" />
     <Compile Include="Models\Business\Repositories\GrillRepository.cs" />
+    <Compile Include="Models\Business\Repositories\HarvestSeasonRepository.cs" />
     <Compile Include="Models\Business\Repositories\HumidityRepository.cs" />
     <Compile Include="Models\Business\Repositories\NutInBatchRepository.cs" />
     <Compile Include="Models\Business\Repositories\NutSizeRepository.cs" />
@@ -280,6 +283,7 @@
     <Compile Include="Models\Business\Services\FieldService.cs" />
     <Compile Include="Models\Business\Services\GrillIssueService.cs" />
     <Compile Include="Models\Business\Services\GrillService.cs" />
+    <Compile Include="Models\Business\Services\HarvestSeasonService.cs" />
     <Compile Include="Models\Business\Services\HomeService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
     <Compile Include="Models\Business\Services\NutTypeService.cs" />
@@ -323,6 +327,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\GrillIssue.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\HarvestSeason.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Humidity.cs">

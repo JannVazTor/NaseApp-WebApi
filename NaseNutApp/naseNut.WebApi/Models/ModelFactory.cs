@@ -18,7 +18,7 @@ namespace naseNut.WebApi.Models
     {
         private UrlHelper _urlHelper;
         private ApplicationUserManager _appUserManager;
-
+        private NaseNEntities _db = new NaseNEntities();
         public ModelFactory(HttpRequestMessage request, ApplicationUserManager appUserManager)
         {
             _urlHelper = new UrlHelper(request);
@@ -44,7 +44,7 @@ namespace naseNut.WebApi.Models
         public BarChartModel[] CreateDash(List<Cylinder> cylinders) {
             return cylinders.Select(c => new BarChartModel {
                 name = c.CylinderName,
-                data = new double[] { (DateTime.Now - c.ReceptionEntries.First().DateEntry).TotalHours }
+                data = new double[] { (DateTime.Now - c.ReceptionEntries.First().EntryDate).TotalHours }
             }).ToList().ToArray();
         }
 
@@ -170,7 +170,7 @@ namespace naseNut.WebApi.Models
                 State = c.Active,
                 LastHumidity = c.ReceptionEntries.Any(r => r.CylinderId == c.Id && r.Humidities.Any()) ? 
                         c.ReceptionEntries.Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).FirstOrDefault().HumidityPercent.ToString() : "",
-                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.DateEntry).First(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
+                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.EntryDate).First(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
             }).ToList();
         }
 
@@ -283,7 +283,7 @@ namespace naseNut.WebApi.Models
             {
                 Id = r.Id,
                 Receptions = string.Join(", ", r.Receptions.Select(f => f.Folio)),
-                DateEntry = r.DateEntry,
+                EntryDate = r.EntryDate,
                 Variety = r.Variety.Variety1,
                 Producer = r.Producer.ProducerName,
                 Cylinder = r.Cylinder.CylinderName,
@@ -336,14 +336,14 @@ namespace naseNut.WebApi.Models
             Random num = new Random();
             var reportService = new ReportService();
             return (from r in receptionEntries
-                    let dateReceptionCapture = r.DateEntry
+                    let dateReceptionCapture = r.EntryDate
                     let variety = r.Variety.Variety1
                     let batch = r.Receptions.Select(x => x.Remissions).Any() ? string.Join(", ", r.Receptions.SelectMany(y => y.Remissions.Select(re => re.Batch.Batch1))) : ""
                     let remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString()
                     let cylinder = r.Cylinder.CylinderName
                     let folio = r.Receptions.Any() ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : ""
                     let kgsOrigin = r.Receptions.Any() ? r.Receptions.Sum(x => x.Remissions.Sum(re => re.Quantity)) : 0
-                    let processDate = r.DateIssue != null ? r.DateIssue.ToString() : ""
+                    let processDate = r.IssueDate != null ? r.IssueDate.ToString() : ""
                     let sacksP = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.First)).Sum(n => n.Sacks) : 0
                     let kilosFirst = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.First)).Sum(n => n.Sacks * n.Kilos) : 0
                     let sacksS = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.Second)).Sum(s => s.Sacks) : 0
@@ -455,8 +455,8 @@ namespace naseNut.WebApi.Models
                 ReceivedFromField = r.Remissions.Select(re => re.Quantity).Sum(),
                 FieldName = r.Remissions.Any() ? string.Join(", ", r.Remissions.Select(re => re.Batch.Batch1)) : "",
                 CarRegistration = r.CarRegistration,
-                EntryDate = r.ReceptionEntry.DateEntry,
-                IssueDate = r.ReceptionEntry.DateIssue,
+                EntryDate = r.ReceptionEntry.EntryDate,
+                IssueDate = r.ReceptionEntry.IssueDate,
                 HeatHoursDrying = r.HeatHoursDtrying,
                 HumidityPercent = r.ReceptionEntry.Humidities.Any() ? r.ReceptionEntry.Humidities.OrderByDescending(h => h.DateCapture).First().HumidityPercent : 0,
                 Observations = r.Observations,
@@ -475,7 +475,7 @@ namespace naseNut.WebApi.Models
                 CylinderName = receptionEntry.Cylinder.CylinderName,
                 FieldName = receptionEntry.Receptions.Select(r => r.Remissions).FirstOrDefault() != null ? string.Join(", ", receptionEntry.Receptions.SelectMany(r => r.Remissions.Select(re => re.Batch.Batch1))) : "",
                 Tons = receptionEntry.Receptions.Sum(r => r.Remissions.Sum(re => re.Quantity)),
-                EntryDate = receptionEntry.DateEntry,
+                EntryDate = receptionEntry.EntryDate,
                 Folio = string.Join(", ", receptionEntry.Receptions.Select(re => re.Folio))
             };
         }
@@ -494,7 +494,7 @@ namespace naseNut.WebApi.Models
                 HumidityPercentage = h.HumidityPercent,
                 DateCapture = h.DateCapture,
                 CylinderName = h.ReceptionEntry.Cylinder.CylinderName,
-                EntryDate = h.ReceptionEntry.DateEntry,
+                EntryDate = h.ReceptionEntry.EntryDate,
                 FieldName = h.ReceptionEntry.Receptions.Select(r => r.Remissions).FirstOrDefault() != null ? string.Join(", ", h.ReceptionEntry.Receptions.SelectMany(r => r.Remissions.Select(re => re.Batch.Batch1))) : "",
                 Folio = string.Join(", ", h.ReceptionEntry.Receptions.Select(g => g.Folio)),
                 Tons = h.ReceptionEntry.Receptions.Sum(r => r.Remissions.Sum(re => re.Quantity))
@@ -505,7 +505,7 @@ namespace naseNut.WebApi.Models
             return receptionEntries.Select(r => new ReceptionEntryModel
             {
                 Id = r.Id,
-                DateEntry = r.DateEntry,
+                EntryDate = r.EntryDate,
                 Producer = r.Producer.ProducerName,
                 Variety = r.Variety.Variety1,
                 ReceptionList = Create(r.Receptions.ToList())
@@ -521,8 +521,8 @@ namespace naseNut.WebApi.Models
                 ReceivedFromField = reception.Remissions.Sum(r => r.Quantity),
                 FieldName = reception.Remissions != null && reception.Remissions.Count != 0 ? string.Join(", ", reception.Remissions.Select(re => re.Batch.Batch1)) : "",
                 CarRegistration = reception.CarRegistration,
-                EntryDate = reception.ReceptionEntry.DateEntry,
-                IssueDate = reception.ReceptionEntry.DateIssue,
+                EntryDate = reception.ReceptionEntry.EntryDate,
+                IssueDate = reception.ReceptionEntry.IssueDate,
                 HeatHoursDrying = reception.HeatHoursDtrying,
                 HumidityPercent = reception.ReceptionEntry.Humidities.Any() ? reception.ReceptionEntry.Humidities.OrderByDescending(d => d.DateCapture).First().HumidityPercent : 0,
                 Observations = reception.Observations,
@@ -605,6 +605,27 @@ namespace naseNut.WebApi.Models
                 Remission = i.Remission,
                 Grills = Create(i.Grills.Where(g => g.GrillIssuesId == i.Id && g.Quality == 2).ToList())
             }).ToList();
+        }
+        public List<HarvestSeasonModel> Create(List<HarvestSeason> harvestSeasons) {
+            return harvestSeasons.Select(h => new HarvestSeasonModel {
+                Id = h.Id,
+                Active = h.Active,
+                EntryDate = h.EntryDate,
+                IssueDate = h.IssueDate,
+                Description = h.Description,
+                Name = h.Name,
+                UserName = _db.AspNetUsers.First(u => u.Id == h.UserId).UserName
+            }).ToList();
+        }
+
+        public class HarvestSeasonModel {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public DateTime EntryDate { get; set; }
+            public DateTime? IssueDate { get; set; }
+            public bool Active { get; set; }
+            public string UserName { get; set; }
         }
 
         public class UpdateRemissionModel {
@@ -689,7 +710,7 @@ namespace naseNut.WebApi.Models
         {
             public int Id { get; set; }
             public string Receptions { get; set; }
-            public DateTime DateEntry { get; set; }
+            public DateTime EntryDate { get; set; }
             public string Variety { get; set; }
             public string Producer { get; set; }
             public string Cylinder { get; set; }

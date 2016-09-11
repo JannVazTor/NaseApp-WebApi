@@ -23,7 +23,9 @@ namespace naseNut.WebApi.Models.Entities
         public int Id { get; set; }
         public string CylinderName { get; set; }
         public bool Active { get; set; }
+        public int HarvestSeasonId { get; set; }
     
+        public virtual HarvestSeason HarvestSeason { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
     }
