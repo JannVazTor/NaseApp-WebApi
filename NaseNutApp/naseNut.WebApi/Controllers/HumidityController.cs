@@ -68,7 +68,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var humidities = _db.ReceptionEntries.Where(r => r.Id == id).FirstOrDefault();
+                var humidities = _db.ReceptionEntries.Where(r => r.Id == id && r.HarvestSeason.Active).FirstOrDefault();
                 return humidities != null ? (IHttpActionResult)Ok(TheModelFactory.Create(humidities)) : Ok();
             }
             catch (Exception ex)
@@ -82,7 +82,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetLastSamplings() {
             try
             {
-                var lastSamplings = _db.ReceptionEntries.Where(r => r.Humidities.Any()).Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).ToList();
+                var lastSamplings = _db.ReceptionEntries.Where(r => r.Humidities.Any() && r.HarvestSeason.Active).Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).ToList();
                 return lastSamplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateH(lastSamplings)) : Ok();
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetAll() {
             try
             {
-                var humidities = _db.Humidities.ToList();
+                var humidities = _db.Humidities.Where(h => h.ReceptionEntry.HarvestSeason.Active).ToList();
                 return humidities.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateH(humidities)) : Ok();
             }
             catch (Exception ex)

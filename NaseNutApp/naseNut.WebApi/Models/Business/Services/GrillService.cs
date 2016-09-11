@@ -41,7 +41,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var grillRepository = new GrillRepository(db);
-                    var grill = grillRepository.SearchOne(g => g.Folio == folio);
+                    var grill = grillRepository.SearchOne(g => g.Folio == folio && g.HarvestSeason.Active);
                     return grill;
                 }
             }

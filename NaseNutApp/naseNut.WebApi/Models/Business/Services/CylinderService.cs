@@ -66,7 +66,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var cylinderRepository = new CylinderRepository(db);
-                    return cylinderRepository.SearchOne(p => p.CylinderName.ToLower() == cylinderName.ToLower());
+                    return cylinderRepository.SearchOne(c => c.CylinderName.ToLower() == cylinderName.ToLower() && c.HarvestSeason.Active);
                 }
             }
             catch (Exception ex)

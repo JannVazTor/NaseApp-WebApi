@@ -17,8 +17,20 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var harvestSeasonRepository = new HarvestSeasonRepository(db);
-                    harvestSeasonRepository.Insert(harvestSeason);
-                    return db.SaveChanges() >= 1;
+                    var harvestSeasonActive = harvestSeasonRepository.Search(h => h.Active).ToList();
+                    if (harvestSeasonActive.Any())
+                    {
+                        foreach (var h in harvestSeasonActive)
+                        {
+                            h.Active = false;
+                            db.HarvestSeasons.Attach(h);
+                            db.Entry(h).Property(p => p.Active).IsModified = true;
+                        }
+                        var modified = db.SaveChanges() >= 1;
+                        if (!modified) return false;
+                    }
+                        harvestSeasonRepository.Insert(harvestSeason);
+                        return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception ex)

@@ -16,7 +16,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult ProductionByVariety() {
             try
             {
-                var varieties = _db.Varieties.ToList();
+                var varieties = _db.Varieties.Where(v => v.HarvestSeason.Active).ToList();
                 return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(varieties)) : Ok();
             }
             catch (Exception ex)
@@ -30,7 +30,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var producers = _db.Producers.ToList();
+                var producers = _db.Producers.Where(p => p.HarvestSeason.Active).ToList();
                 return producers.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(producers)) : Ok();
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var grills = _db.Grills.ToList();
+                var grills = _db.Grills.Where(g => g.HarvestSeason.Active).ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(grills)) : Ok();
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var cylinders = _db.Cylinders.Where(c=> !c.Active && c.ReceptionEntries.Any(r => r.IssueDate == null)).ToList();
+                var cylinders = _db.Cylinders.Where(c=> !c.Active && c.ReceptionEntries.Any(r => r.IssueDate == null) && c.HarvestSeason.Active).ToList();
                 return cylinders.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDash(cylinders)) : Ok();
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var varieties = _db.Varieties.ToList();
+                var varieties = _db.Varieties.Where(v => v.HarvestSeason.Active).ToList();
                 return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDashBarWithNumber(varieties)) : Ok();
             }
             catch (Exception ex)
@@ -86,7 +86,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var varieties = _db.Varieties.ToList();
+                var varieties = _db.Varieties.Where(h => h.HarvestSeason.Active).ToList();
                 return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateDashBarWithNumberPercentage(varieties)) : Ok();
             }
             catch (Exception ex)

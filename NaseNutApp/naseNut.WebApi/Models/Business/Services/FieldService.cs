@@ -68,7 +68,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var fieldRepository = new FieldRepository(db);
-                    return fieldRepository.SearchOne(p => p.FieldName == fieldName);
+                    return fieldRepository.SearchOne(f => f.FieldName == fieldName && f.HarvestSeason.Active);
                 }
             }
             catch (Exception ex)

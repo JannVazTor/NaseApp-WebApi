@@ -80,7 +80,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var receptionRepository = new ReceptionRepository(db);
 
-                    var reception = receptionRepository.SearchOne(r => r.Folio == folio);
+                    var reception = receptionRepository.SearchOne(r => r.Folio == folio && r.ReceptionEntry.HarvestSeason.Active);
                     return reception;
                 }
             }

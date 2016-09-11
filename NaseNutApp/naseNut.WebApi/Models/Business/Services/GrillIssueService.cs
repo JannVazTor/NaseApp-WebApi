@@ -67,5 +67,20 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
         }
+
+        public GrillIssue GetByRemission(int remission) {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var grillIssueRepository = new GrillIssueRepository(db);
+                    return grillIssueRepository.SearchOne(g => g.Remission == remission && g.HarvestSeason.Active);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

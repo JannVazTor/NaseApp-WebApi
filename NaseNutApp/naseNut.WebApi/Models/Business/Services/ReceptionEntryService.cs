@@ -15,12 +15,14 @@ namespace naseNut.WebApi.Models.Business.Services
             {
                 using (var db = new NaseNEntities())
                 {
+                    var harvestSeasonRepository = new HarvestSeasonRepository(db);
                     var receptionEntry = new ReceptionEntry {
                         EntryDate = DateTime.Now,
                         VarietyId = VarietyId,
                         ProducerId = ProducerId,
                         CylinderId = CylinderId,
-                        Active = true 
+                        Active = true ,
+                        HarvestSeasonId = harvestSeasonRepository.SearchOne(h => h.Active).Id
                     };
                     foreach (var reception in receptions)
                     {
@@ -47,7 +49,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionEntryRepository = new ReceptionEntryRepository(db);
-                    var receptionEntries = receptionEntryRepository.Search(r => r.CylinderId == cylinderId);
+                    var receptionEntries = receptionEntryRepository.Search(r => r.CylinderId == cylinderId && r.HarvestSeason.Active);
                     return receptionEntries;
                 }
             }

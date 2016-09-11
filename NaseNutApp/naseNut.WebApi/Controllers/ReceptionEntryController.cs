@@ -51,7 +51,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetAllReceptionEntries() {
             try
             {
-                var receptionEntries = _db.ReceptionEntries.Where(r => !r.Samplings.Any() || !r.NutTypes.Any()).ToList();
+                var receptionEntries = _db.ReceptionEntries.Where(r => (!r.Samplings.Any() || !r.NutTypes.Any()) && r.HarvestSeason.Active).ToList();
                 return receptionEntries != null ? (IHttpActionResult)Ok(TheModelFactory.Create(receptionEntries)) : Ok();
             }
             catch (Exception ex)

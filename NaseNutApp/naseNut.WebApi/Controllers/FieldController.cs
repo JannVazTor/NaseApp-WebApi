@@ -29,7 +29,8 @@ namespace naseNut.WebApi.Controllers
                 if (fieldService.GetByFieldName(model.FieldName) != null) return Conflict(); 
                 var field = new Field
                 {
-                    FieldName = model.FieldName
+                    FieldName = model.FieldName,
+                    HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
                 };
                 var saved = fieldService.Save(field);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -101,7 +102,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var fieldService = new FieldService();
-                var batches = _db.Batches.ToList();
+                var batches = _db.Batches.Where(b => b.Field.HarvestSeason.Active).ToList();
                 return batches != null ? (IHttpActionResult)Ok(TheModelFactory.Create(batches, false)) : Ok();
             }
             catch (Exception ex)
@@ -118,7 +119,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var fieldService = new FieldService();
-                var fields = _db.Fields.ToList();
+                var fields = _db.Fields.Where(f => f.HarvestSeason.Active).ToList();
                 return fields != null ? (IHttpActionResult)Ok(TheModelFactory.Create(fields)) : Ok();
             }
             catch (Exception ex)
@@ -135,7 +136,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var fieldService = new FieldService();
-                var batches = _db.Batches.ToList();
+                var batches = _db.Batches.Where(b => b.Field.HarvestSeason.Active).ToList();
                 return batches != null ? (IHttpActionResult)Ok(TheModelFactory.Create(batches, true)) : Ok();
             }
             catch (Exception ex)
@@ -170,7 +171,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var fieldService = new FieldService();
-                var boxes = _db.Boxes.ToList();
+                var boxes = _db.Boxes.Where(b => b.Batch.Field.HarvestSeason.Active).ToList();
                 return boxes != null ? (IHttpActionResult)Ok(TheModelFactory.Create(boxes)) : Ok();
             }
             catch (Exception ex)

@@ -55,7 +55,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var remissions = _db.Remissions.ToList();
+                var remissions = _db.Remissions.Where(r => r.Reception.ReceptionEntry.HarvestSeason.Active).ToList();
                 return remissions.Count != 0 ? (IHttpActionResult) Ok(TheModelFactory.Create(remissions)) : Ok();
             }
             catch (Exception ex)

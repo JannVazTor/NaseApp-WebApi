@@ -24,7 +24,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var producers = _db.ReceptionEntries.Where(r => r.ProducerId == id).ToList();
+                var producers = _db.ReceptionEntries.Where(r => r.ProducerId == id && r.HarvestSeason.Active).ToList();
                 return producers.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(producers)) : Ok();
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetReportingProcess() {
             try
             {
-                var varieties = _db.Varieties.ToList();
+                var varieties = _db.Varieties.Where(v => v.HarvestSeason.Active).ToList();
                 return varieties.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(varieties)) : Ok();
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetCurrentInvetoryReport() {
             try
             {
-                var grills = _db.Grills.Where(g => g.Status).ToList();
+                var grills = _db.Grills.Where(g => g.Status && g.HarvestSeason.Active).ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var grills = _db.Grills.Where(g => g.Status && g.Quality == 2).ToList();
+                var grills = _db.Grills.Where(g => g.Status && g.Quality == 2 && g.HarvestSeason.Active).ToList();
 
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
@@ -83,7 +83,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetProcessInventory() {
             try
             {
-                var grills = _db.Grills.ToList();
+                var grills = _db.Grills.Where(g => g.HarvestSeason.Active).ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)
@@ -97,7 +97,7 @@ namespace naseNut.WebApi.Controllers
         public IHttpActionResult GetGrillIssuesReport() {
             try
             {
-                var grillsIssues = _db.GrillIssues.ToList();
+                var grillsIssues = _db.GrillIssues.Where(gi => gi.HarvestSeason.Active).ToList();
                 return grillsIssues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(grillsIssues)) : Ok();
             }
             catch (Exception ex)
@@ -113,8 +113,8 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var secondGrill = _db.GrillIssues.SelectMany(x => x.Grills).Where(y => y.Quality == 2).ToList();
-                var grillsIssues = _db.GrillIssues.ToList();
+                var secondGrill = _db.GrillIssues.Where(gi => gi.HarvestSeason.Active).SelectMany(x => x.Grills).Where(y => y.Quality == 2).ToList();
+                var grillsIssues = _db.GrillIssues.Where(gi => gi.HarvestSeason.Active).ToList();
                 return grillsIssues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(secondGrill, grillsIssues)) : Ok();
             }
             catch (Exception ex)
@@ -130,10 +130,10 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var batches = _db.Batches.ToList();
-                var varieties = _db.Varieties.ToList();
-                var remissions = _db.Remissions.ToList();
-                var nutTypes = _db.NutTypes.ToList();
+                var batches = _db.Batches.Where(b => b.Field.HarvestSeason.Active).ToList();
+                var varieties = _db.Varieties.Where(v => v.HarvestSeason.Active).ToList();
+                var remissions = _db.Remissions.Where(r => r.Reception.ReceptionEntry.HarvestSeason.Active).ToList();
+                var nutTypes = _db.NutTypes.Where(n => n.ReceptionEntry.HarvestSeason.Active).ToList();
                 return batches.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(batches, varieties, remissions, nutTypes)) : Ok();
             }
             catch (Exception ex)
@@ -155,7 +155,7 @@ namespace naseNut.WebApi.Controllers
             {
                 var receptionEntries = _db.ReceptionEntries.ToList();
                 var datedReception = from rec in receptionEntries
-                    where rec.IssueDate != null && rec.IssueDate.Value.ToShortDateString().Equals(date1) select rec;
+                    where rec.IssueDate != null && rec.IssueDate.Value.ToShortDateString().Equals(date1) && rec.HarvestSeason.Active select rec;
 
                 datedReceptionEntries.AddRange(datedReception);
                 return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(datedReceptionEntries, date.ReportDate.ToString(CultureInfo.InvariantCulture))) : Ok();

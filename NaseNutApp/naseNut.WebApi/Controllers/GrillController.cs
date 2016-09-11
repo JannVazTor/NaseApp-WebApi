@@ -39,7 +39,8 @@ namespace naseNut.WebApi.Controllers
                     ProducerId = model.ProducerId,
                     BatchId = model.BatchId,
                     Status = true,
-                    Folio = model.Folio
+                    Folio = model.Folio,
+                    HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
                 };  
                 var saved = grillService.Save(grill);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -56,7 +57,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var grills = _db.Grills.ToList();
+                var grills = _db.Grills.Where(g => g.HarvestSeason.Active).ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)
@@ -154,7 +155,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var grills = _db.Grills.Where(g => g.Status).ToList();
+                var grills = _db.Grills.Where(g => g.Status && g.HarvestSeason.Active).ToList();
                 return grills.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(grills)) : Ok();
             }
             catch (Exception ex)
@@ -175,13 +176,15 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var grillIssueService = new GrillIssueService();
+                if (model.Remission != 0 && grillIssueService.GetByRemission(model.Remission) != null) return Conflict();
                 var grillIssue = new GrillIssue
                 {
                     DateCapture = model.DateCapture,
                     Truck = model.Truck,
                     Driver = model.Driver,
                     Box = model.Box,
-                    Remission = model.Remission
+                    Remission = model.Remission,
+                    HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
                 };
                 var saved = grillIssueService.Save(grillIssue, model.GrillsIds);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
@@ -199,7 +202,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var issues = _db.GrillIssues.ToList();
+                var issues = _db.GrillIssues.Where(gi => gi.HarvestSeason.Active).ToList();
                 return issues.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.Create(issues)) : Ok();
             }
             catch (Exception ex)

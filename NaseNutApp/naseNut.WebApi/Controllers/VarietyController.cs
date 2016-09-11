@@ -30,6 +30,7 @@ namespace naseNut.WebApi.Controllers
                 var variety = new Variety
                 {
                     Variety1 = model.VarietyName,
+                    HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id,
                     NutSize = new NutSize {
                         Small = model.Small,
                         MediumStart = model.MediumStart,
@@ -53,7 +54,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var varieties = _db.Varieties.ToList();
+                var varieties = _db.Varieties.Where(v => v.HarvestSeason.Active).ToList();
                 return varieties != null ? (IHttpActionResult)Ok(TheModelFactory.Create(varieties)) : Ok();
             }
             catch (Exception ex)

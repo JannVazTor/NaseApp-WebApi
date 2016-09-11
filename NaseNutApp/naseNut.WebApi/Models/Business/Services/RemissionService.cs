@@ -66,7 +66,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var remissionRepository = new RemissionRepository(db);
-                    var remission = remissionRepository.SearchOne(r => r.Folio == folio);
+                    var remission = remissionRepository.SearchOne(r => r.Folio == folio && r.Reception.ReceptionEntry.HarvestSeason.Active);
                     return remission;
                 }
             }

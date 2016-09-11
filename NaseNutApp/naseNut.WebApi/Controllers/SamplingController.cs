@@ -53,7 +53,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var samplings = _db.Samplings.Where(g => g.GrillId != null).ToList();
+                var samplings = _db.Samplings.Where(g => g.GrillId != null && g.Grill.HarvestSeason.Active).ToList();
                 return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateSampling(samplings)) : Ok();
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var samplings = _db.Samplings.Where(g => g.ReceptionEntryId != null).ToList();
+                var samplings = _db.Samplings.Where(g => g.ReceptionEntryId != null && g.ReceptionEntry.HarvestSeason.Active).ToList();
                 return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReception(samplings)) : Ok();
             }
             catch (Exception ex)

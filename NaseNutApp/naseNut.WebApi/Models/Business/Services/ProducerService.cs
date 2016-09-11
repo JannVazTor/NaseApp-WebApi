@@ -68,7 +68,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var producerRepository = new ProducerRepository(db);
-                    return producerRepository.SearchOne(p => p.ProducerName.ToLower() == producer.ToLower());
+                    return producerRepository.SearchOne(p => p.ProducerName.ToLower() == producer.ToLower() && p.HarvestSeason.Active);
                 }
             }
             catch (Exception ex)

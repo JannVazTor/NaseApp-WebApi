@@ -28,7 +28,8 @@ namespace naseNut.WebApi.Controllers
                 if (producerService.GetByProducerName(model.ProducerName) != null) return Conflict();
                 var producer = new Producer
                 {
-                    ProducerName = model.ProducerName
+                    ProducerName = model.ProducerName,
+                    HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
                 };
                 var saved = producerService.Save(producer);
                 return saved ? (IHttpActionResult) Ok() : BadRequest();
@@ -47,7 +48,7 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var producerService = new ProducerService();
-                var producers = producerService.GetAll();
+                var producers = _db.Producers.Where(p => p.HarvestSeason.Active).ToList();
                 return producers != null ? (IHttpActionResult) Ok(TheModelFactory.Create(producers)) : Ok(); 
             }
             catch (Exception ex)
