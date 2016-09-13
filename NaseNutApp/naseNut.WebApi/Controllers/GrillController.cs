@@ -51,7 +51,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar guardar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser,qualityUser")]
+        [Authorize(Roles = "admin,grillUser,qualityUser,remRecepUser")]
         [HttpGet]
         public IHttpActionResult GetAllGrills()
         {
@@ -85,7 +85,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser")]
+        [Authorize(Roles = "admin,grillUser,remRecepUser")]
         [HttpPut]
         [Route("addGrillToReception/{grillId}/{receptionId}")]
         public IHttpActionResult AddReceptionToGrill(int grillId, int receptionId)
@@ -107,7 +107,7 @@ namespace naseNut.WebApi.Controllers
                "Ocurrio un error al intentar relacionar los registros." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,grillUser")]
+        [Authorize(Roles = "admin,grillUser,remRecepUser")]
         [HttpPut]
         [Route("removeGrillToReception/{grillId}/{receptionId}")]
         public IHttpActionResult RemoveReceptionToGrill(int grillId, int receptionId)

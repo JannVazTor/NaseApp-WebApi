@@ -11,7 +11,7 @@ using naseNut.WebApi.Models.Entities;
 
 namespace naseNut.WebApi.Controllers
 {
-    [Authorize(Roles = "admin,qualityUser")]
+    [Authorize(Roles = "admin,qualityUser,grillUser")]
     [RoutePrefix("api/sampling")]
     public class SamplingController : BaseApiController
     {

@@ -145,7 +145,7 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener las Huertas/Lotes." + "\n" + "Detalles del Error: " + ex));
             }
         }
-        [Authorize(Roles = "admin,remRecepUser")]
+        [Authorize(Roles = "admin,remRecepUser,grillUser")]
         [HttpGet]
         [Route("batchesInField/{fieldId}")]
         public IHttpActionResult GetBatchesInField(int fieldId)
