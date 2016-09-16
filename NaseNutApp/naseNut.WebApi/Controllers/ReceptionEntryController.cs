@@ -37,7 +37,7 @@ namespace naseNut.WebApi.Controllers
                     Observations = m.Observations,
                     Folio = m.Folio
                 }).ToList();
-                var saved = receptionEntryService.Save(receptions, model.CylinderId, model.VarietyId, model.ProducerId);
+                var saved = receptionEntryService.Save(receptions, model.CylinderId, model.VarietyId, model.ProducerId, model.EntryDate);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)

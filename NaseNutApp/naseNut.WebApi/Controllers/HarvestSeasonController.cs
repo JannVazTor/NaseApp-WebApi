@@ -92,5 +92,26 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar obtener el registro." + "\n" + "Detalles del Error: " + ex));
             }
         }
+        [Authorize(Roles = "admin")]
+        [HttpPut]
+        public IHttpActionResult Update(UpdateHarvestSeasonBindingModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var harvestSeasonService = new HarvestSeasonService();
+                if (harvestSeasonService.GetById(model.Id) == null) return NotFound();
+                var modified = harvestSeasonService.Update(model);
+                return modified ? (IHttpActionResult)Ok() : Conflict();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar actualizar la parrilla." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
     }
 }

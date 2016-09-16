@@ -19,4 +19,17 @@ namespace naseNut.WebApi.Models.BindingModels
         [Required]
         public string UserName { get; set; }
     }
+    public class UpdateHarvestSeasonBindingModel
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Description { get; set; }
+        [Required]
+        public DateTime IssueDate { get; set; }
+        [Required]
+        public DateTime EntryDate { get; set; }
+    }
 }

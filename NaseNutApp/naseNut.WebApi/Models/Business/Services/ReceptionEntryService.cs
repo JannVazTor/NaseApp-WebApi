@@ -9,7 +9,7 @@ namespace naseNut.WebApi.Models.Business.Services
 {
     public class ReceptionEntryService
     {
-        public bool Save(List<Reception> receptions, int CylinderId, int VarietyId, int ProducerId)
+        public bool Save(List<Reception> receptions, int CylinderId, int VarietyId, int ProducerId, DateTime entryDate)
         {
             try
             {
@@ -17,7 +17,7 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var harvestSeasonRepository = new HarvestSeasonRepository(db);
                     var receptionEntry = new ReceptionEntry {
-                        EntryDate = DateTime.Now,
+                        EntryDate = entryDate,
                         VarietyId = VarietyId,
                         ProducerId = ProducerId,
                         CylinderId = CylinderId,

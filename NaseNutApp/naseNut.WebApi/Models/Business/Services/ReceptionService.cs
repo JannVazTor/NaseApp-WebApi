@@ -10,7 +10,7 @@ using System.Data.Entity;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
-    public class ReceptionService 
+    public class ReceptionService
     {
         public bool Delete(Reception reception, bool onlyHasOne)
         {
@@ -25,7 +25,8 @@ namespace naseNut.WebApi.Models.Business.Services
                         var receptionRepository = new ReceptionRepository(db);
                         receptionEntryRepository.Delete(receptionEntry);
                     }
-                    else {
+                    else
+                    {
                         var receptionRepository = new ReceptionRepository(db);
                         receptionRepository.Delete(reception);
                     }
@@ -41,13 +42,13 @@ namespace naseNut.WebApi.Models.Business.Services
         {
             try
             {
-               // using (var db = new NaseNEntities())
+                // using (var db = new NaseNEntities())
                 //{
                 var db = new NaseNEntities();
-                    var receptionRepository = new ReceptionRepository(db);
-                    var receptions = receptionRepository.GetAllWithProperties();
-                    return receptions;
-               // }
+                var receptionRepository = new ReceptionRepository(db);
+                var receptions = receptionRepository.GetAllWithProperties();
+                return receptions;
+                // }
             }
             catch (Exception ex)
             {
@@ -101,7 +102,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grill = grillRepository.GetById(grillId);
                     receptionRepository.Update(reception);
                     reception.Grills.Add(grill);
-                    return db.SaveChanges()>=1;
+                    return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception ex)
@@ -136,20 +137,21 @@ namespace naseNut.WebApi.Models.Business.Services
                 using (var db = new NaseNEntities())
                 {
                     var receptionService = new ReceptionService();
+                    var receptionRepository = new ReceptionRepository(db);
+                    var receptionEntryRepository = new ReceptionEntryRepository(db);
                     var reception = db.Receptions.Find(id);
-                    if (reception != null)
-                    {
-                        reception.CarRegistration = model.CarRegistration;
-                        reception.HeatHoursDtrying = model.HeatHoursDrying;
-                        reception.Observations = model.Observations;
-                        var receptionRepository = new ReceptionRepository(db);
-                        receptionRepository.Update(reception);
-                        return db.SaveChanges() >= 1;
-                    }
-                    else
-                    {
-                        return false;
-                    }    
+                    reception.CarRegistration = model.CarRegistration;
+                    reception.HeatHoursDtrying = model.HeatHoursDrying;
+                    reception.Observations = model.Observations;
+                    receptionRepository.Update(reception);
+                    var modified = db.SaveChanges() >= 1;
+                    if (!modified) return false;
+
+                    var receptionEntry = receptionEntryRepository.SearchOne(r => r.Id == reception.ReceptionEntryId);
+                    receptionEntry.EntryDate = model.EntryDate;
+                    db.ReceptionEntries.Attach(receptionEntry);
+                    db.Entry(receptionEntry).Property(p => p.EntryDate).IsModified = true;
+                    return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception ex)

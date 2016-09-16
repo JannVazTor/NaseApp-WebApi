@@ -13,9 +13,12 @@ namespace naseNut.WebApi.Models.BindingModels
         public double? HeatHoursDrying { get; set; }
         [Required]
         public string Observations { get; set; }
+        public DateTime EntryDate { get; set; }
     }
     public class AddReceptionEntryBindingModel
     {
+        [Required]
+        public DateTime EntryDate { get; set; }
         [Required]
         public int CylinderId { get; set; }
         [Required]

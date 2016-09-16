@@ -1,4 +1,5 @@
-﻿using naseNut.WebApi.Models.Business.Repositories;
+﻿using naseNut.WebApi.Models.BindingModels;
+using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Business.Services;
 using naseNut.WebApi.Models.Entities;
 using System;
@@ -144,6 +145,30 @@ namespace naseNut.WebApi.Models.Business.Services
                 throw ex;
             }
 
+        }
+
+        public bool Update(UpdateHarvestSeasonBindingModel model)
+        {
+            try
+            {
+                using (var db = new NaseNEntities())
+                {
+                    var harvestSeasonRepository = new HarvestSeasonRepository(db);
+                    var harvestSeason = harvestSeasonRepository.SearchOne(h => h.Id == model.Id);
+
+                    harvestSeason.Name = model.Name;
+                    harvestSeason.Description = model.Description;
+                    harvestSeason.EntryDate = model.EntryDate;
+                    harvestSeason.IssueDate = model.IssueDate;
+
+                    harvestSeasonRepository.Update(harvestSeason);
+                    return db.SaveChanges() >= 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
