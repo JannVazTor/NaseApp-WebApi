@@ -241,6 +241,7 @@ namespace naseNut.WebApi.Models
             return samplings.Select(s => new SamplingGrillModel
             {
                 Id = s.Id,
+                Folio = s.Grill.Folio,
                 GrillId = s.Grill.Id,
                 DateCapture = s.DateCapture,
                 SampleWeight = s.SampleWeight,
@@ -751,6 +752,7 @@ namespace naseNut.WebApi.Models
         public class SamplingGrillModel
         {
             public int Id { get; set; }
+            public int Folio { get; set; }
             public int GrillId { get; set; }
             public DateTime DateCapture { get; set; }
             public double SampleWeight { get; set; }
