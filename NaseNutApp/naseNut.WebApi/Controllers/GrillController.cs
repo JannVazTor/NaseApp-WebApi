@@ -242,6 +242,7 @@ namespace naseNut.WebApi.Controllers
                 }
                 var grillService = new GrillService();
                 if (grillService.GetById(id) == null) return NotFound();
+                model.Folio = grillService.GetById(id).Folio;
                 var modified = grillService.Update(id, model);
                 return modified ? (IHttpActionResult)Ok() : Conflict();
             }
