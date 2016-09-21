@@ -33,17 +33,15 @@ namespace naseNut.WebApi.Models.Entities
         public int ProducerId { get; set; }
         public int VarietyId { get; set; }
         public int Folio { get; set; }
-        public int BatchId { get; set; }
         public int HarvestSeasonId { get; set; }
     
-        public virtual Batch Batch { get; set; }
         public virtual GrillIssue GrillIssue { get; set; }
+        public virtual HarvestSeason HarvestSeason { get; set; }
         public virtual Producer Producer { get; set; }
         public virtual Variety Variety { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sampling> Samplings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reception> Receptions { get; set; }
-        public virtual HarvestSeason HarvestSeason { get; set; }
     }
 }

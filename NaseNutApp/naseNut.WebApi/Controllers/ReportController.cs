@@ -126,7 +126,7 @@ namespace naseNut.WebApi.Controllers
 
         [HttpGet]
         [Route("originReport")]
-        public IHttpActionResult GetOriginReportt()
+        public IHttpActionResult GetOriginReport()
         {
             try
             {

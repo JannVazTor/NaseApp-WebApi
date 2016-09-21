@@ -24,7 +24,5 @@ namespace naseNut.WebApi.Models.BindingModels
         public int VarietyId { get; set; }
         [Required]
         public int ProducerId { get; set; }
-        [Required]
-        public int BatchId{ get; set; }
     }
 }

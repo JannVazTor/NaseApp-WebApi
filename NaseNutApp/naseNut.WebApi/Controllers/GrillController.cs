@@ -37,7 +37,6 @@ namespace naseNut.WebApi.Controllers
                     Quality = model.Quality,
                     VarietyId = model.VarietyId,
                     ProducerId = model.ProducerId,
-                    BatchId = model.BatchId,
                     Status = true,
                     Folio = model.Folio,
                     HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id

@@ -19,11 +19,11 @@ namespace naseNut.WebApi.Models.Entities
         {
             this.Cylinders = new HashSet<Cylinder>();
             this.Fields = new HashSet<Field>();
-            this.Grills = new HashSet<Grill>();
             this.GrillIssues = new HashSet<GrillIssue>();
             this.Producers = new HashSet<Producer>();
             this.ReceptionEntries = new HashSet<ReceptionEntry>();
             this.Varieties = new HashSet<Variety>();
+            this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
@@ -39,8 +39,6 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Field> Fields { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Grill> Grills { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GrillIssue> GrillIssues { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Producer> Producers { get; set; }
@@ -48,5 +46,7 @@ namespace naseNut.WebApi.Models.Entities
         public virtual ICollection<ReceptionEntry> ReceptionEntries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Variety> Varieties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grill> Grills { get; set; }
     }
 }

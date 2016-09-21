@@ -21,7 +21,7 @@ namespace naseNut.WebApi.Models.Business.Services
                     grillRepository.Insert(grill);
                     var saved = db.SaveChanges()>=1;
                     if (!saved) return false;
-                    if (grill.Folio != -1) return true;
+                    if (grill.Folio != 0) return true;
                     grill.Folio = grill.Id;
                     db.Grills.Attach(grill);
                     db.Entry(grill).Property(p => p.Folio).IsModified = true;
@@ -186,7 +186,6 @@ namespace naseNut.WebApi.Models.Business.Services
                     if (grill == null) return false;
                     grill.Folio = model.Folio;
                     grill.DateCapture = model.DateCapture; 
-                    grill.BatchId = model.BatchId;
                     grill.Kilos = model.Kilos;
                     grill.ProducerId = model.ProducerId;
                     grill.Quality = model.Quality;
