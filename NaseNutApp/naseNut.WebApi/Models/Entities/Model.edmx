@@ -170,6 +170,15 @@
           <Property Name="LargeStart" Type="int" Nullable="false" />
           <Property Name="LargeEnd" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="NutSizeProcessResult">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NutSize" Type="int" Nullable="false" />
+          <Property Name="Sacks" Type="int" Nullable="false" />
+          <Property Name="NutTypeId" Type="int" />
+        </EntityType>
         <EntityType Name="NutType">
           <Key>
             <PropertyRef Name="Id" />
@@ -497,6 +506,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_nutSizeProcessResult">
+          <End Role="NutType" Type="Self.NutType" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NutSizeProcessResult" Type="Self.NutSizeProcessResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NutType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutSizeProcessResult">
+              <PropertyRef Name="NutTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_nutType_receptionEntry">
           <End Role="ReceptionEntry" Type="Self.ReceptionEntry" Multiplicity="0..1" />
           <End Role="NutType" Type="Self.NutType" Multiplicity="*" />
@@ -722,6 +745,7 @@
           <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutInBatch" EntityType="Self.NutInBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutSize" EntityType="Self.NutSize" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NutSizeProcessResult" EntityType="Self.NutSizeProcessResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NutType" EntityType="Self.NutType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producer" EntityType="Self.Producer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reception" EntityType="Self.Reception" Schema="dbo" store:Type="Tables" />
@@ -801,6 +825,10 @@
           <AssociationSet Name="fk_nutSize_variety" Association="Self.fk_nutSize_variety">
             <End Role="Variety" EntitySet="Variety" />
             <End Role="NutSize" EntitySet="NutSize" />
+          </AssociationSet>
+          <AssociationSet Name="fk_nutSizeProcessResult" Association="Self.fk_nutSizeProcessResult">
+            <End Role="NutType" EntitySet="NutType" />
+            <End Role="NutSizeProcessResult" EntitySet="NutSizeProcessResult" />
           </AssociationSet>
           <AssociationSet Name="fk_nutType_receptionEntry" Association="Self.fk_nutType_receptionEntry">
             <End Role="ReceptionEntry" EntitySet="ReceptionEntry" />
@@ -1103,6 +1131,11 @@
             <End Role="Grill" EntitySet="Grills" />
             <End Role="Reception" EntitySet="Receptions" />
           </AssociationSet>
+          <EntitySet Name="NutSizeProcessResults" EntityType="NASE_DB_WModel.NutSizeProcessResult" />
+          <AssociationSet Name="fk_nutSizeProcessResult" Association="NASE_DB_WModel.fk_nutSizeProcessResult">
+            <End Role="NutType" EntitySet="NutTypes" />
+            <End Role="NutSizeProcessResult" EntitySet="NutSizeProcessResults" />
+          </AssociationSet>
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Member Name="Entry" Value="1" />
@@ -1284,6 +1317,7 @@
           <Property Name="SamplingId" Type="Int32" />
           <NavigationProperty Name="Sampling" Relationship="NASE_DB_WModel.fk_nutType_sampling" FromRole="NutType" ToRole="Sampling" />
           <NavigationProperty Name="ReceptionEntry" Relationship="NASE_DB_WModel.fk_nutType_receptionEntry" FromRole="NutType" ToRole="ReceptionEntry" />
+          <NavigationProperty Name="NutSizeProcessResults" Relationship="NASE_DB_WModel.fk_nutSizeProcessResult" FromRole="NutType" ToRole="NutSizeProcessResult" />
         </EntityType>
         <Association Name="fk_nutType_sampling">
           <End Type="NASE_DB_WModel.Sampling" Role="Sampling" Multiplicity="0..1" />
@@ -1732,6 +1766,30 @@
           <End Type="NASE_DB_WModel.Grill" Role="Grill" Multiplicity="*" />
           <End Type="NASE_DB_WModel.Reception" Role="Reception" Multiplicity="*" />
         </Association>
+        <EntityType Name="NutSizeProcessResult">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NutSize" Type="Int32" Nullable="false" />
+          <Property Name="Sacks" Type="Int32" Nullable="false" />
+          <Property Name="NutTypeId" Type="Int32" />
+          <NavigationProperty Name="NutType" Relationship="NASE_DB_WModel.fk_nutSizeProcessResult" FromRole="NutSizeProcessResult" ToRole="NutType" />
+        </EntityType>
+        <Association Name="fk_nutSizeProcessResult">
+          <End Type="NASE_DB_WModel.NutType" Role="NutType" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="NASE_DB_WModel.NutSizeProcessResult" Role="NutSizeProcessResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NutType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NutSizeProcessResult">
+              <PropertyRef Name="NutTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2013,6 +2071,16 @@
               <ScalarProperty Name="Id" ColumnName="grillId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="NutSizeProcessResults">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.NutSizeProcessResult">
+              <MappingFragment StoreEntitySet="NutSizeProcessResult">
+                <ScalarProperty Name="NutTypeId" ColumnName="NutTypeId" />
+                <ScalarProperty Name="Sacks" ColumnName="Sacks" />
+                <ScalarProperty Name="NutSize" ColumnName="NutSize" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

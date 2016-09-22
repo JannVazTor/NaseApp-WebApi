@@ -292,34 +292,34 @@ namespace naseNut.WebApi.Models
             }).ToList();
         }
 
-        public List<SamplingReceptionModel> CreateReception(List<Sampling> samplings)
+        public List<SamplingReceptionModel> CreateReception(List<ReceptionEntry> receptionEntries)
         {
-            return samplings.Select(s => new SamplingReceptionModel
+            return receptionEntries.Select(r => new SamplingReceptionModel
             {
-                Id = s.Id,
-                Folio = s.ReceptionEntry.Receptions.Any() ? string.Join(", ", s.ReceptionEntry.Receptions.Select(c => c.Folio)) : "",
-                DateCapture = s.DateCapture,
-                SampleWeight = s.SampleWeight,
-                HumidityPercent = s.HumidityPercent,
-                WalnutNumber = s.WalnutNumber,
-                Variety = s.ReceptionEntry.Variety.Variety1,
-                Performance = s.Performance.RoundTwoDigitsDouble(),
-                TotalWeightOfEdibleNuts = s.TotalWeightOfEdibleNuts,
-                SacksFirst = s.NutTypes.Any(n => n.NutType1 == 1) 
-                            ? s.NutTypes.Where(n => n.NutType1 == 1).First().Sacks.ToString() : "",
-                KilosFirst = s.NutTypes.Any(n => n.NutType1 == 1) 
-                            ? (s.NutTypes.Where(n => n.NutType1 == 1).First().Kilos 
-                                * s.NutTypes.Where(n => n.NutType1 == 1).First().Sacks).ToString() : "",
-                SacksSecond = s.NutTypes.Any(n => n.NutType1 == 2) 
-                            ? (s.NutTypes.Where(n => n.NutType1 == 2).First().Sacks).ToString() : "",
-                KilosSecond = s.NutTypes.Any(n => n.NutType1 == 2)
-                            ? (s.NutTypes.Where(n => n.NutType1 == 2).First().Kilos
-                                * s.NutTypes.Where(n => n.NutType1 == 2).First().Sacks).ToString() : "",
-                SacksThird = s.NutTypes.Any(n => n.NutType1== 3) 
-                            ? s.NutTypes.Where(n => n.NutType1 == 3).First().Sacks.ToString() : "",
-                KilosThird = s.NutTypes.Any(n => n.NutType1 == 3) 
-                            ? (s.NutTypes.Where(n => n.NutType1 == 3).First().Kilos 
-                                * s.NutTypes.Where(n => n.NutType1 == 3).First().Sacks).ToString() : "",
+                Id = r.Id,
+                Folio = r.Receptions.Any() ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : "",
+                DateCapture = r.Samplings.Any() ? r.Samplings.OrderByDescending(d => d.DateCapture).First().DateCapture : (DateTime?)null,
+                SampleWeight = r.Samplings.Any() ? r.Samplings.OrderByDescending(d => d.DateCapture).First().SampleWeight : 0,
+                HumidityPercent = r.Samplings.Any() ? r.Samplings.OrderByDescending(d => d.DateCapture).First().HumidityPercent : 0,
+                WalnutNumber = r.Samplings.Any() ? r.Samplings.OrderByDescending(d => d.DateCapture).First().WalnutNumber : 0,
+                Variety = r.Variety.Variety1,
+                Performance = r.Samplings.Any() ? r.Samplings.OrderByDescending(d => d.DateCapture).First().Performance.RoundTwoDigitsDouble() : 0,
+                TotalWeightOfEdibleNuts = r.Samplings.Any() ? r.Samplings.OrderByDescending(d => d.DateCapture).First().TotalWeightOfEdibleNuts : 0,
+                SacksFirst = r.NutTypes.Any(n => n.NutType1 == 1) 
+                            ? r.NutTypes.Where(n => n.NutType1 == 1).First().Sacks.ToString() : "",
+                KilosFirst = r.NutTypes.Any(n => n.NutType1 == 1) 
+                            ? (r.NutTypes.Where(n => n.NutType1 == 1).First().Kilos 
+                                * r.NutTypes.Where(n => n.NutType1 == 1).First().Sacks).ToString() : "",
+                SacksSecond = r.NutTypes.Any(n => n.NutType1 == 2) 
+                            ? (r.NutTypes.Where(n => n.NutType1 == 2).First().Sacks).ToString() : "",
+                KilosSecond = r.NutTypes.Any(n => n.NutType1 == 2)
+                            ? (r.NutTypes.Where(n => n.NutType1 == 2).First().Kilos
+                                * r.NutTypes.Where(n => n.NutType1 == 2).First().Sacks).ToString() : "",
+                SacksThird = r.NutTypes.Any(n => n.NutType1== 3) 
+                            ? r.NutTypes.Where(n => n.NutType1 == 3).First().Sacks.ToString() : "",
+                KilosThird = r.NutTypes.Any(n => n.NutType1 == 3) 
+                            ? (r.NutTypes.Where(n => n.NutType1 == 3).First().Kilos 
+                                * r.NutTypes.Where(n => n.NutType1 == 3).First().Sacks).ToString() : "",
             }).ToList();
         }
         public List<NutTypeModel> Create(List<NutType> nutTypes) {
@@ -339,16 +339,15 @@ namespace naseNut.WebApi.Models
                     let dateReceptionCapture = r.EntryDate
                     let variety = r.Variety.Variety1
                     let batch = r.Receptions.Select(x => x.Remissions).Any() ? string.Join(", ", r.Receptions.SelectMany(y => y.Remissions.Select(re => re.Batch.Batch1))) : ""
-                    let remission = DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + num.Next(99999).ToString()
                     let cylinder = r.Cylinder.CylinderName
                     let folio = r.Receptions.Any() ? string.Join(", ", r.Receptions.Select(c => c.Folio)) : ""
                     let kgsOrigin = r.Receptions.Any() ? r.Receptions.Sum(x => x.Remissions.Sum(re => re.Quantity)) : 0
                     let processDate = r.IssueDate != null ? r.IssueDate.ToString() : ""
-                    let sacksP = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.First)).Sum(n => n.Sacks) : 0
-                    let kilosFirst = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.First)).Sum(n => n.Sacks * n.Kilos) : 0
-                    let sacksS = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.Second)).Sum(s => s.Sacks) : 0
-                    let kilosSecond = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (int)r.Samplings.SelectMany(s => s.NutTypes.Where(n => n.NutType1 == (int)NutQuality.Second)).Sum(n => n.Sacks * n.Kilos) : 0
-                    let kilosTotal = r.Samplings.SelectMany(n => n.NutTypes).Any() ? (double)r.Samplings.SelectMany(n => n.NutTypes).Sum(g => g.Kilos * g.Sacks) : 0
+                    let sacksP = r.NutTypes.Any() ? (int)r.NutTypes.Where(n => n.NutType1 == (int)NutQuality.First).Sum(n => n.Sacks) : 0
+                    let kilosFirst = r.NutTypes.Any() ? (int)r.NutTypes.Where(n => n.NutType1 == (int)NutQuality.First).Sum(n => n.Sacks * n.Kilos) : 0
+                    let sacksS = r.NutTypes.Any() ? (int)r.NutTypes.Where(n => n.NutType1 == (int)NutQuality.Second).Sum(n => n.Sacks) : 0
+                    let kilosSecond = r.NutTypes.Any() ? (int)r.NutTypes.Where(n => n.NutType1 == (int)NutQuality.Second).Sum(n => n.Sacks * n.Kilos) : 0
+                    let kilosTotal = r.NutTypes.Any() ? (double)r.NutTypes.Sum(g => g.Kilos * g.Sacks) : 0
                     let sacksFirstSmall = reportService.GetSacks(r, NutSizes.Small, (int)NutQuality.First)
                     let sacksFirstMedium = reportService.GetSacks(r, NutSizes.Medium, (int)NutQuality.First)
                     let sacksFirstLarge = reportService.GetSacks(r, NutSizes.Large, (int)NutQuality.First)
@@ -358,7 +357,6 @@ namespace naseNut.WebApi.Models
                         DateReceptionCapture = dateReceptionCapture,
                         Variety = variety,
                         Batch = batch,
-                        Remission = remission,
                         Cylinder = cylinder,
                         Folio = folio,
                         KgsOrigen = kgsOrigin,
@@ -415,7 +413,7 @@ namespace naseNut.WebApi.Models
                     let batch = b.Batch1
                     let hectares = b.Hectares
                     let varieties = (from v in varietiesL
-                                     let cleanWalnut = (double)nutTypes.Where(n => n.Sampling.ReceptionEntry.Variety.Id == v.Id).Sum(n => (n.Kilos * n.Sacks))
+                                     let cleanWalnut = (double)nutTypes.Where(n => n.ReceptionEntry.Variety.Id == v.Id).Sum(n => (n.Kilos * n.Sacks))
                                      let rawWalnutInBatch = remissions.Where(r => r.Reception.ReceptionEntry.Variety.Id == v.Id && r.Batch.Id == b.Id).Sum(t => t.Quantity)
                                      let rawWalnut = remissions.Where(r => r.Reception.ReceptionEntry.Variety.Id == v.Id).Sum(t => t.Quantity)
                                      let cleanWalnutInBatch = rawWalnut != 0 ? ((cleanWalnut * rawWalnutInBatch)/rawWalnut).RoundTwoDigitsDouble() : 0 
@@ -693,7 +691,7 @@ namespace naseNut.WebApi.Models
             public int Id { get; set; }
             public string Folio { get; set; }
             public string Variety { get; set; }
-            public DateTime DateCapture { get; set; }
+            public DateTime? DateCapture { get; set; }
             public double SampleWeight { get; set; }
             public double HumidityPercent { get; set; }
             public int WalnutNumber { get; set; }
@@ -929,7 +927,6 @@ namespace naseNut.WebApi.Models
             {
                 public string Folio { get; set; }
                 public string Variety { get; set; }
-                public string Remission { get; set; }
                 public string Cylinder { get; set; }
                 public string Batch { get; set; }
                 public DateTime DateReceptionCapture { get; set; }

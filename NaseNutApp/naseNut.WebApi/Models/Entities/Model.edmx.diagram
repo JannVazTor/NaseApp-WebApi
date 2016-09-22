@@ -59,6 +59,8 @@
         <AssociationConnector Association="NASE_DB_WModel.fk_grill_variety" />
         <AssociationConnector Association="NASE_DB_WModel.fk_sampling_grill" />
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.NutSizeProcessResult" Width="1.5" PointX="13.375" PointY="21.75" />
+        <AssociationConnector Association="NASE_DB_WModel.fk_nutSizeProcessResult" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -10,7 +10,7 @@ namespace naseNut.WebApi.Models.Business.Services
     public class NutTypeService
     {
         //Save sampling for ReceptionEntry
-        public bool Save(List<NutType> nutTypes, int receptionEntryId)
+        public bool Save(List<NutType> nutTypes, int receptionEntryId, List<NutSizeProcessResult> nutSizeProcessResult)
         {
             try
             {
@@ -27,7 +27,18 @@ namespace naseNut.WebApi.Models.Business.Services
                     db.ReceptionEntries.Attach(receptionEntry);
                     db.Entry(receptionEntry).Property(p => p.IssueDate).IsModified = true;
 
-                    nutTypes.ForEach(n => nutTypeRepository.Insert(n));
+                    foreach (var n in nutTypes)
+                    {
+                        if (n.NutType1 == 1)
+                        {
+                            foreach (var np in nutSizeProcessResult)
+                            {
+                                n.NutSizeProcessResults.Add(np);
+                            }
+                            db.NutTypes.Add(n);
+                        }
+                        db.NutTypes.Add(n);
+                    }
                     return db.SaveChanges() >= 1;
                 }
             }

@@ -18,7 +18,7 @@ namespace naseNut.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult SaveReceptionEntrySampling(AddNutTypeBindingModel model)
         {
-            if (!ModelState.IsValid || model == null || model.NutTypes.Count == 0)
+            if (!ModelState.IsValid || model == null || model.NutTypes.Count == 0 || model.NutSizeProcessResult.Count == 0)
             {
                 return BadRequest();
             }
@@ -31,7 +31,11 @@ namespace naseNut.WebApi.Controllers
                     Kilos = n.Kilos,
                     ReceptionEntryId = model.ReceptionEntryId
                 }).ToList();
-                var saved = nutTypeService.Save(nutTypes, model.ReceptionEntryId);
+                var nutSizeProcessResult = model.NutSizeProcessResult.Select(n => new NutSizeProcessResult {
+                    NutSize = n.NutSize,
+                    Sacks = n.Sacks
+                }).ToList();
+                var saved = nutTypeService.Save(nutTypes, model.ReceptionEntryId, nutSizeProcessResult);
                 return saved ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)

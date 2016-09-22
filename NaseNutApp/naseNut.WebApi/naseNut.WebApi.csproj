@@ -357,6 +357,9 @@
     <Compile Include="Models\Entities\NutSize.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\NutSizeProcessResult.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\NutType.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -427,7 +430,6 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <EntityDeploy Include="Models\Entities\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="Models\Entities\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>

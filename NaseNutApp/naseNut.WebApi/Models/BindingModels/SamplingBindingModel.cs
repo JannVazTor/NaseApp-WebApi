@@ -28,11 +28,18 @@ namespace naseNut.WebApi.Models.BindingModels
         public int ReceptionEntryId { get; set; }
         [Required]
         public List<NutTypeBindingModel> NutTypes { get; set; }
+        [Required]
+        public List<NutSizeProcessResultBindingModel> NutSizeProcessResult { get; set; }
     }
     public class NutTypeBindingModel
     {
         public byte NutType { get; set; }
         public float Kilos { get; set; }
+        public int Sacks { get; set; }
+    }
+    public class NutSizeProcessResultBindingModel
+    {
+        public int NutSize { get; set; }
         public int Sacks { get; set; }
     }
     public class UpdateGrillSamplingBindingModel

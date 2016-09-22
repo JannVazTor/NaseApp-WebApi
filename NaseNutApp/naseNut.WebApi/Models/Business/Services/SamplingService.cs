@@ -38,27 +38,28 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Delete(int id)
+        public bool Delete(int id, bool isProcessResult)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var samplingRepository = new SamplingRepository(db);
-                    var sampling = samplingRepository.GetById(id);
-
-                    if (sampling.ReceptionEntryId != null)
+                    if (isProcessResult)
                     {
                         var receptionEntryRepository = new ReceptionEntryRepository(db);
-                        var receptionEntry = receptionEntryRepository.GetById(sampling.ReceptionEntry.Id);
-
+                        var receptionEntry = receptionEntryRepository.GetById(id);
                         receptionEntry.IssueDate = null;
                         db.ReceptionEntries.Attach(receptionEntry);
                         db.Entry(receptionEntry).Property(p => p.IssueDate).IsModified = true;
 
                         receptionEntry.NutTypes.ToList().ForEach(n => db.NutTypes.Remove(n));
+                        receptionEntry.Samplings.ToList().ForEach(n => db.Samplings.Remove(n));
                     }
-                    samplingRepository.Delete(sampling);
+                    else {
+                        var samplingRepository = new SamplingRepository(db);
+                        var sampling = samplingRepository.GetById(id);
+                        samplingRepository.Delete(sampling);
+                    }
                     return db.SaveChanges() >= 1;
                 }
             }
@@ -84,31 +85,37 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool Update(UpdateGrillSamplingBindingModel model)
+        public bool Update(UpdateGrillSamplingBindingModel model, bool isProcessResult)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    
-                    var sampling = db.Samplings.Find(model.Id);
-                    if (sampling != null)
+                    var samplingRepository = new SamplingRepository(db);
+                    if (isProcessResult)
                     {
+                        var receptionEntryRepository = new ReceptionEntryRepository(db);
+                        var receptionEntry = receptionEntryRepository.GetById(model.Id);
+                        var sampling = receptionEntry.Samplings.OrderByDescending(d => d.DateCapture).First();
                         sampling.DateCapture = model.DateCapture;
-                        sampling.HumidityPercent= model.HumidityPercent;
+                        sampling.HumidityPercent = model.HumidityPercent;
                         sampling.Performance = model.Performance;
                         sampling.SampleWeight = model.SampleWeight;
                         sampling.TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts;
                         sampling.WalnutNumber = model.WalnutNumber;
-                       
-                        var samplingRepository = new SamplingRepository(db);
                         samplingRepository.Update(sampling);
-                        return db.SaveChanges() >= 1;
                     }
-                    else
-                    {
-                        return false;
+                    else {
+                        var sampling = samplingRepository.GetById(model.Id);
+                            sampling.DateCapture = model.DateCapture;
+                            sampling.HumidityPercent = model.HumidityPercent;
+                            sampling.Performance = model.Performance;
+                            sampling.SampleWeight = model.SampleWeight;
+                            sampling.TotalWeightOfEdibleNuts = model.TotalWeightOfEdibleNuts;
+                            sampling.WalnutNumber = model.WalnutNumber;
+                            samplingRepository.Update(sampling);
                     }
+                    return db.SaveChanges() >= 1;
                 }
             }
             catch (Exception ex)

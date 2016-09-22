@@ -47,5 +47,6 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<HarvestSeason> HarvestSeasons { get; set; }
         public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
         public virtual DbSet<Grill> Grills { get; set; }
+        public virtual DbSet<NutSizeProcessResult> NutSizeProcessResults { get; set; }
     }
 }

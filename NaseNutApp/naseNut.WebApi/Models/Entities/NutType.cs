@@ -14,6 +14,12 @@ namespace naseNut.WebApi.Models.Entities
     
     public partial class NutType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public NutType()
+        {
+            this.NutSizeProcessResults = new HashSet<NutSizeProcessResult>();
+        }
+    
         public int Id { get; set; }
         public byte NutType1 { get; set; }
         public Nullable<int> Sacks { get; set; }
@@ -23,5 +29,7 @@ namespace naseNut.WebApi.Models.Entities
     
         public virtual Sampling Sampling { get; set; }
         public virtual ReceptionEntry ReceptionEntry { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NutSizeProcessResult> NutSizeProcessResults { get; set; }
     }
 }
