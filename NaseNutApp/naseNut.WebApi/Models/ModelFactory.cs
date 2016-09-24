@@ -169,8 +169,8 @@ namespace naseNut.WebApi.Models
                 CylinderName = c.CylinderName,
                 State = c.Active,
                 LastHumidity = c.ReceptionEntries.Any(r => r.CylinderId == c.Id && r.Humidities.Any()) ? 
-                        c.ReceptionEntries.Select(r => r.Humidities.OrderByDescending(d => d.DateCapture).FirstOrDefault()).FirstOrDefault().HumidityPercent.ToString() : "",
-                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.EntryDate).First(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
+                        c.ReceptionEntries.OrderByDescending(r => r.EntryDate).First().Humidities.OrderByDescending(h => h.DateCapture).First().HumidityPercent.ToString() : "",
+                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.EntryDate).FirstOrDefault(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
             }).ToList();
         }
 
