@@ -143,22 +143,21 @@ namespace naseNut.WebApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [AllowAnonymous]
         [Route("dailyProcess")]
-        public IHttpActionResult GetDailyProcessReport(ReportBindingModel date)
+        public IHttpActionResult GetDailyProcessReport()
         {
-            //var date2 = DateTime.Now.ToString("d");
             List<ReceptionEntry> datedReceptionEntries = new List<ReceptionEntry>();
-            var date1 = date.ReportDate.ToShortDateString();
+            var date = DateTime.Now.ToShortDateString();
             try
             {
                 var receptionEntries = _db.ReceptionEntries.ToList();
                 var datedReception = from rec in receptionEntries
-                    where rec.IssueDate != null && rec.IssueDate.Value.ToShortDateString().Equals(date1) && rec.HarvestSeason.Active select rec;
+                    where rec.IssueDate != null && rec.HarvestSeason.Active select rec;
 
                 datedReceptionEntries.AddRange(datedReception);
-                return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(datedReceptionEntries, date.ReportDate.ToString(CultureInfo.InvariantCulture))) : Ok();
+                return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(datedReceptionEntries, date)) : Ok();
             }
             catch (Exception ex)
             {
