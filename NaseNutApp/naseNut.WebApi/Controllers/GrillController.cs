@@ -41,8 +41,8 @@ namespace naseNut.WebApi.Controllers
                     Folio = model.Folio,
                     HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
                 };  
-                var saved = grillService.Save(grill);
-                return saved ? (IHttpActionResult)Ok() : BadRequest();
+                var grillS = grillService.Save(grill);
+                return grillS != null ? (IHttpActionResult)Ok(grillS) : BadRequest();
             }
             catch (Exception ex)
             {
@@ -251,6 +251,30 @@ namespace naseNut.WebApi.Controllers
                 "Ocurrio un error al intentar actualizar la parrilla." + "\n" + "Detalles del Error: " + ex));
             }
         }
+
+        [Authorize(Roles = "admin,grillUser")]
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult GetById(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var grillService = new GrillService();
+                var grill = grillService.GetById(id);
+                if (grillService.GetById(id) == null) return NotFound();
+                return Ok(TheModelFactory.Create(grill));
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar obtener la parrilla." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
         [Authorize(Roles = "admin,grillUser")]
         [HttpPut]
         [Route("removeGrillFromGrillIssue/{id}")]

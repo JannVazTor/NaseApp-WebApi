@@ -44,7 +44,7 @@ namespace naseNut.WebApi.Models
         public BarChartModel[] CreateDash(List<Cylinder> cylinders) {
             return cylinders.Select(c => new BarChartModel {
                 name = c.CylinderName,
-                data = new double[] { (DateTime.Now - c.ReceptionEntries.First().EntryDate).TotalHours }
+                data = new double[] { (DateTime.Now - c.ReceptionEntries.OrderByDescending(d => d.EntryDate).First().EntryDate).TotalHours }
             }).ToList().ToArray();
         }
 
@@ -163,15 +163,23 @@ namespace naseNut.WebApi.Models
 
         public List<CylinderModel> Create(List<Cylinder> cylinders)
         {
-            return cylinders.Select(c => new CylinderModel
-            {
-                Id = c.Id,
-                CylinderName = c.CylinderName,
-                State = c.Active,
-                LastHumidity = c.ReceptionEntries.Any(r => r.CylinderId == c.Id && r.Humidities.Any()) ? 
-                        c.ReceptionEntries.OrderByDescending(r => r.EntryDate).First().Humidities.OrderByDescending(h => h.DateCapture).First().HumidityPercent.ToString() : "",
-                Folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.EntryDate).FirstOrDefault(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "",
-            }).ToList();
+            return (from c in cylinders
+                    let id = c.Id
+                    let cylinderName = c.CylinderName
+                    let state = c.Active
+                    let lastHumidity = c.ReceptionEntries.Any() ? 
+                                            c.ReceptionEntries.OrderByDescending(r => r.EntryDate).First().Humidities.OrderByDescending(h => h.DateCapture).FirstOrDefault() != null ? 
+                                        c.ReceptionEntries.OrderByDescending(r => r.EntryDate).First().Humidities.OrderByDescending(h => h.DateCapture).First().HumidityPercent.ToString() : "" : "" 
+                    let folios = c.ReceptionEntries.Any(r => r.CylinderId == c.Id) ? 
+                                        string.Join(", ", c.ReceptionEntries.OrderByDescending(d => d.EntryDate)
+                                            .FirstOrDefault(r => r.CylinderId == c.Id).Receptions.Select(f => f.Folio)) : "" 
+                    select new CylinderModel {
+                        Id = id,
+                        CylinderName = cylinderName,
+                        State = state,
+                        LastHumidity = lastHumidity,
+                        Folios = folios
+                    }).ToList(); 
         }
 
         public List<GrillModel> Create(List<Grill> grills)
@@ -197,7 +205,28 @@ namespace naseNut.WebApi.Models
                 TotalWeightOfEdibleNuts = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
             }).ToList();
         }
-
+        public GrillModel Create(Grill g) {
+            return new GrillModel
+            {
+                Id = g.Id,
+                DateCapture = g.DateCapture,
+                Folio = g.Folio,
+                Receptions = g.Receptions.Any() ? string.Join(", ", g.Receptions.Select(r => r.Folio)) : "",
+                Size = g.Size == 1 ? "Grande" : (g.Size == 2 ? "Mediana" : "Chica"),
+                Sacks = g.Sacks,
+                Kilos = g.Kilos,
+                Quality = g.Quality == 1 ? "Primera" : (g.Quality == 2 ? "Segunda" : "Tercera"),
+                Variety = g.Variety.Variety1,
+                Producer = g.Producer.ProducerName,
+                Batch = g.Receptions.Any(r => r.Remissions.Any()) ? string.Join(", ", g.Receptions.SelectMany(r => r.Remissions.Select(re => re.Batch.Batch1))) : "",
+                Status = g.Status,
+                SampleWeight = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight.ToString() : "",
+                HumidityPercent = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().HumidityPercent.ToString() : "",
+                WalnutNumber = g.Samplings.Any() ? ((g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().WalnutNumber * 1000) / g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().SampleWeight).RoundTwoDigitsDouble().ToString() : "",
+                Performance = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().Performance.RoundTwoDigitsDouble() : 0,
+                TotalWeightOfEdibleNuts = g.Samplings.Any() ? g.Samplings.OrderBy(s => s.DateCapture).FirstOrDefault().TotalWeightOfEdibleNuts.ToString() : ""
+            };
+        }
         public List<DailyProcessModel> CreateReport(List<ReceptionEntry> receptionEntries, string date)
         {
             var reportService = new ReportService();
