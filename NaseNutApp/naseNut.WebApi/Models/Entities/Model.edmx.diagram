@@ -12,7 +12,7 @@
         <AssociationConnector Association="NASE_DB_WModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="NASE_DB_WModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="NASE_DB_WModel.C__MigrationHistory" Width="1.5" PointX="15.125" PointY="2.875" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.C__MigrationHistory" Width="1.5" PointX="15.75" PointY="2.5" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Humidity" Width="1.5" PointX="4.375" PointY="4.75" />
         <EntityTypeShape EntityType="NASE_DB_WModel.Sampling" Width="1.5" PointX="13.875" PointY="7.375" />
         <EntityTypeShape EntityType="NASE_DB_WModel.NutSize" Width="1.5" PointX="15.75" PointY="10.625" />
@@ -61,6 +61,8 @@
         <AssociationConnector Association="NASE_DB_WModel.Reception_Grill" />
         <EntityTypeShape EntityType="NASE_DB_WModel.NutSizeProcessResult" Width="1.5" PointX="13.375" PointY="21.75" />
         <AssociationConnector Association="NASE_DB_WModel.fk_nutSizeProcessResult" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.ApplyChangeFailed" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="NASE_DB_WModel.ChangeApplied" Width="1.5" PointX="2.75" PointY="0.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,6 +15,15 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="ApplyChangeFailed">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConflictType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ErrorMessage" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -81,6 +90,17 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Box" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChangeApplied">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SyncStartTime" Type="datetime" Nullable="false" />
+          <Property Name="SyncEndTime" Type="datetime" Nullable="false" />
+          <Property Name="UploadChangesTotal" Type="int" Nullable="false" />
+          <Property Name="DownloadChangesTotal" Type="int" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Cylinder">
           <Key>
@@ -175,8 +195,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NutSize" Type="int" Nullable="false" />
-          <Property Name="Sacks" Type="int" Nullable="false" />
+          <Property Name="NutSize" Type="int" />
+          <Property Name="Sacks" Type="int" />
           <Property Name="NutTypeId" Type="int" />
         </EntityType>
         <EntityType Name="NutType">
@@ -730,6 +750,7 @@
         </Association>
         <EntityContainer Name="NASE_DB_WModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplyChangeFailed" EntityType="Self.ApplyChangeFailed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -737,6 +758,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Batch" EntityType="Self.Batch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Box" EntityType="Self.Box" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChangeApplied" EntityType="Self.ChangeApplied" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cylinder" EntityType="Self.Cylinder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Field" EntityType="Self.Field" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Grill" EntityType="Self.Grill" Schema="dbo" store:Type="Tables" />
@@ -1136,6 +1158,8 @@
             <End Role="NutType" EntitySet="NutTypes" />
             <End Role="NutSizeProcessResult" EntitySet="NutSizeProcessResults" />
           </AssociationSet>
+          <EntitySet Name="ApplyChangeFaileds" EntityType="NASE_DB_WModel.ApplyChangeFailed" />
+          <EntitySet Name="ChangeApplieds" EntityType="NASE_DB_WModel.ChangeApplied" />
           </EntityContainer>
         <EnumType Name="GrillStatus" UnderlyingType="Byte" a:ExternalTypeName="grillEnum" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Member Name="Entry" Value="1" />
@@ -1771,8 +1795,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NutSize" Type="Int32" Nullable="false" />
-          <Property Name="Sacks" Type="Int32" Nullable="false" />
+          <Property Name="NutSize" Type="Int32" />
+          <Property Name="Sacks" Type="Int32" />
           <Property Name="NutTypeId" Type="Int32" />
           <NavigationProperty Name="NutType" Relationship="NASE_DB_WModel.fk_nutSizeProcessResult" FromRole="NutSizeProcessResult" ToRole="NutType" />
         </EntityType>
@@ -1790,6 +1814,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ApplyChangeFailed">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConflictType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorMessage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ChangeApplied">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SyncStartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SyncEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UploadChangesTotal" Type="Int32" Nullable="false" />
+          <Property Name="DownloadChangesTotal" Type="Int32" Nullable="false" />
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2077,6 +2121,28 @@
                 <ScalarProperty Name="NutTypeId" ColumnName="NutTypeId" />
                 <ScalarProperty Name="Sacks" ColumnName="Sacks" />
                 <ScalarProperty Name="NutSize" ColumnName="NutSize" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplyChangeFaileds">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.ApplyChangeFailed">
+              <MappingFragment StoreEntitySet="ApplyChangeFailed">
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="ConflictType" ColumnName="ConflictType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChangeApplieds">
+            <EntityTypeMapping TypeName="NASE_DB_WModel.ChangeApplied">
+              <MappingFragment StoreEntitySet="ChangeApplied">
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="DownloadChangesTotal" ColumnName="DownloadChangesTotal" />
+                <ScalarProperty Name="UploadChangesTotal" ColumnName="UploadChangesTotal" />
+                <ScalarProperty Name="SyncEndTime" ColumnName="SyncEndTime" />
+                <ScalarProperty Name="SyncStartTime" ColumnName="SyncStartTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
