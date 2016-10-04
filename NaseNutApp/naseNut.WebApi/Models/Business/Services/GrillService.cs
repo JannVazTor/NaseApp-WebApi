@@ -6,12 +6,13 @@ using System.Web;
 using naseNut.WebApi.Models.BindingModels;
 using naseNut.WebApi.Models.Business.Repositories;
 using naseNut.WebApi.Models.Entities;
+using static naseNut.WebApi.Models.ModelFactory;
 
 namespace naseNut.WebApi.Models.Business.Services
 {
-    public class GrillService : IService<Grill>
+    public class GrillService
     {
-        public bool Save(Grill grill)
+        public Grill Save(Grill grill)
         {
             try
             {
@@ -20,12 +21,13 @@ namespace naseNut.WebApi.Models.Business.Services
                     var grillRepository = new GrillRepository(db);
                     grillRepository.Insert(grill);
                     var saved = db.SaveChanges()>=1;
-                    if (!saved) return false;
-                    if (grill.Folio != -1) return true;
+                    if (!saved) return null;
+                    if (grill.Folio != 0) return grill;
                     grill.Folio = grill.Id;
                     db.Grills.Attach(grill);
                     db.Entry(grill).Property(p => p.Folio).IsModified = true;
-                    return db.SaveChanges() >= 1;
+                    var savedAux = db.SaveChanges() >= 1;
+                    return savedAux ? grill : null;
                 }
             }
             catch (Exception ex)
@@ -186,7 +188,6 @@ namespace naseNut.WebApi.Models.Business.Services
                     if (grill == null) return false;
                     grill.Folio = model.Folio;
                     grill.DateCapture = model.DateCapture; 
-                    grill.BatchId = model.BatchId;
                     grill.Kilos = model.Kilos;
                     grill.ProducerId = model.ProducerId;
                     grill.Quality = model.Quality;

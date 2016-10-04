@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,6 +54,9 @@
       <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Synchronization, Version=2.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Synchronization.Data, Version=3.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Synchronization.Data.SqlServer, Version=3.1.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -286,6 +290,7 @@
     <Compile Include="Models\Business\Services\HarvestSeasonService.cs" />
     <Compile Include="Models\Business\Services\HomeService.cs" />
     <Compile Include="Models\Business\Services\HumidityService.cs" />
+    <Compile Include="Models\Business\Services\NaseNEntitiesSyncService.cs" />
     <Compile Include="Models\Business\Services\NutTypeService.cs" />
     <Compile Include="Models\Business\Services\ProducerService.cs" />
     <Compile Include="Models\Business\Services\ReceptionEntryService.cs" />
@@ -296,6 +301,9 @@
     <Compile Include="Models\Business\Services\SamplingService.cs" />
     <Compile Include="Models\Business\Services\UserService.cs" />
     <Compile Include="Models\Business\Services\VarietyService.cs" />
+    <Compile Include="Models\Entities\ApplyChangeFailed.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -312,6 +320,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Box.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\ChangeApplied.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Cylinder.cs">
@@ -351,10 +362,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\NutInBatch.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\NutSize.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\NutSizeProcessResult.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\NutType.cs">
@@ -427,7 +446,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <EntityDeploy Include="Models\Entities\Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="Models\Entities\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>

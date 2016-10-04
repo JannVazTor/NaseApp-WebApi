@@ -68,7 +68,7 @@ namespace naseNut.WebApi.Controllers
         {
             try
             {
-                var samplings = _db.Samplings.Where(g => g.ReceptionEntryId != null && g.ReceptionEntry.HarvestSeason.Active).ToList();
+                var samplings = _db.ReceptionEntries.Where(r => (r.Samplings.Any() || r.NutTypes.Any()) && r.HarvestSeason.Active).ToList();
                 return samplings.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReception(samplings)) : Ok();
             }
             catch (Exception ex)
@@ -87,7 +87,27 @@ namespace naseNut.WebApi.Controllers
                 var samplingService = new SamplingService();
                 var sampling = samplingService.GetById(id);
                 if (sampling == null) return NotFound();
-                var deleted = samplingService.Delete(id);
+                var deleted = samplingService.Delete(id, false);
+                return deleted ? (IHttpActionResult)Ok() : Conflict();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+
+        [HttpDelete]
+        [Route("processResult/{id}")]
+        public IHttpActionResult DeleteProcessResult(int id)
+        {
+            try
+            {
+                var receptionEntryService = new ReceptionEntryService();
+                var receptionEntry = receptionEntryService.GetById(id);
+                if (receptionEntry == null) return NotFound();
+                var samplingService = new SamplingService();
+                var deleted = samplingService.Delete(id, true);
                 return deleted ? (IHttpActionResult)Ok() : Conflict();
             }
             catch (Exception ex)
@@ -107,7 +127,27 @@ namespace naseNut.WebApi.Controllers
             try
             {
                 var samplingService = new SamplingService();
-                var update = samplingService.Update(model);
+                var update = samplingService.Update(model, false);
+                return update ? (IHttpActionResult)Ok() : InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError,
+                "Ocurrio un error al intentar eliminar el registro." + "\n" + "Detalles del Error: " + ex));
+            }
+        }
+        [HttpPut]
+        [Route("processResult")]
+        public IHttpActionResult UpdateProcessResultSampling(UpdateGrillSamplingBindingModel model)
+        {
+            if (!ModelState.IsValid || model == null)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var samplingService = new SamplingService();
+                var update = samplingService.Update(model, true);
                 return update ? (IHttpActionResult)Ok() : InternalServerError();
             }
             catch (Exception ex)

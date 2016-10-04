@@ -41,11 +41,14 @@ namespace naseNut.WebApi.Models.Entities
         public virtual DbSet<NutInBatch> NutInBatches { get; set; }
         public virtual DbSet<Cylinder> Cylinders { get; set; }
         public virtual DbSet<Field> Fields { get; set; }
-        public virtual DbSet<Grill> Grills { get; set; }
         public virtual DbSet<GrillIssue> GrillIssues { get; set; }
         public virtual DbSet<Producer> Producers { get; set; }
         public virtual DbSet<Variety> Varieties { get; set; }
         public virtual DbSet<HarvestSeason> HarvestSeasons { get; set; }
         public virtual DbSet<ReceptionEntry> ReceptionEntries { get; set; }
+        public virtual DbSet<Grill> Grills { get; set; }
+        public virtual DbSet<NutSizeProcessResult> NutSizeProcessResults { get; set; }
+        public virtual DbSet<ApplyChangeFailed> ApplyChangeFaileds { get; set; }
+        public virtual DbSet<ChangeApplied> ChangeApplieds { get; set; }
     }
 }

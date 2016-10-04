@@ -19,7 +19,6 @@ namespace naseNut.WebApi.Models.Entities
         {
             this.Remissions = new HashSet<Remission>();
             this.NutInBatches = new HashSet<NutInBatch>();
-            this.Grills = new HashSet<Grill>();
         }
     
         public int Id { get; set; }
@@ -33,7 +32,5 @@ namespace naseNut.WebApi.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NutInBatch> NutInBatches { get; set; }
         public virtual Field Field { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Grill> Grills { get; set; }
     }
 }

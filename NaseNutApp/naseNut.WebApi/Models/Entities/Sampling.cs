@@ -32,7 +32,7 @@ namespace naseNut.WebApi.Models.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NutType> NutTypes { get; set; }
-        public virtual Grill Grill { get; set; }
         public virtual ReceptionEntry ReceptionEntry { get; set; }
+        public virtual Grill Grill { get; set; }
     }
 }
