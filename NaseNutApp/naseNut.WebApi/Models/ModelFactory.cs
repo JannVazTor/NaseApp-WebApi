@@ -249,7 +249,7 @@ namespace naseNut.WebApi.Models
                     let sacksFirstSmall = reportService.GetSacks(receptionEntries, NutSizes.Small, (int)GrillQuality.First)
                     select new DailyProcessModel
                     {
-                        Date = date,
+                        Date = s.IssueDate.Value.ToString("dd/MM/yyyy"),
                         Producer = s.Producer.ProducerName,
                         Folio = s.Receptions.ToList().Count != 0 ? string.Join(", ", s.Receptions.Select(c => c.Folio)) : "",
                         Cylinder = s.Cylinder.CylinderName,
