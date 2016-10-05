@@ -13,7 +13,7 @@ using naseNut.WebApi.Models.Enum;
 namespace naseNut.WebApi.Controllers
 {
     [RoutePrefix("api/grill")]
-    public class GrillController: BaseApiController
+    public class GrillController : BaseApiController
     {
         private NaseNEntities _db = new NaseNEntities();
         [Authorize(Roles = "admin,grillUser")]
@@ -30,7 +30,7 @@ namespace naseNut.WebApi.Controllers
                 if (model.Folio != 0 && grillService.GetByFolio(model.Folio) != null) return Conflict();
                 var grill = new Grill
                 {
-                    DateCapture = model.DateCapture, 
+                    DateCapture = model.DateCapture,
                     Size = model.Size,
                     Sacks = model.Sacks,
                     Kilos = model.Kilos,
@@ -40,7 +40,7 @@ namespace naseNut.WebApi.Controllers
                     Status = true,
                     Folio = model.Folio,
                     HarvestSeasonId = _db.HarvestSeasons.FirstOrDefault(h => h.Active).Id
-                };  
+                };
                 var grillS = grillService.Save(grill);
                 return grillS != null ? (IHttpActionResult)Ok(grillS) : BadRequest();
             }
@@ -131,7 +131,7 @@ namespace naseNut.WebApi.Controllers
         [Authorize(Roles = "admin,grillUser")]
         [HttpPut]
         [Route("changeStatus/{id}/{status}")]
-        public IHttpActionResult UpdateStatus(int id, int status) 
+        public IHttpActionResult UpdateStatus(int id, int status)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace naseNut.WebApi.Controllers
                 var grillService = new GrillService();
                 if (grillService.GetById(id) == null) return NotFound();
                 var modified = grillService.UpdateStatus(id, status == 1);
-                return modified ? (IHttpActionResult) Ok() : BadRequest();
+                return modified ? (IHttpActionResult)Ok() : BadRequest();
             }
             catch (Exception ex)
             {
@@ -232,7 +232,8 @@ namespace naseNut.WebApi.Controllers
         [Authorize(Roles = "admin,grillUser")]
         [HttpPut]
         [Route("{id}")]
-        public IHttpActionResult UpdateGrill(int id, AddOrUpdateGrillBindingModel model) {
+        public IHttpActionResult UpdateGrill(int id, AddOrUpdateGrillBindingModel model)
+        {
             try
             {
                 if (!ModelState.IsValid)
@@ -278,7 +279,8 @@ namespace naseNut.WebApi.Controllers
         [Authorize(Roles = "admin,grillUser")]
         [HttpPut]
         [Route("removeGrillFromGrillIssue/{id}")]
-        public IHttpActionResult RemoveGrillFromGrillIssue(int id) {
+        public IHttpActionResult RemoveGrillFromGrillIssue(int id)
+        {
             try
             {
                 var grillService = new GrillService();

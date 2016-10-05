@@ -282,6 +282,7 @@
     <Compile Include="Models\Business\Repositories\VarietyRepository.cs" />
     <Compile Include="Models\Business\Repository.cs" />
     <Compile Include="Models\Business\Services\BatchService.cs" />
+    <Compile Include="Models\Business\Services\BenchMarkService.cs" />
     <Compile Include="Models\Business\Services\BoxService.cs" />
     <Compile Include="Models\Business\Services\CylinderService.cs" />
     <Compile Include="Models\Business\Services\FieldService.cs" />
