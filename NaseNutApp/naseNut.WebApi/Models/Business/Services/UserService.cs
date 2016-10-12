@@ -72,8 +72,8 @@ namespace naseNut.WebApi.Models.Business.Services
                 {
                     var userStore = new UserStore<ApplicationUser>(db);
                     var userManager = new UserManager<ApplicationUser>(userStore);
-                    var userToInsert = new ApplicationUser { UserName = "jannadmin", Email = "jannadmin@gmail.com" };
-                    userManager.Create(userToInsert, "SuperPass19*");
+                    var userToInsert = new ApplicationUser { UserName = "", Email = "" };
+                    userManager.Create(userToInsert, "");
                     var roleService = new RoleService();
                     var role = roleService.GetById("592690d4-f3ce-4e57-b2c8-78d0394b08bd");
                     userManager.AddToRole(userToInsert.Id, role.Name);
