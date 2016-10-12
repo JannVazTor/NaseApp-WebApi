@@ -252,3 +252,5 @@ paket-files/
 *.sln.iml
 /NaseNutApp/naseNut.WebApi/Models/Entities/Model.edmx.sql
 NaseNutApp/naseNut.WebApi/Web.config
+
+/NaseNutApp/naseNut.WebApi/Models/Business/Services/UserService.cs

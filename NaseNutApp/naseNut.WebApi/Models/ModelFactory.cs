@@ -149,7 +149,8 @@ namespace naseNut.WebApi.Models
                 Batch = r.Batch.Batch1,
                 Box = r.Box.Box1,
                 Variety = r.Reception.ReceptionEntry.Variety.Variety1,
-                RemissionFolio = r.Folio
+                RemissionFolio = r.Folio,
+                Folio = r.Reception.Folio
             }).ToList();
         }
 
@@ -949,6 +950,7 @@ namespace naseNut.WebApi.Models
         public class RemissionModel
         {
             public int Id { get; set; }
+            public int Folio { get; set; }
             public int RemissionFolio { get; set; }
             public string Cultivation { get; set; }
             public string Batch { get; set; }

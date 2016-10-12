@@ -24,10 +24,10 @@ namespace naseNut.WebApi
             var userService = new UserService();
             roleService.CreateRoles();
             userService.CreateAdminUser();
-            var naseNEntitiesSyncService = new NaseNEntitiesSyncService();
+            //var naseNEntitiesSyncService = new NaseNEntitiesSyncService();
             //naseNEntitiesSyncService.SetServerSyncConfiguration();
             //naseNEntitiesSyncService.SetClientSyncConfiguration();
-            naseNEntitiesSyncService.ExecuteSyncTask();
+            //naseNEntitiesSyncService.ExecuteSyncTask();
         }
 
         public void ConfigureOAuth(IAppBuilder app)
