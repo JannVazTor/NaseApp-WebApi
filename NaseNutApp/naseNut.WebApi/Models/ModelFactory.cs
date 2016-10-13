@@ -245,9 +245,9 @@ namespace naseNut.WebApi.Models
         {
             var reportService = new ReportService();
             return (from s in receptionEntries
-                    let sacksFirstLarge = reportService.GetSacks(receptionEntries, NutSizes.Large, (int)GrillQuality.First)
-                    let sacksFirstMedium = reportService.GetSacks(receptionEntries, NutSizes.Medium, (int)GrillQuality.First)
-                    let sacksFirstSmall = reportService.GetSacks(receptionEntries, NutSizes.Small, (int)GrillQuality.First)
+                    let sacksFirstLarge = reportService.GetSacks(s, NutSizes.Large, (int)GrillQuality.First)
+                    let sacksFirstMedium = reportService.GetSacks(s, NutSizes.Medium, (int)GrillQuality.First)
+                    let sacksFirstSmall = reportService.GetSacks(s, NutSizes.Small, (int)GrillQuality.First)
                     select new DailyProcessModel
                     {
                         Date = s.IssueDate.Value.ToString("dd/MM/yyyy"),

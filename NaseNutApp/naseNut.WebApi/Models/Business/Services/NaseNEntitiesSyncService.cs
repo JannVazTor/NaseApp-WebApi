@@ -25,8 +25,8 @@ namespace naseNut.WebApi.Models.Business.Services
         public static string _tableName = "";
         public NaseNEntitiesSyncService()
         {
-            _clientConn = new SqlConnection(@"Data Source=JAN\SQLEXPRESS01; Initial Catalog=NASE_DB_W; Integrated Security=True");
-            _serverConn = new SqlConnection(@"Data Source=JAN\SQLEXPRESS01; Initial Catalog=NASE_DB_W_Server; Integrated Security=True");
+            _clientConn = new SqlConnection(@"Data Source=.\NASE; Initial Catalog=NASE_DB_W; Integrated Security=True");
+            _serverConn = new SqlConnection(@"Data Source=.\NASE; Initial Catalog=NASE_DB_W_Server; Integrated Security=True");
             _syncOrchestrator = new SyncOrchestrator();
             _tablesNames = GetTablesNames();
         }
