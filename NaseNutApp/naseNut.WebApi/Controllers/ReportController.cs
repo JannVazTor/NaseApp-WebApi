@@ -148,16 +148,15 @@ namespace naseNut.WebApi.Controllers
         [Route("dailyProcess")]
         public IHttpActionResult GetDailyProcessReport()
         {
-            List<ReceptionEntry> datedReceptionEntries = new List<ReceptionEntry>();
             var date = DateTime.Now.ToShortDateString();
             try
             {
-                var receptionEntries = _db.ReceptionEntries.ToList();
-                var datedReception = from rec in receptionEntries
-                    where rec.IssueDate != null && rec.HarvestSeason.Active select rec;
+                var receptionEntries = _db.ReceptionEntries.Where(r => r.IssueDate != null).ToList();
+                //var datedReception = from rec in receptionEntries
+                //    where rec.IssueDate != null && rec.HarvestSeason.Active select rec;
 
-                datedReceptionEntries.AddRange(datedReception);
-                return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(datedReceptionEntries, date)) : Ok();
+                //datedReceptionEntries.AddRange(datedReception);
+                return receptionEntries.Count != 0 ? (IHttpActionResult)Ok(TheModelFactory.CreateReport(receptionEntries, date)) : Ok();
             }
             catch (Exception ex)
             {
