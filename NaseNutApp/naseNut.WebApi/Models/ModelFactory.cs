@@ -827,7 +827,6 @@ namespace naseNut.WebApi.Models
             public string Variety { get; set; }
             public string Producer { get; set; }
             public string Batch { get; set; }
-            public string Field { get; set; }
             public bool Status { get; set; }
             public string SampleWeight { get; set; }
             public string HumidityPercent { get; set; }
