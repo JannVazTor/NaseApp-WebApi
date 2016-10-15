@@ -205,17 +205,31 @@ namespace naseNut.WebApi.Models.Business.Services
             }
         }
 
-        public bool RemoveGrillFromGrillIssue(int id)
+        public bool RemoveGrillFromGrillIssue(int id, bool onlyHasOne)
         {
             try
             {
                 using (var db = new NaseNEntities())
                 {
-                    var grillRepository = new GrillRepository(db);
-                    var grill = db.Grills.First(g => g.Id == id);
-                    grill.GrillIssuesId = null;
-                    grill.Status = true;
-                    grillRepository.Update(grill);
+                    if (onlyHasOne)
+                    {
+                        var grillRepository = new GrillRepository(db);
+                        var grillIssuesRepository = new GrillIssueRepository(db);
+                        var grill = db.Grills.First(g => g.Id == id);
+                        var grillIssue = grillIssuesRepository.GetById(grill.GrillIssuesId);
+                        grill.GrillIssuesId = null;
+                        grill.Status = true;
+                        grillRepository.Update(grill);
+                        grillIssuesRepository.Delete(grillIssue);
+                    }
+                    else
+                    {
+                        var grillRepository = new GrillRepository(db);
+                        var grill = db.Grills.First(g => g.Id == id);
+                        grill.GrillIssuesId = null;
+                        grill.Status = true;
+                        grillRepository.Update(grill);
+                    }
                     return db.SaveChanges() >= 1;
                 }
             }

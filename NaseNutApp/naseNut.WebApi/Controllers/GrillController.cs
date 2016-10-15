@@ -285,7 +285,7 @@ namespace naseNut.WebApi.Controllers
             {
                 var grillService = new GrillService();
                 if (grillService.GetById(id) == null) return NotFound();
-                var removed = grillService.RemoveGrillFromGrillIssue(id);
+                var removed = grillService.RemoveGrillFromGrillIssue(id, _db.GrillIssues.First(gi => gi.Grills.Any(g => g.Id == id)).Grills.Count == 1);
                 return removed ? (IHttpActionResult)Ok() : Conflict();
             }
             catch (Exception ex)
