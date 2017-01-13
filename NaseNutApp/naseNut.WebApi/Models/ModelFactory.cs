@@ -248,6 +248,9 @@ namespace naseNut.WebApi.Models
                     let sacksFirstLarge = reportService.GetSacks(s, NutSizes.Large, (int)GrillQuality.First)
                     let sacksFirstMedium = reportService.GetSacks(s, NutSizes.Medium, (int)GrillQuality.First)
                     let sacksFirstSmall = reportService.GetSacks(s, NutSizes.Small, (int)GrillQuality.First)
+                    let totalOfFirst = sacksFirstSmall + sacksFirstMedium + sacksFirstLarge
+                    let totalOfSecond = s.NutTypes.Any() ? (int)s.NutTypes.Where(n => n.NutType1 == 2).Select(s => s.Sacks).Sum() : 0
+                    let performanceOfSeconds = (((double)totalOfSecond / (totalOfSecond + totalOfFirst)) * 100).RoundTwoDigitsDouble()
                     select new DailyProcessModel
                     {
                         Date = s.IssueDate.Value.ToString("dd/MM/yyyy"),
@@ -258,9 +261,9 @@ namespace naseNut.WebApi.Models
                         SacksFirstLarge = sacksFirstLarge,
                         SacksFirstSmall = sacksFirstSmall,
                         SacksFirstMedium = sacksFirstMedium,
-                        Total = sacksFirstSmall + sacksFirstMedium + sacksFirstLarge,
-                        QualityPercent = s.Samplings.Count != 0 ? s.Samplings.OrderBy(x => x.DateCapture).FirstOrDefault().Performance.ToString(CultureInfo.InvariantCulture) + "%" : "",
-                        Germinated = s.Samplings.SelectMany(x => x.NutTypes).Any() ? s.Receptions.SelectMany(x => x.ReceptionEntry.Samplings.SelectMany(n => n.NutTypes).Where(n => n.NutType1 == 2).Select(y => y.Sacks)).Sum() : 0,
+                        Total = totalOfFirst,
+                        QualityPercent = performanceOfSeconds.ToString() + " %",
+                        Germinated = totalOfSecond
                     }).ToList();
         }
 
@@ -464,8 +467,7 @@ namespace naseNut.WebApi.Models
                                          Variety = v.Variety1,
                                          Total = cleanWalnutInBatch,
                                          Performance = v.NutInBatches.Any(vn => vn.BatchId == b.Id && vn.VarietyId == v.Id) ?
-                                            ((cleanWalnutInBatch / hectares) * v.NutInBatches.Where(vn => vn.BatchId == b.Id
-                                                && vn.VarietyId == v.Id).First().NutPercentage).RoundTwoDigitsDouble() : 0
+                                            ((cleanWalnutInBatch / (hectares * v.NutInBatches.Where(vn => vn.BatchId == b.Id && vn.VarietyId == v.Id).First().NutPercentage)) / 10).RoundTwoDigitsDouble() : 0
                                      }).ToList()
                     let totalProduction = varieties.Sum(g => g.Total).RoundTwoDigitsDouble()
                     let performancePerHa = hectares != 0 ? (totalProduction / hectares).RoundTwoDigitsDouble() : 0

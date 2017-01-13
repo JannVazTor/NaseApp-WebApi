@@ -151,7 +151,7 @@ namespace naseNut.WebApi.Controllers
             var date = DateTime.Now.ToShortDateString();
             try
             {
-                var receptionEntries = _db.ReceptionEntries.Where(r => r.IssueDate != null).ToList();
+                var receptionEntries = _db.ReceptionEntries.Where(r => r.IssueDate != null && r.HarvestSeason.Active).ToList();
                 //var datedReception = from rec in receptionEntries
                 //    where rec.IssueDate != null && rec.HarvestSeason.Active select rec;
 
